@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Slimming</string>
+    <string name="on_destroy">Activity is Destroyed</string>
+    <string name="exit_hint">Tap Back again to exit.</string>
+    <string name="handle_unknow_msg">Unknow message.what: what=%1$d , time=%2$x dataBundle=%3$s </string>
+</resources>
