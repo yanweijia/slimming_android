@@ -3,4 +3,9 @@
     <string name="on_destroy">Activity is Destroyed</string>
     <string name="exit_hint">Tap Back again to exit.</string>
     <string name="handle_unknow_msg">Unknow message.what: what=%1$d , time=%2$x dataBundle=%3$s </string>
+    <string name="title_sport">Sport</string>
+    <string name="title_analyze">Analyze</string>
+    <string name="title_diet">Diet</string>
+    <string name="title_health">Health</string>
+    <string name="title_me">Me</string>
 </resources>

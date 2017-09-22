@@ -4,7 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.yanweijia.slimming.MainActivity">
+    <FrameLayout
+        android:id="@+id/fragment_main"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/bottomNavigation"
+        android:background="@color/white">
 
+    </FrameLayout>
 
     <!--@see : https://github.com/armcha/LuseenBottomNavigation-->
     <com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView

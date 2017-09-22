@@ -18,8 +18,15 @@ import java.lang.ref.WeakReference;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    // 自定义Handler,弱引用
     private Handler myHandler;
+    // MSG类型
     private static final int MSG_EXIT_APP = 1;
+
+    // 底部BottomNavBar相关资源
+    private int[] bottomBarTitles = {R.string.title_sport, R.string.title_analyze, R.string.title_diet, R.string.title_health, R.string.title_me};
+    private int[] bottomBarColors = {R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault};
+    private int[] bottomBarImages = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background};
     /**
      * tap twice to exit application
      */
@@ -30,19 +37,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
-
-        BottomNavigationItem bottomNavigationItem0 = new BottomNavigationItem("Record", getResources().getColor(R.color.bottomBarDefault), R.drawable.ic_launcher_background);
-        BottomNavigationItem bottomNavigationItem1 = new BottomNavigationItem("Like", ContextCompat.getColor(this, R.color.bottomBarDefault), R.drawable.ic_launcher_background);
-        bottomNavigationView.addTab(bottomNavigationItem0);
-        bottomNavigationView.addTab(bottomNavigationItem1);
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        for (int i = 0; i < bottomBarTitles.length; i++) {
+            BottomNavigationItem item = new BottomNavigationItem(getString(bottomBarTitles[i]), ContextCompat.getColor(MainActivity.this, bottomBarColors[i]), bottomBarImages[i]);
+            bottomNavigationView.addTab(item);
+        }
+        bottomNavigationView.willNotRecreate(true);
         bottomNavigationView.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
             @Override
             public void onNavigationItemClick(int index) {
-                Log.d(TAG, "onNavigationItemClick: Item "+index+" clicked");
+                Log.d(TAG, "onNavigationItemClick: Item " + index + ":" + getString(bottomBarTitles[index]) + " clicked");
+                switch (index) {
+                    case 0: //sport
+                        break;
+                    case 1: //analyze
+                        break;
+                    case 2: //diet
+                        break;
+                    case 3: //health
+                        break;
+                    case 4: //me
+                        break;
+                    default:
+                        Log.d(TAG, "onNavigationItemClick: Error! index is :" + index);
+                }
             }
         });
-        bottomNavigationView.willNotRecreate(true);
+
 
         initDatas();
     }

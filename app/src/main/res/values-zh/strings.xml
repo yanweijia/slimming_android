@@ -3,4 +3,9 @@
     <string name="on_destroy">Activity 被销毁</string>
     <string name="exit_hint">哼,按一次返回键就想退出？\n有本事再按一次啊!</string>
     <string name="handle_unknow_msg">捕获到未知的Handler.Msg.what: what=%1$d , time=%2$x dataBundle=%3$s </string>
+    <string name="title_sport">运动</string>
+    <string name="title_analyze">数据</string>
+    <string name="title_diet">饮食</string>
+    <string name="title_health">健康</string>
+    <string name="title_me">我的</string>
 </resources>
