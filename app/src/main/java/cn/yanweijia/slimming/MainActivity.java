@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationItem;
 import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView;
 import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItemClickListener;
@@ -18,12 +17,12 @@ import java.lang.ref.WeakReference;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    // 自定义Handler,弱引用
+    // custom Handler,weak reference
     private Handler myHandler;
-    // MSG类型
+    // message type
     private static final int MSG_EXIT_APP = 1;
 
-    // 底部BottomNavBar相关资源
+    // BottomNavBar relevant
     private int[] bottomBarTitles = {R.string.title_sport, R.string.title_analyze, R.string.title_diet, R.string.title_health, R.string.title_me};
     private int[] bottomBarColors = {R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault};
     private int[] bottomBarImages = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background};
@@ -37,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initViews();
+
+        initDatas();
+    }
+
+    /**
+     * initial views
+     */
+    private void initViews(){
         final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         for (int i = 0; i < bottomBarTitles.length; i++) {
             BottomNavigationItem item = new BottomNavigationItem(getString(bottomBarTitles[i]), ContextCompat.getColor(MainActivity.this, bottomBarColors[i]), bottomBarImages[i]);
@@ -63,12 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        initDatas();
     }
-
-
     /**
      * initial Datas
      */
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //tap twice on the key to exit.
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.d(TAG, "onKeyDown: Back button Pressed");
             exit();
             return false;
         } else {
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * custom my handler <br/>
-     * <i>weak reference is good for JAVA GB</i>
+     * <i>weak reference is good for JAVA GC</i>
      *
      * @author weijia
      * @ref <a href="http://blog.csdn.net/nzfxx/article/details/51854305">解决handler警告问题</a>

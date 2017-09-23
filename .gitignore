@@ -104,3 +104,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# plugin:markdown-navigator
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/
