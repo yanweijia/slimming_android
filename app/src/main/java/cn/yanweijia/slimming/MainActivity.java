@@ -45,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
      * initial views
      */
     private void initViews(){
-        final BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
+        final BottomNavigationView navView = findViewById(R.id.bottomNavigation);
         for (int i = 0; i < bottomBarTitles.length; i++) {
             BottomNavigationItem item = new BottomNavigationItem(getString(bottomBarTitles[i]), ContextCompat.getColor(MainActivity.this, bottomBarColors[i]), bottomBarImages[i]);
-            bottomNavigationView.addTab(item);
+            navView.addTab(item);
         }
-        bottomNavigationView.willNotRecreate(true);
-        bottomNavigationView.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
+        navView.willNotRecreate(true);
+        navView.disableShadow();
+        navView.setOnBottomNavigationItemClickListener(new OnBottomNavigationItemClickListener() {
             @Override
             public void onNavigationItemClick(int index) {
                 Log.d(TAG, "onNavigationItemClick: Item " + index + ":" + getString(bottomBarTitles[index]) + " clicked");
