@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_above="@id/bottomNavigation"
-        android:background="@color/colorPrimary">
-
+        android:background="@color/white">
     </FrameLayout>
 
     <!--@see : https://github.com/armcha/LuseenBottomNavigation-->

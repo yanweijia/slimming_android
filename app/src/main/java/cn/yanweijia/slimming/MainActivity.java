@@ -1,5 +1,7 @@
 package cn.yanweijia.slimming;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -9,11 +11,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
 import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationItem;
 import com.luseen.luseenbottomnavigation.BottomNavigation.BottomNavigationView;
 import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItemClickListener;
 
 import java.lang.ref.WeakReference;
+
+import cn.yanweijia.slimming.analyze.AnalyzeFragment;
+import cn.yanweijia.slimming.diet.DietFragment;
+import cn.yanweijia.slimming.health.HealthFragment;
+import cn.yanweijia.slimming.me.MeFragment;
+import cn.yanweijia.slimming.sport.SportFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,6 +35,15 @@ public class MainActivity extends AppCompatActivity {
     private int[] bottomBarTitles = {R.string.title_sport, R.string.title_analyze, R.string.title_diet, R.string.title_health, R.string.title_me};
     private int[] bottomBarColors = {R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault};
     private int[] bottomBarImages = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background};
+
+
+    //fragments
+    private SportFragment sportFragment;
+    private AnalyzeFragment analyzeFragment;
+    private DietFragment dietFragment;
+    private HealthFragment healthFragment;
+    private MeFragment meFragment;
+
     /**
      * tap twice to exit application
      */
@@ -44,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * initial views
      */
-    private void initViews(){
+    private void initViews() {
+        setDefaultFragment();
         final BottomNavigationView navView = findViewById(R.id.bottomNavigation);
         for (int i = 0; i < bottomBarTitles.length; i++) {
             BottomNavigationItem item = new BottomNavigationItem(getString(bottomBarTitles[i]), ContextCompat.getColor(MainActivity.this, bottomBarColors[i]), bottomBarImages[i]);
@@ -56,23 +75,54 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNavigationItemClick(int index) {
                 Log.d(TAG, "onNavigationItemClick: Item " + index + ":" + getString(bottomBarTitles[index]) + " clicked");
+                FragmentManager fm = MainActivity.this.getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
                 switch (index) {
                     case 0: //sport
+                        if (sportFragment == null)
+                            sportFragment = SportFragment.newInstance();
+                        transaction.replace(R.id.fragment_main, sportFragment);
                         break;
                     case 1: //analyze
+                        if (analyzeFragment == null)
+                            analyzeFragment = AnalyzeFragment.newInstance();
+                        transaction.replace(R.id.fragment_main, analyzeFragment);
                         break;
                     case 2: //diet
+                        if (dietFragment == null)
+                            dietFragment = DietFragment.newInstance();
+                        transaction.replace(R.id.fragment_main, dietFragment);
                         break;
                     case 3: //health
+                        if (healthFragment == null)
+                            healthFragment = HealthFragment.newInstance();
+                        transaction.replace(R.id.fragment_main, healthFragment);
                         break;
                     case 4: //me
+                        if (meFragment == null)
+                            meFragment = MeFragment.newInstance();
+                        transaction.replace(R.id.fragment_main, meFragment);
                         break;
                     default:
                         Log.d(TAG, "onNavigationItemClick: Error! index is :" + index);
                 }
+                transaction.commit();
             }
         });
     }
+
+    /**
+     * init the first Fragment and set to default
+     */
+    private void setDefaultFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        if (sportFragment == null)
+            sportFragment = SportFragment.newInstance();
+        transaction.replace(R.id.fragment_main, sportFragment);
+        transaction.commit();
+    }
+
     /**
      * initial Datas
      */
