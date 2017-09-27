@@ -8,4 +8,14 @@
     <string name="title_diet">饮食</string>
     <string name="title_health">健康</string>
     <string name="title_me">我的</string>
+
+    <!-- login相关资源 -->
+    <string name="sign_in">登 录</string>
+    <string name="prompt_username">用 户 名</string>
+    <string name="prompt_password">密 码</string>
+    <string name="illegal_username">用户名非法</string>
+    <string name="illegal_password">密码格式不正确</string>
+    <string name="password_to_short">密码位数过短</string>
+    <string name="field_required">必填项</string>
+    <string name="sign_on">注 册</string>
 </resources>

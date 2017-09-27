@@ -8,4 +8,14 @@
     <string name="title_diet">Diet</string>
     <string name="title_health">Health</string>
     <string name="title_me">Me</string>
+
+    <!-- Strings related to login -->
+    <string name="sign_in">Sign in</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="illegal_username">This Username is invalid</string>
+    <string name="illegal_password">This Password is invalid</string>
+    <string name="password_to_short">This Password is too short</string>
+    <string name="field_required">This field is required</string>
+    <string name="sign_on">Sign on</string>
 </resources>
