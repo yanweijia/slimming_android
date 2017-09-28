@@ -1,4 +1,4 @@
-package cn.yanweijia.slimming.me;
+package cn.yanweijia.slimming.fragment.analyze;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,13 +13,13 @@ import cn.yanweijia.slimming.R;
  * @author weijia
  * @date 2017.09.24
  */
-public class MeFragment extends Fragment {
+public class AnalyzeFragment extends Fragment {
     //this view is used to save view stack
     private View rootView;
-    private static final String TAG = "MeFragment";
+    private static final String TAG = "AnalyzeFragment";
 
-    public MeFragment() {
-        Log.d(TAG, "MeFragment: Constructor");
+    public AnalyzeFragment() {
+        Log.d(TAG, "AnalyzeFragment: Constructor");
     }
 
     /**
@@ -27,19 +27,18 @@ public class MeFragment extends Fragment {
      *
      * @return
      */
-    public static MeFragment newInstance() {
-        MeFragment fragment = new MeFragment();
+    public static AnalyzeFragment newInstance() {
+        AnalyzeFragment fragment = new AnalyzeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         Log.d(TAG, "newInstance: ");
         return fragment;
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: rootView==null?  " + String.valueOf(rootView == null));
-        return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_me);
+        return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_analyze);
     }
 
     /**
@@ -68,7 +67,7 @@ public class MeFragment extends Fragment {
      *
      * @return rootView
      * @author weijia
-     * @see cn.yanweijia.slimming.sport.SportFragment#getPersistentView(LayoutInflater, ViewGroup, Bundle, int)
+     * @see cn.yanweijia.slimming.fragment.sport.SportFragment#getPersistentView(LayoutInflater, ViewGroup, Bundle, int)
      */
     public View getPersistentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int layout) {
         Log.d(TAG, "getPersistentView: rootView==null? " + String.valueOf(rootView == null));
@@ -86,4 +85,5 @@ public class MeFragment extends Fragment {
         initViews();
         return rootView;
     }
+
 }

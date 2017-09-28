@@ -1,4 +1,4 @@
-package cn.yanweijia.slimming.diet;
+package cn.yanweijia.slimming.fragment.health;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -13,13 +13,13 @@ import cn.yanweijia.slimming.R;
  * @author weijia
  * @date 2017.09.24
  */
-public class DietFragment extends Fragment {
+public class HealthFragment extends Fragment {
     //this view is used to save view stack
     private View rootView;
-    private static final String TAG = "DietFragment";
+    private static final String TAG = "HealthFragment";
 
-    public DietFragment() {
-        Log.d(TAG, "DietFragment: Constructor");
+    public HealthFragment() {
+        Log.d(TAG, "HealthFragment: Constructor");
     }
 
     /**
@@ -27,20 +27,20 @@ public class DietFragment extends Fragment {
      *
      * @return
      */
-    public static DietFragment newInstance() {
-        DietFragment fragment = new DietFragment();
+    public static HealthFragment newInstance() {
+        HealthFragment fragment = new HealthFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         Log.d(TAG, "newInstance: ");
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: rootView==null? " + String.valueOf(rootView == null));
-        return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_diet);
+        Log.d(TAG, "onCreateView: rootView==null?  " + String.valueOf(rootView == null));
+        return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_health);
     }
-
 
     /**
      * use rootView to initial views
@@ -68,7 +68,7 @@ public class DietFragment extends Fragment {
      *
      * @return rootView
      * @author weijia
-     * @see cn.yanweijia.slimming.sport.SportFragment#getPersistentView(LayoutInflater, ViewGroup, Bundle, int)
+     * @see cn.yanweijia.slimming.fragment.sport.SportFragment#getPersistentView(LayoutInflater, ViewGroup, Bundle, int)
      */
     public View getPersistentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int layout) {
         Log.d(TAG, "getPersistentView: rootView==null? " + String.valueOf(rootView == null));

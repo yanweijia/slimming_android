@@ -18,11 +18,11 @@ import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItem
 
 import java.lang.ref.WeakReference;
 
-import cn.yanweijia.slimming.analyze.AnalyzeFragment;
-import cn.yanweijia.slimming.diet.DietFragment;
-import cn.yanweijia.slimming.health.HealthFragment;
-import cn.yanweijia.slimming.me.MeFragment;
-import cn.yanweijia.slimming.sport.SportFragment;
+import cn.yanweijia.slimming.fragment.analyze.AnalyzeFragment;
+import cn.yanweijia.slimming.fragment.diet.DietFragment;
+import cn.yanweijia.slimming.fragment.health.HealthFragment;
+import cn.yanweijia.slimming.fragment.me.MeFragment;
+import cn.yanweijia.slimming.fragment.sport.SportFragment;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";

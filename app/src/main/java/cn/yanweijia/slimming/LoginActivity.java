@@ -57,7 +57,7 @@ public class LoginActivity extends Activity {
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
         Log.d(TAG, "onCreate: Complete");
