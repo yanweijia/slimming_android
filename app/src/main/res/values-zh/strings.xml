@@ -18,4 +18,6 @@
     <string name="password_to_short">密码位数过短</string>
     <string name="field_required">必填项</string>
     <string name="sign_on">注 册</string>
+    <string name="login_success">登录成功</string>
+    <string name="login_fail">登录失败</string>
 </resources>

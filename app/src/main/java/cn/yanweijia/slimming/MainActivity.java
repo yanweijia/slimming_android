@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
         //弱引用<引用外部类>
         WeakReference<MainActivity> mActivity;
 
-        public MyHandler(MainActivity activity) {
-            this.mActivity = new WeakReference<MainActivity>(activity);
+        MyHandler(MainActivity activity) {
+            this.mActivity = new WeakReference<>(activity);
         }
 
         @Override

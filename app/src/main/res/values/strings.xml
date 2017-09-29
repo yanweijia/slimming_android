@@ -18,4 +18,6 @@
     <string name="password_to_short">This Password is too short</string>
     <string name="field_required">This field is required</string>
     <string name="sign_on">Sign on</string>
+    <string name="login_success">Login success.</string>
+    <string name="login_fail">Login fail.</string>
 </resources>

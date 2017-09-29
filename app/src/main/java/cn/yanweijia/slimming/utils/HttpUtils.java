@@ -28,6 +28,12 @@ public class HttpUtils {
 
     private static final String TAG = "HttpUtils";
 
+    //httpClient
+    private static HttpClient httpClient;
+
+    static{
+        httpClient = new DefaultHttpClient();
+    }
 
     /**
      * send Post request
@@ -37,8 +43,6 @@ public class HttpUtils {
      * @return result html content
      */
     public static String sendPost(String url, Map<String, String> params) {
-        //httpClient
-        HttpClient httpClient = new DefaultHttpClient();
 
         // get method
         HttpPost httpPost = new HttpPost(url);

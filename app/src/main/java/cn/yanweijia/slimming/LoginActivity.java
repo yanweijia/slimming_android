@@ -4,15 +4,22 @@ package cn.yanweijia.slimming;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.util.Map;
 
 import cn.yanweijia.slimming.utils.HttpUtils;
 import cn.yanweijia.slimming.utils.RequestUtils;
@@ -24,13 +31,32 @@ import cn.yanweijia.slimming.utils.RequestUtils;
  * login
  */
 public class LoginActivity extends Activity {
+
+    /**
+     * login success
+     */
+    private static final int LOGIN_SUCCESS = 1;
+    /**
+     * login fail
+     */
+    private static final int LOGIN_FAIL = 2;
+
+
     private static final String TAG = "LoginActivity";
+
+
     private EditText editText_username, editText_password;
+    private String username;
+    private String password;    //encrypted(MD5)
+    private MyHandler myHandler;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        gson = new Gson();
+        myHandler = new MyHandler();
 
         //bind views
         Button btn_signin = (Button) findViewById(R.id.sign_in_button);
@@ -43,8 +69,8 @@ public class LoginActivity extends Activity {
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String username = editText_username.getText().toString();
-                final String password = editText_password.getText().toString();
+                username = editText_username.getText().toString();
+                password = editText_password.getText().toString();
                 if (!isUserNameValid(username) || !RegexUtils.isUsername(username)) {
                     //check username
                     Toast.makeText(LoginActivity.this, R.string.illegal_username, Toast.LENGTH_SHORT).show();
@@ -55,13 +81,8 @@ public class LoginActivity extends Activity {
                     Toast.makeText(LoginActivity.this, R.string.illegal_password, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //TODO:login
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        RequestUtils.login(username,password);
-                    }
-                }).start();
+                password = EncryptUtils.encryptMD5ToString(password);
+                login();
             }
         });
 
@@ -76,6 +97,7 @@ public class LoginActivity extends Activity {
             }
         });
         Log.d(TAG, "onCreate: Complete");
+        autoLogin();
     }
 
     /**
@@ -95,6 +117,62 @@ public class LoginActivity extends Activity {
     private boolean isPasswordValid(String password) {
         return password.length() > 6;
     }
-    //TODO: 自定义Handler,处理异步信息
+
+    /**
+     * if username/password exists in sqlite DB,try to auto login <br/>
+     * @author weijia
+     */
+    private void autoLogin(){
+        //TODO:check sqlite DB,and auto login
+    }
+
+    /**
+     * login Thread <br/>
+     * date 2017.09.29
+     *
+     * @author weijia
+     */
+    private void login() {
+        //login
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.login(username, password);
+                Map<String, Object> map = gson.fromJson(jsonResult, Map.class);
+                Message msg = new Message();
+                msg.what = ((boolean) map.get("success") == true) ? LOGIN_SUCCESS : LOGIN_FAIL;
+                Bundle bundle = new Bundle();
+                bundle.putString("message", String.valueOf(map.get("message")));
+                msg.setData(bundle);
+                myHandler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    //customer Handler,handle asynchronous message..
+    class MyHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case LOGIN_SUCCESS:
+                    Toast.makeText(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "handleMessage: LOGIN_SUCCESS " + msg.getData().getString("message"));
+                    //open main frame
+                    Intent intent = new Intent();
+                    intent.setClass(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    //TODO: save username and password
+                    finish();
+                    break;
+                case LOGIN_FAIL:
+                    Toast.makeText(LoginActivity.this, getString(R.string.login_fail) + msg.getData().getString("message"), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "handleMessage: LOGIN_FAIL " + msg.getData().getString("message"));
+                    break;
+                default:
+                    Log.d(TAG, "handleMessage: mysterious msg.what");
+            }
+        }
+    }
 }
 
