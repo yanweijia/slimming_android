@@ -10,6 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.RegexUtils;
+
+import org.json.JSONObject;
+
+import cn.yanweijia.slimming.utils.HttpUtils;
+import cn.yanweijia.slimming.utils.RequestUtils;
+
 
 /**
  * @author weijia
@@ -36,17 +43,25 @@ public class LoginActivity extends Activity {
         btn_signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = editText_username.getText().toString();
-                String password = editText_password.getText().toString();
-                Log.d(TAG, "Btn_sign_in onClick: Username:" + username + " , Password:" + password);
-                if(!isUserNameValid(username)){
-                    //TODO: check username
-                    Toast.makeText(LoginActivity.this,R.string.illegal_username,Toast.LENGTH_SHORT).show();
+                final String username = editText_username.getText().toString();
+                final String password = editText_password.getText().toString();
+                if (!isUserNameValid(username) || !RegexUtils.isUsername(username)) {
+                    //check username
+                    Toast.makeText(LoginActivity.this, R.string.illegal_username, Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                if(!isPasswordValid(password)){
-                    //TODO: check password
-                    Toast.makeText(LoginActivity.this,R.string.illegal_password,Toast.LENGTH_SHORT).show();
+                if (!isPasswordValid(password)) {
+                    //check password
+                    Toast.makeText(LoginActivity.this, R.string.illegal_password, Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                //TODO:login
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestUtils.login(username,password);
+                    }
+                }).start();
             }
         });
 

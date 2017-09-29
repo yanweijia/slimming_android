@@ -1,6 +1,3 @@
-![logo][logo]
-
-[![auc][aucsvg]][auc] [![api][apisvg]][api] [![build][buildsvg]][build] [![Insight][insightsvg]][insight] [![License][licensesvg]][license]
 
 ## [README of English][readme.md]
 
@@ -601,8 +598,6 @@ getComments       : 获取压缩文件中的注释链表
 
 ## About
 
-* [![jianshu][jianshusvg]][jianshu] [![weibo][weibosvg]][weibo]  [![Blog][blogsvg]][blog] [![QQ0Group][qq0groupsvg]][qq0group] [![QQ1Group][qq1groupsvg]][qq1group]
-
 * 做这份整理是想把它作为Android开发的小字典，当遇到一些琐碎问题时，不用再面向百度或者谷歌查询API的使用，费时费力，这里有的话，大家尽管撸走；同时也希望它能逐日壮大起来，期待大家的Star和完善，当然我也会一直更新发布版本和日志，为了方便大家导入，现已上传jcenter；其中很多代码也是汇四方之精华，谢谢前辈们的提供，当然最终还是要通过单元测试的，如有错误，请及时告之。
 
 
@@ -631,37 +626,6 @@ Utils.init(context);
 ```
 
 
-[logo]: https://raw.githubusercontent.com/Blankj/AndroidUtilCode/master/art/logo.png
-
-[aucsvg]: https://img.shields.io/badge/AndroidUtilCode-v1.9.0-brightgreen.svg
-[auc]: https://github.com/Blankj/AndroidUtilCode
-
-[apisvg]: https://img.shields.io/badge/API-14+-brightgreen.svg
-[api]: https://android-arsenal.com/api?level=14
-
-[buildsvg]: https://travis-ci.org/Blankj/AndroidUtilCode.svg?branch=master
-[build]: https://travis-ci.org/Blankj/AndroidUtilCode
-
-[insightsvg]: https://www.insight.io/repoBadge/github.com/Blankj/AndroidUtilCode
-[insight]: https://insight.io/github.com/Blankj/AndroidUtilCode
-
-[licensesvg]: https://img.shields.io/badge/License-Apache--2.0-brightgreen.svg
-[license]: https://github.com/Blankj/AndroidUtilCode/blob/master/LICENSE
-
-[jianshusvg]: https://img.shields.io/badge/简书-Blankj-34a48e.svg
-[jianshu]: http://www.jianshu.com/u/46702d5c6978
-
-[weibosvg]: https://img.shields.io/badge/weibo-__Blankj-34a48e.svg
-[weibo]: http://weibo.com/3076228982
-
-[blogsvg]: https://img.shields.io/badge/Blog-Blankj-34a48e.svg
-[blog]: http://blankj.com
-
-[qq0groupsvg]: https://img.shields.io/badge/QQ0群(满)-74721490-ff73a3.svg
-[qq0group]: https://shang.qq.com/wpa/qunwpa?idkey=62baf2c3ec6b0863155b0c7a10c71bba2608cb0b6532fc18515835e54c69bdd3
-
-[qq1groupsvg]: https://img.shields.io/badge/QQ1群-25206533-ff73a3.svg
-[qq1group]: https://shang.qq.com/wpa/qunwpa?idkey=d906789f84484465e2736f7b524366b4c23afeda38733d5c7b10fc3f6e406e9b
 
 [readme.md]: https://github.com/Blankj/AndroidUtilCode
 [readme-cn.md]: https://github.com/Blankj/AndroidUtilCode/blob/master/README-CN.md
