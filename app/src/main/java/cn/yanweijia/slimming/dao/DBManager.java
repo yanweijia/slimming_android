@@ -74,7 +74,7 @@ public class DBManager {
                 }
                 String time = jsonObject.getString("reg_time");
                 jsonObject.remove("reg_time");
-                jsonObject.put("reg_time",time);
+                jsonObject.put("reg_time", time);
                 return objectMapper.readValue(jsonObject.toString(), User.class);
             } else
                 return null;
@@ -93,6 +93,8 @@ public class DBManager {
      * @return
      */
     public static boolean saveUser(User user) {
+        if (user == null)
+            return false;
         try {
             db.execSQL(DBSentence.CLEAN_TABLE_USER);
             db.execSQL(DBSentence.SAVE_USER,
