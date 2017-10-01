@@ -4,7 +4,8 @@
 * [ADB Install Fails With INSTALL_FAILED_TEST_ONLY - Stack overFlow](https://stackoverflow.com/questions/25274296/adb-install-fails-with-install-failed-test-only)
 * [AndroidStudio完美解决"Activity使用Handler时出现警告信息"的问题 - CSDN](http://blog.csdn.net/nzfxx/article/details/51854305)
 * [【已解决】Android Studio中的gradle无法引用HttpClient库](http://blog.csdn.net/u011726984/article/details/48528573)
-
+* [我的Android进阶之旅------>解决：Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.](http://blog.csdn.net/ouyang_peng/article/details/50538658)
+* [jackson下划线和驼峰命名法自动忽略](http://blog.csdn.net/z69183787/article/details/51279603)
 
 ## DataBinding 技术
 * [ DataBinding快速入门 ](http://blog.csdn.net/dxplay120/article/details/52036448)
@@ -18,5 +19,3 @@
 ## BottomNavBar
 * [LuseenBottomNavigation - Github](https://github.com/armcha/LuseenBottomNavigation)
 
-## 遇到的问题/bug
-* [我的Android进阶之旅------>解决：Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.](http://blog.csdn.net/ouyang_peng/article/details/50538658)

@@ -7,11 +7,13 @@ import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import cn.yanweijia.slimming.entity.User;
 
@@ -40,8 +42,10 @@ public class DBManager {
             dbHelper = new DBHelper(context, DBSentence.DB_NAME, null, DBSentence.DB_VERSION);
         if (db == null)
             db = dbHelper.getWritableDatabase();
-        if (objectMapper == null)
+        if (objectMapper == null) {
             objectMapper = new ObjectMapper();
+            objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        }
     }
 
     /**
@@ -60,29 +64,25 @@ public class DBManager {
      * @return
      */
     public static User getUser() {
-        //TODO: queryUser
-        Cursor cursor = db.rawQuery(DBSentence.GET_USER, null);
-        if (cursor.moveToNext()) {
-            JSONObject jsonObject = new JSONObject();
-            for (int i = 0; i < cursor.getColumnCount(); i++) {
-                try {
+        //TODO: queryUser,check if exist error
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.GET_USER, null);
+            if (cursor.moveToNext()) {
+                JSONObject jsonObject = new JSONObject();
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
                     jsonObject.put(cursor.getColumnName(i), cursor.getString(i));
-                } catch (JSONException e) {
-                    Log.e(TAG, "getUser: Error:" + jsonObject.toString(), e);
-                    e.printStackTrace();
-                    return null;
                 }
-            }
-            User user = null;
-            try {
-                user = objectMapper.readValue(jsonObject.toString(),User.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return user;
-
-        } else
+                String time = jsonObject.getString("reg_time");
+                jsonObject.remove("reg_time");
+                jsonObject.put("reg_time",time);
+                return objectMapper.readValue(jsonObject.toString(), User.class);
+            } else
+                return null;
+        } catch (Exception e) {
+            Log.e(TAG, "getUser: Error:", e);
+            e.printStackTrace();
             return null;
+        }
     }
 
     /**
@@ -102,12 +102,12 @@ public class DBManager {
                             user.getPhone(),
                             user.getEmail(),
                             user.getName(),
-                            user.getBirthday(),
+                            new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()),
                             user.getGender(),
                             user.getHeight(),
                             user.getWeight(),
                             user.getStatus(),
-                            user.getRegTime(),
+                            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
                             user.getRegIp(),
                             user.getLastLogin()});
         } catch (Exception e) {

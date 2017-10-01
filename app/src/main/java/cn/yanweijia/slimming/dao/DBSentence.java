@@ -21,12 +21,12 @@ public class DBSentence {
             "`phone`VARCHAR ( 11 ) DEFAULT NULL," +
             "`email`VARCHAR ( 50 ) DEFAULT NULL," +
             "`name`VARCHAR ( 30 ) DEFAULT ' 佚名'," +
-            "`birthday`DATE DEFAULT NULL," +
+            "`birthday`VARCHAR ( 20 ) DEFAULT NULL," +
             "`gender`VARCHAR ( 5 ) NOT NULL DEFAULT '未知'," +
             "`height`DECIMAL ( 5 , 2 ) DEFAULT NULL," +
             "`weight`DECIMAL ( 5 , 2 ) DEFAULT NULL," +
             "`status`TINYINT NOT NULL DEFAULT 0," +
-            "`reg_time`DATETIME DEFAULT NULL," +
+            "`reg_time`VARCHAR ( 30 ) DEFAULT NULL," +
             "`reg_ip`VARCHAR ( 50 ) DEFAULT NULL," +
             "`last_login`DATETIME DEFAULT NULL," +
             "PRIMARY KEY(`id`)" +

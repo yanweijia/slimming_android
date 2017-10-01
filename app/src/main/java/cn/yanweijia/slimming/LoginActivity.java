@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import org.json.JSONObject;
 
@@ -123,8 +124,15 @@ public class LoginActivity extends Activity {
      * @author weijia
      */
     private void autoLogin() {
-        //TODO:check sqlite DB,and auto login
-
+        //check sqlite DB,and auto login
+        DBManager.initSQLiteDB(LoginActivity.this);
+        User user = DBManager.getUser();
+        if (user != null) {
+            //TODO:自动登录跳转
+            username = user.getUsername();
+            password = user.getPassword();
+            login();
+        }
     }
 
     /**
