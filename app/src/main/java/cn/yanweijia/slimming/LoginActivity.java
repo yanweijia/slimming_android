@@ -14,14 +14,14 @@ import android.widget.Toast;
 
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
-import java.util.Map;
+import java.io.IOException;
 
-import cn.yanweijia.slimming.utils.HttpUtils;
+import cn.yanweijia.slimming.dao.DBManager;
+import cn.yanweijia.slimming.entity.User;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
 
@@ -49,13 +49,13 @@ public class LoginActivity extends Activity {
     private String username;
     private String password;    //encrypted(MD5)
     private MyHandler myHandler;
-    private Gson gson;
+    private ObjectMapper objectMapper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        gson = new Gson();
+        objectMapper = new ObjectMapper();
         myHandler = new MyHandler();
 
         //bind views
@@ -91,8 +91,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 //finish();
             }
         });
@@ -120,10 +119,12 @@ public class LoginActivity extends Activity {
 
     /**
      * if username/password exists in sqlite DB,try to auto login <br/>
+     *
      * @author weijia
      */
-    private void autoLogin(){
+    private void autoLogin() {
         //TODO:check sqlite DB,and auto login
+
     }
 
     /**
@@ -138,15 +139,32 @@ public class LoginActivity extends Activity {
             @Override
             public void run() {
                 String jsonResult = RequestUtils.login(username, password);
-                Map<String, Object> map = gson.fromJson(jsonResult, Map.class);
-                Message msg = new Message();
-                msg.what = ((boolean) map.get("success") == true) ? LOGIN_SUCCESS : LOGIN_FAIL;
-                Bundle bundle = new Bundle();
-                bundle.putString("message", String.valueOf(map.get("message")));
-                msg.setData(bundle);
-                myHandler.sendMessage(msg);
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonResult);
+                    Message msg = new Message();
+                    msg.what = jsonObject.getBoolean("success") ? LOGIN_SUCCESS : LOGIN_FAIL;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message", jsonObject.getString("message"));
+                    bundle.putString("user", jsonObject.getString("user"));
+                    msg.setData(bundle);
+                    myHandler.sendMessage(msg);
+                } catch (Exception e) {
+                    Log.e(TAG, "login() run: ", e);
+                    e.printStackTrace();
+                }
+
             }
         }).start();
+    }
+
+    /**
+     * save user info to sqlite db
+     */
+    private void saveUser(User user) {
+        DBManager.initSQLiteDB(LoginActivity.this);
+        ;
+        DBManager.saveUser(user);
+        DBManager.closeSQLiteDB();
     }
 
     //customer Handler,handle asynchronous message..
@@ -158,11 +176,17 @@ public class LoginActivity extends Activity {
                 case LOGIN_SUCCESS:
                     Toast.makeText(LoginActivity.this, R.string.login_success, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "handleMessage: LOGIN_SUCCESS " + msg.getData().getString("message"));
+                    //save user info (include :username and password)
+                    String user = msg.getData().getString("user");
+                    Log.d(TAG, "handleMessage: User Bean:" + user);
+                    try {
+                        saveUser(objectMapper.readValue(user, User.class));
+                    } catch (IOException e) {
+                        Log.e(TAG, "handleMessage: Json string to bean error:", e);
+                        e.printStackTrace();
+                    }
                     //open main frame
-                    Intent intent = new Intent();
-                    intent.setClass(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //TODO: save username and password
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
                     break;
                 case LOGIN_FAIL:

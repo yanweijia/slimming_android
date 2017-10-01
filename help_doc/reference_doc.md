@@ -18,3 +18,5 @@
 ## BottomNavBar
 * [LuseenBottomNavigation - Github](https://github.com/armcha/LuseenBottomNavigation)
 
+## 遇到的问题/bug
+* [我的Android进阶之旅------>解决：Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.](http://blog.csdn.net/ouyang_peng/article/details/50538658)

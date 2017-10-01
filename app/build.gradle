@@ -3,6 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         applicationId "cn.yanweijia.slimming"
         minSdkVersion 21
@@ -36,5 +42,6 @@ dependencies {
     compile 'com.github.armcha:LuseenBottomNavigation:1.8.2'
     //https://github.com/Blankj/AndroidUtilCode
     compile 'com.blankj:utilcode:1.9.0'
-    compile 'com.google.code.gson:gson:2.8.2'
+//    compile 'com.google.code.gson:gson:2.8.2'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
 }
