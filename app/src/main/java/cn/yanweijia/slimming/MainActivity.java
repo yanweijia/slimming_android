@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
      * initial Datas
      */
     private void initDatas() {
-        myHandler = new MyHandler(MainActivity.this);
+        myHandler = new MainActivityHandler(MainActivity.this);
     }
 
     @Override
@@ -173,11 +173,11 @@ public class MainActivity extends AppCompatActivity {
      * @author weijia
      * @ref <a href="http://blog.csdn.net/nzfxx/article/details/51854305">解决handler警告问题</a>
      */
-    static class MyHandler extends Handler {
+    static class MainActivityHandler extends Handler {
         //弱引用<引用外部类>
         WeakReference<MainActivity> mActivity;
 
-        MyHandler(MainActivity activity) {
+        MainActivityHandler(MainActivity activity) {
             this.mActivity = new WeakReference<>(activity);
         }
 

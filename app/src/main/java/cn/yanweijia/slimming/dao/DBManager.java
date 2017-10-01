@@ -93,7 +93,7 @@ public class DBManager {
         if (user == null)
             return false;
         try {
-            db.execSQL(DBSentence.CLEAN_TABLE_USER);
+            removeAllUser();
             db.execSQL(DBSentence.SAVE_USER,
                     new Object[]{user.getId(),
                             user.getUsername(),
@@ -119,4 +119,12 @@ public class DBManager {
         }
         return true;
     }
+
+    /**
+     * remove all users
+     */
+    public static void removeAllUser(){
+        db.execSQL(DBSentence.CLEAN_TABLE_USER);
+    }
+
 }

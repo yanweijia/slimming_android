@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.blankj.utilcode.util.EncryptUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
 import org.json.JSONObject;
 
@@ -49,7 +48,7 @@ public class LoginActivity extends Activity {
     private EditText editText_username, editText_password;
     private String username;
     private String password;    //encrypted(MD5)
-    private MyHandler myHandler;
+    private LoginActivityHandler myHandler;
     private ObjectMapper objectMapper;
 
     @Override
@@ -57,7 +56,7 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         objectMapper = new ObjectMapper();
-        myHandler = new MyHandler();
+        myHandler = new LoginActivityHandler();
 
         //bind views
         Button btn_signin = (Button) findViewById(R.id.sign_in_button);
@@ -92,6 +91,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
+                //TODO:startActivityForResult,then auto fill two field and login automatically
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 //finish();
             }
@@ -176,7 +176,7 @@ public class LoginActivity extends Activity {
     }
 
     //customer Handler,handle asynchronous message..
-    class MyHandler extends Handler {
+    class LoginActivityHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
