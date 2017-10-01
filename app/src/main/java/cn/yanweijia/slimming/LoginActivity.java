@@ -128,7 +128,7 @@ public class LoginActivity extends Activity {
         DBManager.initSQLiteDB(LoginActivity.this);
         User user = DBManager.getUser();
         if (user != null) {
-            //TODO:自动登录跳转
+            //自动登录跳转
             username = user.getUsername();
             password = user.getPassword();
             login();

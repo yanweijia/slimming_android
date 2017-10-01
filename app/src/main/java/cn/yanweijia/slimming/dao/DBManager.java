@@ -64,7 +64,7 @@ public class DBManager {
      * @return
      */
     public static User getUser() {
-        //TODO: queryUser,check if exist error
+        //queryUser,check if exist error
         try {
             Cursor cursor = db.rawQuery(DBSentence.GET_USER, null);
             if (cursor.moveToNext()) {
@@ -72,9 +72,6 @@ public class DBManager {
                 for (int i = 0; i < cursor.getColumnCount(); i++) {
                     jsonObject.put(cursor.getColumnName(i), cursor.getString(i));
                 }
-                String time = jsonObject.getString("reg_time");
-                jsonObject.remove("reg_time");
-                jsonObject.put("reg_time", time);
                 return objectMapper.readValue(jsonObject.toString(), User.class);
             } else
                 return null;
