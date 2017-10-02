@@ -1,5 +1,6 @@
 package cn.yanweijia.slimming.fragment.me;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.yanweijia.slimming.R;
+import cn.yanweijia.slimming.dao.DBManager;
+import cn.yanweijia.slimming.databinding.FragmentMeBinding;
 
 /**
  * @author weijia
@@ -19,6 +22,7 @@ public class MeFragment extends Fragment {
     private static final String TAG = "MeFragment";
 
     public MeFragment() {
+        DBManager.initSQLiteDB(getActivity());
         Log.d(TAG, "MeFragment: Constructor");
     }
 
@@ -39,6 +43,7 @@ public class MeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: rootView==null?  " + String.valueOf(rootView == null));
+        DBManager.initSQLiteDB(getActivity());
         return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_me);
     }
 
@@ -73,7 +78,9 @@ public class MeFragment extends Fragment {
     public View getPersistentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int layout) {
         Log.d(TAG, "getPersistentView: rootView==null? " + String.valueOf(rootView == null));
         if (rootView == null) {
-            rootView = inflater.inflate(layout, container, false);
+            FragmentMeBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_me,container,false);
+            binding.setUser(DBManager.getUser());
+            rootView = binding.getRoot();
             Log.d(TAG, "getPersistentView:  rootView is null, initial rootView");
             initViews();
             initDatas();

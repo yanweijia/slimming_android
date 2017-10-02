@@ -18,6 +18,7 @@ import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItem
 
 import java.lang.ref.WeakReference;
 
+import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.fragment.analyze.AnalyzeFragment;
 import cn.yanweijia.slimming.fragment.diet.DietFragment;
 import cn.yanweijia.slimming.fragment.health.HealthFragment;
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initDatas() {
         myHandler = new MainActivityHandler(MainActivity.this);
+        DBManager.initSQLiteDB(this);
     }
 
     @Override
