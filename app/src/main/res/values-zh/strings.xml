@@ -39,4 +39,5 @@
     <string name="me_height">身 高:</string>
     <string name="me_weight">体 重:</string>
     <string name="logout">注销/登出</string>
+    <string name="logout_success">登出成功!</string>
 </resources>
