@@ -6,6 +6,7 @@
 * [【已解决】Android Studio中的gradle无法引用HttpClient库](http://blog.csdn.net/u011726984/article/details/48528573)
 * [我的Android进阶之旅------>解决：Execution failed for task ':app:transformResourcesWithMergeJavaResForDebug'.](http://blog.csdn.net/ouyang_peng/article/details/50538658)
 * [jackson下划线和驼峰命名法自动忽略](http://blog.csdn.net/z69183787/article/details/51279603)
+* [Android------startActivityForResult的详细用法](http://blog.csdn.net/sunchaoenter/article/details/6612039)
 
 ## DataBinding 技术
 * [ DataBinding快速入门 ](http://blog.csdn.net/dxplay120/article/details/52036448)

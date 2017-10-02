@@ -8,6 +8,7 @@
     <string name="title_diet">饮食</string>
     <string name="title_health">健康</string>
     <string name="title_me">我的</string>
+    <string name="unknow_exception">未知异常</string>
 
     <!-- login相关资源 -->
     <string name="sign_in">登 录</string>
@@ -21,4 +22,8 @@
     <string name="sign_on">注 册</string>
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
+
+    <string name="password_not_same">两次输入密码不一致,请重新输入!</string>
+    <string name="register_success">注册成功,即将调到登录页面.</string>
+    <string name="register_fail">注册失败 </string>
 </resources>

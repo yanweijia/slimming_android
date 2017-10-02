@@ -101,12 +101,12 @@ public class DBManager {
                             user.getPhone(),
                             user.getEmail(),
                             user.getName(),
-                            new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()),
+                            user.getBirthday() == null ? null : new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()),
                             user.getGender(),
                             user.getHeight(),
                             user.getWeight(),
                             user.getStatus(),
-                            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
+                            user.getRegTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
                             user.getRegIp(),
                             user.getLastLogin()});
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class DBManager {
     /**
      * remove all users
      */
-    public static void removeAllUser(){
+    public static void removeAllUser() {
         db.execSQL(DBSentence.CLEAN_TABLE_USER);
     }
 

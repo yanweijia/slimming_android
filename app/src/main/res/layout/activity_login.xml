@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textview_login_username"
+                    android:id="@+id/edittext_login_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textview_login_password"
+                    android:id="@+id/edittext_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"

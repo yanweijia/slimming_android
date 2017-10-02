@@ -41,6 +41,10 @@ public class LoginActivity extends Activity {
      */
     private static final int LOGIN_FAIL = 2;
 
+    /**
+     * start activity for result, register request
+     */
+    private static final int START_ACTIVITY_FOR_RESULT_REGISTER_REQUEST = 3;
 
     private static final String TAG = "LoginActivity";
 
@@ -61,8 +65,8 @@ public class LoginActivity extends Activity {
         //bind views
         Button btn_signin = (Button) findViewById(R.id.sign_in_button);
         Button btn_signon = (Button) findViewById(R.id.sign_on_button);
-        editText_password = (EditText) findViewById(R.id.textview_login_password);
-        editText_username = (EditText) findViewById(R.id.textview_login_username);
+        editText_password = (EditText) findViewById(R.id.edittext_login_password);
+        editText_username = (EditText) findViewById(R.id.edittext_login_username);
 
 
         //sign in action
@@ -74,11 +78,13 @@ public class LoginActivity extends Activity {
                 if (!isUserNameValid(username) || !RegexUtils.isUsername(username)) {
                     //check username
                     Toast.makeText(LoginActivity.this, R.string.illegal_username, Toast.LENGTH_SHORT).show();
+                    editText_username.requestFocus();
                     return;
                 }
                 if (!isPasswordValid(password)) {
                     //check password
                     Toast.makeText(LoginActivity.this, R.string.illegal_password, Toast.LENGTH_SHORT).show();
+                    editText_password.requestFocus();
                     return;
                 }
                 password = EncryptUtils.encryptMD5ToString(password);
@@ -91,8 +97,8 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                //TODO:startActivityForResult,then auto fill two field and login automatically
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                //startActivityForResult,then auto fill two field and login automatically
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), START_ACTIVITY_FOR_RESULT_REGISTER_REQUEST);
                 //finish();
             }
         });
@@ -158,6 +164,12 @@ public class LoginActivity extends Activity {
                     myHandler.sendMessage(msg);
                 } catch (Exception e) {
                     Log.e(TAG, "login() run: ", e);
+                    Message msg = new Message();
+                    msg.what = LOGIN_FAIL;
+                    Bundle bundle = new Bundle();
+                    bundle.putString("message", e.getMessage());
+                    msg.setData(bundle);
+                    myHandler.sendMessage(msg);
                     e.printStackTrace();
                 }
 
@@ -173,6 +185,33 @@ public class LoginActivity extends Activity {
         ;
         DBManager.saveUser(user);
         DBManager.closeSQLiteDB();
+    }
+
+    /**
+     * start activity for result
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     * @author weijia
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //auto fill two field and login automatically
+        switch (requestCode) {
+            case START_ACTIVITY_FOR_RESULT_REGISTER_REQUEST:
+                if (resultCode != RegisterActivity.REGISTER_SUCCESS)
+                    break;
+                username = data.getStringExtra("username");
+                password = data.getStringExtra("password");
+                editText_username.setText(username);
+                editText_password.setText(password);
+                login();
+                break;
+            default:
+                Toast.makeText(LoginActivity.this, R.string.unknow_exception, Toast.LENGTH_SHORT).show();
+        }
     }
 
     //customer Handler,handle asynchronous message..
