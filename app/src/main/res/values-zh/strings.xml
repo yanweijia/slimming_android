@@ -8,6 +8,9 @@
     <string name="title_diet">饮食</string>
     <string name="title_health">健康</string>
     <string name="title_me">我的</string>
+    <string name="unknow_exception">未知异常</string>
+    <string name="key">键</string>
+    <string name="value">值</string>
 
     <!-- login相关资源 -->
     <string name="sign_in">登 录</string>
@@ -21,4 +24,22 @@
     <string name="sign_on">注 册</string>
     <string name="login_success">登录成功</string>
     <string name="login_fail">登录失败</string>
+
+    <string name="password_not_same">两次输入密码不一致,请重新输入!</string>
+    <string name="register_success">注册成功,即将调到登录页面.</string>
+    <string name="register_fail">注册失败 </string>
+
+    <!--me fragment-->
+    <string name="me_username">用户名:</string>
+    <string name="me_name">姓 名:</string>
+    <string name="me_phone">电 话:</string>
+    <string name="me_email">邮 箱:</string>
+    <string name="me_birthday">出生日期:</string>
+    <string name="me_gender">性 别:</string>
+    <string name="me_height">身 高:</string>
+    <string name="me_weight">体 重:</string>
+    <string name="logout">注销/登出</string>
+    <string name="logout_success">登出成功!</string>
+    <string name="refresh_userinfo_complete">获取用户信息成功!</string>
+    <string name="refresh_userinfo_fail">获取用户信息失败</string>
 </resources>

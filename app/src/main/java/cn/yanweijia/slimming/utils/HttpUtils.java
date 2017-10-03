@@ -31,7 +31,7 @@ public class HttpUtils {
     //httpClient
     private static HttpClient httpClient;
 
-    static{
+    static {
         httpClient = new DefaultHttpClient();
     }
 
@@ -97,7 +97,7 @@ public class HttpUtils {
         //httpClient
         HttpClient httpClient = new DefaultHttpClient();
 
-        StringBuilder params_str = new StringBuilder("?");
+        StringBuilder params_str = new StringBuilder("");
 
         if (params != null) {
             for (Map.Entry<String, String> set : params.entrySet()) {
@@ -105,8 +105,10 @@ public class HttpUtils {
             }
         }
 
-        if (url.contains("?"))
-            url += params_str.substring(1);
+        if (!url.contains("?"))
+            url += "?" + params_str.substring(1);
+        else
+            url += params_str;
 
         // get method
         HttpGet httpGet = new HttpGet(url);

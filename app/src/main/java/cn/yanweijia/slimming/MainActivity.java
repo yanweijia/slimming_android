@@ -18,6 +18,7 @@ import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItem
 
 import java.lang.ref.WeakReference;
 
+import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.fragment.analyze.AnalyzeFragment;
 import cn.yanweijia.slimming.fragment.diet.DietFragment;
 import cn.yanweijia.slimming.fragment.health.HealthFragment;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     // BottomNavBar relevant
     private int[] bottomBarTitles = {R.string.title_sport, R.string.title_analyze, R.string.title_diet, R.string.title_health, R.string.title_me};
     private int[] bottomBarColors = {R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault};
-    private int[] bottomBarImages = {R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background, R.drawable.ic_launcher_background};
+    private int[] bottomBarImages = {R.drawable.sport, R.drawable.analyze, R.drawable.diet, R.drawable.health, R.drawable.me};
 
 
     //fragments
@@ -128,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initDatas() {
         myHandler = new MainActivityHandler(MainActivity.this);
+        DBManager.initSQLiteDB(this);
     }
 
     @Override

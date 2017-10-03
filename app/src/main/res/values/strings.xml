@@ -8,6 +8,9 @@
     <string name="title_diet">Diet</string>
     <string name="title_health">Health</string>
     <string name="title_me">Me</string>
+    <string name="unknow_exception">Unknow Exception</string>
+    <string name="key">key</string>
+    <string name="value">text</string>
 
     <!-- Strings related to login -->
     <string name="sign_in">Sign in</string>
@@ -21,4 +24,22 @@
     <string name="sign_on">Sign on</string>
     <string name="login_success">Login success.</string>
     <string name="login_fail">Login fail.</string>
+
+    <string name="password_not_same">Password is not same , please input again</string>
+    <string name="register_success">Register success, you will be redirect to Sign in Page</string>
+    <string name="register_fail">Register fail </string>
+
+    <!--me fragment-->
+    <string name="me_username">Username:</string>
+    <string name="me_name">Name:</string>
+    <string name="me_phone">Phone:</string>
+    <string name="me_email">Email:</string>
+    <string name="me_birthday">Birthday:</string>
+    <string name="me_gender">Gender:</string>
+    <string name="me_height">Height:</string>
+    <string name="me_weight">Weight:</string>
+    <string name="logout">Logout</string>
+    <string name="logout_success">Logout success!</string>
+    <string name="refresh_userinfo_complete">Refresh user info complete!</string>
+    <string name="refresh_userinfo_fail">Refresh user info fail</string>
 </resources>

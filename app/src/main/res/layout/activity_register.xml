@@ -24,11 +24,12 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textview_register_username"
+                    android:id="@+id/edittext_register_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
                     android:inputType="textPersonName"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -39,7 +40,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textview_register_password"
+                    android:id="@+id/edittext_register_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -47,6 +48,7 @@
                     android:imeActionLabel="@string/sign_in"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -57,7 +59,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/textview_register_repassword"
+                    android:id="@+id/edittext_register_repassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_repassword"
@@ -65,12 +67,13 @@
                     android:imeActionLabel="@string/sign_in"
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
             <Button
-                android:id="@+id/sign_in_button"
+                android:id="@+id/btn_register"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

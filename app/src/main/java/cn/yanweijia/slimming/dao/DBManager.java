@@ -52,10 +52,15 @@ public class DBManager {
      * close db conncection
      */
     public static void closeSQLiteDB() {
-        if (db != null)
+        if (db != null) {
             db.close();
-        if (dbHelper != null)
+            db = null;
+        }
+        if (dbHelper != null) {
             dbHelper.close();
+            dbHelper = null;
+        }
+
     }
 
     /**
@@ -67,14 +72,16 @@ public class DBManager {
         //queryUser,check if exist error
         try {
             Cursor cursor = db.rawQuery(DBSentence.GET_USER, null);
+            JSONObject jsonObject = new JSONObject();
+            User user = null;
             if (cursor.moveToNext()) {
-                JSONObject jsonObject = new JSONObject();
                 for (int i = 0; i < cursor.getColumnCount(); i++) {
                     jsonObject.put(cursor.getColumnName(i), cursor.getString(i));
                 }
-                return objectMapper.readValue(jsonObject.toString(), User.class);
-            } else
-                return null;
+                user = objectMapper.readValue(jsonObject.toString(), User.class);
+            }
+            cursor.close();
+            return user;
         } catch (Exception e) {
             Log.e(TAG, "getUser: Error:", e);
             e.printStackTrace();
@@ -101,12 +108,12 @@ public class DBManager {
                             user.getPhone(),
                             user.getEmail(),
                             user.getName(),
-                            new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()),
+                            user.getBirthday() == null ? null : new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()),
                             user.getGender(),
                             user.getHeight(),
                             user.getWeight(),
                             user.getStatus(),
-                            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
+                            user.getRegTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
                             user.getRegIp(),
                             user.getLastLogin()});
         } catch (Exception e) {
@@ -123,7 +130,7 @@ public class DBManager {
     /**
      * remove all users
      */
-    public static void removeAllUser(){
+    public static void removeAllUser() {
         db.execSQL(DBSentence.CLEAN_TABLE_USER);
     }
 
