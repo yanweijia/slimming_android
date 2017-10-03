@@ -105,7 +105,7 @@ public class HttpUtils {
             }
         }
 
-        if (url.contains("?"))
+        if (!url.contains("?"))
             url += params_str.substring(1);
 
         // get method
