@@ -115,7 +115,7 @@ public class DBManager {
                             user.getStatus(),
                             user.getRegTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getRegTime()),
                             user.getRegIp(),
-                            user.getLastLogin()});
+                            user.getLastLogin() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(user.getLastLogin())});
         } catch (Exception e) {
             try {
                 Log.e(TAG, "saveUser: Error:" + e.getMessage() + " User Bean:" + objectMapper.writeValueAsString(user), e);

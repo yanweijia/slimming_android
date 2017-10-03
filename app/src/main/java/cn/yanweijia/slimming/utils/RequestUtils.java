@@ -3,10 +3,13 @@ package cn.yanweijia.slimming.utils;
 import android.util.Log;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import cn.yanweijia.slimming.entity.User;
 
 /**
  * Created by weijia on 29/09/2017.
@@ -20,6 +23,7 @@ public class RequestUtils {
     private static final String URL_LOGIN = BASE_URL + "/api/guest/login";   //post:  username=&password=
     private static final String URL_GET_USER_INFO = BASE_URL + "/api/user/getUserInfo"; //get:  ?id=1
     private static final String URL_REGISTER = BASE_URL + "/api/guest/register";
+    private static final String URL_UPDATE_USER_INFO = BASE_URL + "/api/user/updateUserInfo"; //post with json
 
     private static ObjectMapper objectMapper;
 
@@ -27,6 +31,27 @@ public class RequestUtils {
         objectMapper = new ObjectMapper();
     }
 
+
+    /**
+     * update user info <br/>
+     * <p>
+     * 记得请求的时候 contentType设置为:
+     * <strong style='color:green'>
+     * application/json;charset=UTF-8
+     * </strong>
+     * </p>
+     *
+     * @param user
+     * @return
+     */
+    public static String updateUserInfo(User user) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPDATE_USER_INFO, objectMapper.writeValueAsString(user));
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, "updateUserInfo: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
 
     /**
      * register new user

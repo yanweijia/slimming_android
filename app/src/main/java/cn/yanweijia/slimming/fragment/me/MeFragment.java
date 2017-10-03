@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import cn.yanweijia.slimming.LoginActivity;
 import cn.yanweijia.slimming.R;
+import cn.yanweijia.slimming.UpdateUserInfoActivity;
 import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.databinding.FragmentMeBinding;
 import cn.yanweijia.slimming.entity.User;
@@ -37,14 +38,25 @@ public class MeFragment extends Fragment {
     private ObjectMapper objectMapper;
 
     /**
-     * update user information success
+     * refresh user information success
      */
-    private static final int UPDATE_USERINFO_SUCCESS = 1;
+    private static final int REFRESH_USERINFO_SUCCESS = 1;
     /**
-     * update user information fail
+     * refresh user information fail
      */
-    private static final int UPDATE_USERINFO_FAIL = 2;
-
+    private static final int REFRESH_USERINFO_FAIL = 2;
+    /**
+     * request to update user information
+     */
+    private static final int UPDATE_USERINFO_REQUEST = 3;
+    /**
+     * update user info successs
+     */
+    public static final int UPDATE_USERINFO_SUCCESS = 4;
+    /**
+     * update user info fail
+     */
+    public static final int UPDATE_USERINFO_FAIL = 5;
 
     public MeFragment() {
         DBManager.initSQLiteDB(getActivity());
@@ -72,13 +84,37 @@ public class MeFragment extends Fragment {
         return getPersistentView(inflater, container, savedInstanceState, R.layout.fragment_me);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //TODO:refresh user information
+        switch (resultCode){
+            case UPDATE_USERINFO_SUCCESS:
+                binding.swipeRefreshlayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.swipeRefreshlayout.setRefreshing(true);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshUserInfo();
+                            }
+                        }).start();
+                    }
+                });
+                break;
+            default :
+        }
+
+    }
+
     /**
      * use rootView to initial views
      *
      * @author weijia
      */
     private void initViews() {
-        binding.buttonLog.setOnClickListener(new View.OnClickListener() {
+        binding.logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DBManager.removeAllUser();
@@ -88,55 +124,65 @@ public class MeFragment extends Fragment {
             }
         });
         myHandler = new MeFragmentHandler();
-
-        binding.swipeRefreshlayoutMe.setRefreshing(false);
-        // set swipe circle progress bar color, default color is WHITE.
-        binding.swipeRefreshlayoutMe.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        binding.circleImageViewMeHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:request update user information
+                startActivityForResult(new Intent(getActivity(), UpdateUserInfoActivity.class), UPDATE_USERINFO_REQUEST);
+            }
+        });
+        binding.swipeRefreshlayout.setRefreshing(false);
+        // set swipe circle progress bar's color, default color is WHITE.
+        binding.swipeRefreshlayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
         // set swipe color theme
-        binding.swipeRefreshlayoutMe.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        binding.swipeRefreshlayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
         // add refresh listener
-        binding.swipeRefreshlayoutMe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeRefreshlayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // begin refreshing
-                binding.swipeRefreshlayoutMe.setRefreshing(true);
+                binding.swipeRefreshlayout.setRefreshing(true);
 
                 // main thread
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            Log.d(TAG, "SwipeRefreshLayout run: refreshing new data");
-                            String jsonResult = RequestUtils.getUserInfo(DBManager.getUser().getId());
-                            JSONObject jsonObject = new JSONObject(jsonResult);
-                            String message = jsonObject.getString("message");
-                            Message msg = new Message();
-                            Bundle bundle = new Bundle();
-                            if (jsonObject.getBoolean("success")) {
-                                String userJson = jsonObject.getString("User");
-                                msg.what = UPDATE_USERINFO_SUCCESS;
-                                bundle.putString("user", userJson);
-                            } else {
-                                msg.what = UPDATE_USERINFO_FAIL;
-                                Log.d(TAG, "run: User update fail:" + message);
-                                Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + message, Toast.LENGTH_SHORT).show();
-                            }
-                            bundle.putString("message", message);
-                            msg.setData(bundle);
-                            myHandler.sendMessage(msg);
-                        } catch (Exception e) {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "SwipeRefreshLayout run: Error!", e);
-                        } finally {
-                            // refresh complete;
-                            binding.swipeRefreshlayoutMe.setRefreshing(false);
-                        }
+                        Log.d(TAG, "SwipeRefreshLayout run: refreshing new data");
+                        refreshUserInfo();
                     }
                 }).start();
             }
         });
 
         Log.d(TAG, "initViews: complete!");
+    }
+
+    private void refreshUserInfo() {
+        try {
+            String jsonResult = RequestUtils.getUserInfo(DBManager.getUser().getId());
+            JSONObject jsonObject = new JSONObject(jsonResult);
+            String message = jsonObject.getString("message");
+            Message msg = new Message();
+            Bundle bundle = new Bundle();
+            if (jsonObject.getBoolean("success")) {
+                String userJson = jsonObject.getString("User");
+                msg.what = REFRESH_USERINFO_SUCCESS;
+                bundle.putString("user", userJson);
+            } else {
+                msg.what = REFRESH_USERINFO_FAIL;
+                Log.d(TAG, "run: User update fail:" + message);
+                Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + message, Toast.LENGTH_SHORT).show();
+            }
+            bundle.putString("message", message);
+            msg.setData(bundle);
+            myHandler.sendMessage(msg);
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "refreshUserInfo() : Error!", e);
+        } finally {
+            // refresh complete;
+            binding.swipeRefreshlayout.setRefreshing(false);
+        }
     }
 
     /**
@@ -179,7 +225,7 @@ public class MeFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case UPDATE_USERINFO_SUCCESS:
+                case REFRESH_USERINFO_SUCCESS:
                     try {
                         String userJson = msg.getData().getString("user");
                         User user = objectMapper.readValue(userJson, User.class);
@@ -192,10 +238,10 @@ public class MeFragment extends Fragment {
                         Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + ":" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                     break;
-                case UPDATE_USERINFO_FAIL:
+                case REFRESH_USERINFO_FAIL:
                     String message = msg.getData().getString("message");
                     Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + ":" + message, Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "handleMessage: UPDATE_USERINFO_FAIL" + message);
+                    Log.d(TAG, "handleMessage: REFRESH_USERINFO_FAIL" + message);
                     break;
                 default:
             }

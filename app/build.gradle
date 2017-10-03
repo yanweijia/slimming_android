@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "cn.yanweijia.slimming"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"

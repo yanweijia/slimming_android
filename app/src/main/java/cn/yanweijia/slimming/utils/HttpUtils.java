@@ -11,10 +11,12 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,45 @@ public class HttpUtils {
 
     static {
         httpClient = new DefaultHttpClient();
+    }
+
+
+    /**
+     * send post request, Content-Type:application/json;charset=UTF-8 <br/>
+     * @param url request url
+     * @param json json string
+     * @return
+     * @author weijia
+     */
+    public static String sendPostWithJSON(String url, String json) {
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
+        try {
+            StringEntity stringEntity = new StringEntity(json,"UTF-8");
+            stringEntity.setContentEncoding("UTF-8");
+            stringEntity.setContentType("application/json;charset=UTF-8");  // important !!!
+            httpPost.setEntity(stringEntity);
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "sendPostWithJSON: Error,json=" + json, e);
+            return "{\"success\":false,\"message\":\"请求异常:" + e.getMessage() + "\"}";
+        }
+        HttpResponse response;
+        try {
+            response = httpClient.execute(httpPost);
+        } catch (Exception e) {
+            Log.e(TAG, "sendPostWithJSON: ", e);
+            return "{\"success\":false,\"message\":\"请求异常:" + e.getMessage() + "\"}";
+        }
+        String temp;
+        try {
+            HttpEntity entity = response.getEntity();
+            temp = EntityUtils.toString(entity, "UTF-8");
+        } catch (Exception e) {
+            Log.e(TAG, "sendPostWithJSON: ", e);
+            return "{\"success\":false,\"message\":\"请求异常:" + e.getMessage() + "\"}";
+        }
+        Log.d(TAG, "sendPostWithJSON: url:" + url + " ,jsonBody:" + json + " ,content:" + temp);
+        return temp;
     }
 
     /**

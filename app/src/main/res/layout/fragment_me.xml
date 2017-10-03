@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -9,7 +10,7 @@
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshlayout_me"
+        android:id="@+id/swipeRefreshlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -29,7 +30,7 @@
                     android:orientation="vertical">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imageview_me_head"
+                        android:id="@+id/circleImageView_me_head"
                         android:layout_width="@dimen/head_maxWidth"
                         android:layout_height="@dimen/head_maxHeight"
                         android:layout_gravity="center_horizontal"
@@ -58,7 +59,7 @@
                         android:text="@string/me_username" />
 
                     <TextView
-                        android:id="@+id/textview_me_username"
+                        android:id="@+id/myusername"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -79,7 +80,7 @@
                         android:text="@string/me_phone" />
 
                     <TextView
-                        android:id="@+id/textview_me_phone"
+                        android:id="@+id/myphone"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -100,7 +101,7 @@
                         android:text="@string/me_email" />
 
                     <TextView
-                        android:id="@+id/textview_me_email"
+                        android:id="@+id/myemail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -121,7 +122,7 @@
                         android:text="@string/me_name" />
 
                     <TextView
-                        android:id="@+id/textview_me_name"
+                        android:id="@+id/myname"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -142,7 +143,7 @@
                         android:text="@string/me_birthday" />
 
                     <TextView
-                        android:id="@+id/textview_me_birthday"
+                        android:id="@+id/mybirthday"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -163,7 +164,7 @@
                         android:text="@string/me_gender" />
 
                     <TextView
-                        android:id="@+id/textview_me_gender"
+                        android:id="@+id/mygender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -184,7 +185,7 @@
                         android:text="@string/me_height" />
 
                     <TextView
-                        android:id="@+id/textview_me_height"
+                        android:id="@+id/myheight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -205,7 +206,7 @@
                         android:text="@string/me_weight" />
 
                     <TextView
-                        android:id="@+id/textview_me_weight"
+                        android:id="@+id/weight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin"
@@ -214,7 +215,7 @@
                 </LinearLayout>
 
                 <Button
-                    android:id="@+id/button_log"
+                    android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin"

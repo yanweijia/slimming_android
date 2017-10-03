@@ -43,4 +43,16 @@
     <string name="refresh_userinfo_complete">Refresh user info complete!</string>
     <string name="refresh_userinfo_fail">Refresh user info fail</string>
     <string name="me_update_info_hint">click head to update info</string>
+
+    <!--update activity-->
+    <string name="update">Update</string>
+    <string name="illegal_phone">Illegal phone,please input another phone</string>
+    <string name="illegal_email">Illegal email,please try again</string>
+    <string name="illegal_birthday">Illegal birthday,wrong date type,please try again</string>
+    <string name="illegal_name">Illegal name,at least 2 characters and should not exceed 20 characters</string>
+    <string name="illegal_gender">Illegal gender,only support \'男\',\'女\',\'未知\'</string>
+    <string name="illegal_weight">Illegal weight,only support numbers</string>
+    <string name="illegal_height">Illegal height,only support numbers</string>
+    <string name="update_userinfo_success">Update user\'s information success</string>
+    <string name="update_userinfo_fail">Update user\'s information fail!</string>
 </resources>
