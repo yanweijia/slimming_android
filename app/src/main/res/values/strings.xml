@@ -40,4 +40,6 @@
     <string name="me_weight">Weight:</string>
     <string name="logout">Logout</string>
     <string name="logout_success">Logout success!</string>
+    <string name="refresh_userinfo_complete">Refresh user info complete!</string>
+    <string name="refresh_userinfo_fail">Refresh user info fail</string>
 </resources>

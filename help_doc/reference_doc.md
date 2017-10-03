@@ -25,5 +25,8 @@
 ## BottomNavBar
 * [LuseenBottomNavigation - Github](https://github.com/armcha/LuseenBottomNavigation)
 
+## SwipeRefreshLayout
+* [SwipeRefreshLayout详解和自定义上拉加载更多](http://www.jianshu.com/p/d23b42b6360b)
+
 ## 资源
 * [IconFont 阿里巴巴矢量图标库](http://www.iconfont.cn/)

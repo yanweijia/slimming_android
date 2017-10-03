@@ -4,17 +4,25 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
+
 import cn.yanweijia.slimming.LoginActivity;
-import cn.yanweijia.slimming.MainActivity;
 import cn.yanweijia.slimming.R;
 import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.databinding.FragmentMeBinding;
+import cn.yanweijia.slimming.entity.User;
+import cn.yanweijia.slimming.utils.RequestUtils;
 
 /**
  * @author weijia
@@ -25,6 +33,18 @@ public class MeFragment extends Fragment {
     private View rootView;
     private static final String TAG = "MeFragment";
     private FragmentMeBinding binding;
+    private MeFragmentHandler myHandler;
+    private ObjectMapper objectMapper;
+
+    /**
+     * update user information success
+     */
+    private static final int UPDATE_USERINFO_SUCCESS = 1;
+    /**
+     * update user information fail
+     */
+    private static final int UPDATE_USERINFO_FAIL = 2;
+
 
     public MeFragment() {
         DBManager.initSQLiteDB(getActivity());
@@ -67,6 +87,54 @@ public class MeFragment extends Fragment {
                 getActivity().finish();
             }
         });
+        myHandler = new MeFragmentHandler();
+
+        binding.swipeRefreshlayoutMe.setRefreshing(false);
+        // set swipe circle progress bar color, default color is WHITE.
+        binding.swipeRefreshlayoutMe.setProgressBackgroundColorSchemeResource(android.R.color.white);
+        // set swipe color theme
+        binding.swipeRefreshlayoutMe.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark);
+        // add refresh listener
+        binding.swipeRefreshlayoutMe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // begin refreshing
+                binding.swipeRefreshlayoutMe.setRefreshing(true);
+
+                // main thread
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Log.d(TAG, "SwipeRefreshLayout run: refreshing new data");
+                            String jsonResult = RequestUtils.getUserInfo(DBManager.getUser().getId());
+                            JSONObject jsonObject = new JSONObject(jsonResult);
+                            String message = jsonObject.getString("message");
+                            Message msg = new Message();
+                            Bundle bundle = new Bundle();
+                            if (jsonObject.getBoolean("success")) {
+                                String userJson = jsonObject.getString("User");
+                                msg.what = UPDATE_USERINFO_SUCCESS;
+                                bundle.putString("user", userJson);
+                            } else {
+                                msg.what = UPDATE_USERINFO_FAIL;
+                                Log.d(TAG, "run: User update fail:" + message);
+                                Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + message, Toast.LENGTH_SHORT).show();
+                            }
+                            bundle.putString("message", message);
+                            msg.setData(bundle);
+                            myHandler.sendMessage(msg);
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "SwipeRefreshLayout run: Error!", e);
+                        } finally {
+                            // refresh complete;
+                            binding.swipeRefreshlayoutMe.setRefreshing(false);
+                        }
+                    }
+                }).start();
+            }
+        });
 
         Log.d(TAG, "initViews: complete!");
     }
@@ -77,7 +145,7 @@ public class MeFragment extends Fragment {
      * @author weijia
      */
     private void initDatas() {
-
+        objectMapper = new ObjectMapper();
         Log.d(TAG, "initDatas: complete!");
     }
 
@@ -103,7 +171,34 @@ public class MeFragment extends Fragment {
             if (viewGroup != null)
                 viewGroup.removeView(rootView);
         }
-        initViews();
         return rootView;
+    }
+
+    class MeFragmentHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case UPDATE_USERINFO_SUCCESS:
+                    try {
+                        String userJson = msg.getData().getString("user");
+                        User user = objectMapper.readValue(userJson, User.class);
+                        binding.setUser(user);
+                        DBManager.saveUser(user);
+                        Log.d(TAG, "run: User updated");
+                        Toast.makeText(getActivity(), R.string.refresh_userinfo_complete, Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Log.e(TAG, "handleMessage: ", e);
+                        Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + ":" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case UPDATE_USERINFO_FAIL:
+                    String message = msg.getData().getString("message");
+                    Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + ":" + message, Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "handleMessage: UPDATE_USERINFO_FAIL" + message);
+                    break;
+                default:
+            }
+        }
     }
 }
