@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -27,16 +28,14 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imageview_me_head"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/head_maxWidth"
+                        android:layout_height="@dimen/head_maxHeight"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/doggy"
-                        android:maxHeight="@dimen/head_maxHeight"
-                        android:maxWidth="@dimen/head_maxWidth"
-                        android:minHeight="@dimen/head_minHeight"
-                        android:minWidth="@dimen/head_minWidth" />
+                        android:src="@drawable/doggy"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="@color/grey"/>
 
                     <TextView
                         android:layout_width="wrap_content"

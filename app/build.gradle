@@ -44,4 +44,6 @@ dependencies {
     compile 'com.blankj:utilcode:1.9.0'
 //    compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
+    //https://github.com/hdodenhof/CircleImageView
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }
