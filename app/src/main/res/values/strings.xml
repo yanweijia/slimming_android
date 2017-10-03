@@ -42,4 +42,5 @@
     <string name="logout_success">Logout success!</string>
     <string name="refresh_userinfo_complete">Refresh user info complete!</string>
     <string name="refresh_userinfo_fail">Refresh user info fail</string>
+    <string name="me_update_info_hint">click head to update info</string>
 </resources>

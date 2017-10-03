@@ -1,185 +1,227 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="user"
-            type="cn.yanweijia.slimming.entity.User"/>
+            type="cn.yanweijia.slimming.entity.User" />
     </data>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshlayout_me"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/padding">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <cn.yanweijia.slimming.custom.view.RoundImageView
-                    android:id="@+id/imageview_me_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxHeight="@dimen/head_maxHeight"
-                    android:maxWidth="@dimen/head_maxWidth"
-                    android:minWidth="@dimen/head_minWidth"
-                    android:minHeight="@dimen/head_minHeight"
-                    android:shadowRadius="10"
-                    android:layout_gravity="center"
+        android:layout_height="wrap_content">
 
-                    android:background="@drawable/me"/>
-            </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_username"/>
-                <TextView
-                    android:id="@+id/textview_me_username"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageview_me_head"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/doggy"
+                        android:maxHeight="@dimen/head_maxHeight"
+                        android:maxWidth="@dimen/head_maxWidth"
+                        android:minHeight="@dimen/head_minHeight"
+                        android:minWidth="@dimen/head_minWidth" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/me_update_info_hint"
+                        android:textColor="@color/grey" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.username}"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_username" />
+
+                    <TextView
+                        android:id="@+id/textview_me_username"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.username}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_phone" />
+
+                    <TextView
+                        android:id="@+id/textview_me_phone"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.phone}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_email" />
+
+                    <TextView
+                        android:id="@+id/textview_me_email"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.email}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_name" />
+
+                    <TextView
+                        android:id="@+id/textview_me_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.name}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_birthday" />
+
+                    <TextView
+                        android:id="@+id/textview_me_birthday"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.birthday}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_gender" />
+
+                    <TextView
+                        android:id="@+id/textview_me_gender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.gender}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_height" />
+
+                    <TextView
+                        android:id="@+id/textview_me_height"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.height}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/key_weight"
+                        android:text="@string/me_weight" />
+
+                    <TextView
+                        android:id="@+id/textview_me_weight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin"
+                        android:layout_weight="@integer/value_weight"
+                        android:text="@{user.weight}" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/button_log"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:text="@string/logout" />
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_phone"/>
-                <TextView
-                    android:id="@+id/textview_me_phone"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.phone}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_email"/>
-                <TextView
-                    android:id="@+id/textview_me_email"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.email}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_name"/>
-                <TextView
-                    android:id="@+id/textview_me_name"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.name}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_birthday"/>
-                <TextView
-                    android:id="@+id/textview_me_birthday"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.birthday}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_gender"/>
-                <TextView
-                    android:id="@+id/textview_me_gender"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.gender}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_height"/>
-                <TextView
-                    android:id="@+id/textview_me_height"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.height}"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/key_weight"
-                    android:text="@string/me_weight"/>
-                <TextView
-                    android:id="@+id/textview_me_weight"
-                    android:layout_margin="@dimen/margin"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="@integer/value_weight"
-                    android:text="@{user.weight}"/>
-            </LinearLayout>
-            <Button
-                android:id="@+id/button_log"
-                android:layout_margin="@dimen/margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/logout"/>
-        </LinearLayout>
+        </ScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
+
 </layout>

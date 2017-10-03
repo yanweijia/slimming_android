@@ -13,4 +13,5 @@
     <dimen name="head_maxWidth">100dp</dimen>
     <dimen name="head_minHeight">80dp</dimen>
     <dimen name="head_minWidth">80dp</dimen>
+    <dimen name="head_roundness">90dp</dimen>
 </resources>

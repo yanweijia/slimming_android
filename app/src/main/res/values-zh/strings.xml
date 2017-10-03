@@ -42,4 +42,5 @@
     <string name="logout_success">登出成功!</string>
     <string name="refresh_userinfo_complete">获取用户信息成功!</string>
     <string name="refresh_userinfo_fail">获取用户信息失败</string>
+    <string name="me_update_info_hint">点击头像更新信息</string>
 </resources>
