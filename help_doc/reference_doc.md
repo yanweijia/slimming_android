@@ -8,6 +8,9 @@
 * [jackson下划线和驼峰命名法自动忽略](http://blog.csdn.net/z69183787/article/details/51279603)
 * [Android------startActivityForResult的详细用法](http://blog.csdn.net/sunchaoenter/article/details/6612039)
 * [Android:attempt to re-open an already-closed object](http://www.cnblogs.com/wanqieddy/p/3503136.html)
+* [Android实现圆形Imageview，带白色边框](http://blog.csdn.net/a_ycmbc/article/details/51373211)
+* [stackOverFlow - Warning:Android custom view should extend AppCompatTextView](https://stackoverflow.com/questions/43246336/android-custom-view-should-extend-appcompattextview)
+
 
 ## DataBinding 技术
 * [ DataBinding快速入门 ](http://blog.csdn.net/dxplay120/article/details/52036448)
@@ -22,3 +25,5 @@
 ## BottomNavBar
 * [LuseenBottomNavigation - Github](https://github.com/armcha/LuseenBottomNavigation)
 
+## 资源
+* [IconFont 阿里巴巴矢量图标库](http://www.iconfont.cn/)
