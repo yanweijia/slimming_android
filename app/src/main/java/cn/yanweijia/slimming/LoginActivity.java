@@ -159,7 +159,9 @@ public class LoginActivity extends Activity {
                     msg.what = jsonObject.getBoolean("success") ? LOGIN_SUCCESS : LOGIN_FAIL;
                     Bundle bundle = new Bundle();
                     bundle.putString("message", jsonObject.getString("message"));
-                    bundle.putString("user", jsonObject.getString("user"));
+                    if (msg.what == LOGIN_SUCCESS) {
+                        bundle.putString("user", jsonObject.getString("user"));
+                    }
                     msg.setData(bundle);
                     myHandler.sendMessage(msg);
                 } catch (Exception e) {

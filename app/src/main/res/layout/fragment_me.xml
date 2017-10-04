@@ -213,7 +213,12 @@
                         android:layout_weight="@integer/value_weight"
                         android:text="@{user.weight}" />
                 </LinearLayout>
-
+                <Button
+                    android:id="@+id/changePassword"
+                    android:layout_margin="@dimen/margin"
+                    android:text="@string/prompt_change_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
                 <Button
                     android:id="@+id/logout"
                     android:layout_width="match_parent"

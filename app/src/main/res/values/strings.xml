@@ -61,4 +61,7 @@
     <string name="confirm">Confirm</string>
     <string name="change_password_success">Change password successful, please login again.</string>
     <string name="change_password_fail">Change password fail.</string>
+    <string name="prompt_oldpassword">Old Password</string>
+    <string name="prompt_newpassword">New Password</string>
+    <string name="prompt_renewpassword">Input again</string>
 </resources>

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
 
+import cn.yanweijia.slimming.ChangePasswordActivity;
 import cn.yanweijia.slimming.LoginActivity;
 import cn.yanweijia.slimming.R;
 import cn.yanweijia.slimming.UpdateUserInfoActivity;
@@ -58,6 +59,19 @@ public class MeFragment extends Fragment {
      */
     public static final int UPDATE_USERINFO_FAIL = 5;
 
+    /**
+     * request to change user's password
+     */
+    private static final int CHANGE_PASSWORD_REQUEST = 6;
+    /**
+     * change password success
+     */
+    public static final int CHANGE_PASSWORD_SUCCESS = 7;
+    /**
+     * change password fail
+     */
+    public static final int CHANGE_PASSWORD_FAIL = 8;
+
     public MeFragment() {
         DBManager.initSQLiteDB(getActivity());
         Log.d(TAG, "MeFragment: Constructor");
@@ -88,22 +102,39 @@ public class MeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //refresh user information
-        switch (resultCode){
-            case UPDATE_USERINFO_SUCCESS:
-                binding.swipeRefreshlayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        binding.swipeRefreshlayout.setRefreshing(true);
-                        new Thread(new Runnable() {
+        switch (requestCode) {
+            case UPDATE_USERINFO_REQUEST:
+                switch (resultCode) {
+                    case UPDATE_USERINFO_SUCCESS:
+                        binding.swipeRefreshlayout.post(new Runnable() {
                             @Override
                             public void run() {
-                                refreshUserInfo();
+                                binding.swipeRefreshlayout.setRefreshing(true);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        refreshUserInfo();
+                                    }
+                                }).start();
                             }
-                        }).start();
-                    }
-                });
+                        });
+                        break;
+                    default:
+                }
                 break;
-            default :
+            case CHANGE_PASSWORD_REQUEST:
+                switch (resultCode){
+                    case CHANGE_PASSWORD_SUCCESS:
+                        DBManager.removeAllUser();
+                        startActivity(new Intent(getActivity(), LoginActivity.class));
+                        getActivity().finish();
+                        break;
+                    case CHANGE_PASSWORD_FAIL:
+                        break;
+                }
+                break;
+            default:
+                Log.d(TAG, "onActivityResult: requestCode:" + requestCode);
         }
 
     }
@@ -121,6 +152,12 @@ public class MeFragment extends Fragment {
                 Toast.makeText(getActivity(), R.string.logout_success, Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
                 getActivity().finish();
+            }
+        });
+        binding.changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), ChangePasswordActivity.class), CHANGE_PASSWORD_REQUEST);
             }
         });
         myHandler = new MeFragmentHandler();
