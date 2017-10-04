@@ -55,4 +55,10 @@
     <string name="illegal_height">请按格式填写身高,仅支持整数和小数</string>
     <string name="update_userinfo_success">修改用户信息成功!</string>
     <string name="update_userinfo_fail">修改用户信息失败!</string>
+
+    <!--change password-->
+    <string name="prompt_change_password">修改密码</string>
+    <string name="confirm">确 定</string>
+    <string name="change_password_success">修改密码成功,即将转到登录页面</string>
+    <string name="change_password_fail">修改密码失败</string>
 </resources>

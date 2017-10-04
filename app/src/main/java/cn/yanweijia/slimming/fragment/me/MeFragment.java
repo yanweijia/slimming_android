@@ -87,7 +87,7 @@ public class MeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO:refresh user information
+        //refresh user information
         switch (resultCode){
             case UPDATE_USERINFO_SUCCESS:
                 binding.swipeRefreshlayout.post(new Runnable() {
@@ -127,7 +127,7 @@ public class MeFragment extends Fragment {
         binding.circleImageViewMeHead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:request update user information
+                //request update user information
                 startActivityForResult(new Intent(getActivity(), UpdateUserInfoActivity.class), UPDATE_USERINFO_REQUEST);
             }
         });

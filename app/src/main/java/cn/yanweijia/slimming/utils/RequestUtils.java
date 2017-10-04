@@ -24,6 +24,7 @@ public class RequestUtils {
     private static final String URL_GET_USER_INFO = BASE_URL + "/api/user/getUserInfo"; //get:  ?id=1
     private static final String URL_REGISTER = BASE_URL + "/api/guest/register";
     private static final String URL_UPDATE_USER_INFO = BASE_URL + "/api/user/updateUserInfo"; //post with json
+    private static final String URL_CHANGE_PASSWORD = BASE_URL + "/api/user/changePassword";
 
     private static ObjectMapper objectMapper;
 
@@ -31,6 +32,26 @@ public class RequestUtils {
         objectMapper = new ObjectMapper();
     }
 
+    /**
+     * change password
+     *
+     * @param userid
+     * @param oldPw  old password (md5 encrypted)
+     * @param newPw  new password (md5 encrypted)
+     * @return
+     */
+    public static String changePassword(int userid, String oldPw, String newPw) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("id", String.valueOf(userid));
+            params.put("oldPw", oldPw);
+            params.put("newPw", newPw);
+            return HttpUtils.sendPost(URL_CHANGE_PASSWORD, params);
+        } catch (Exception e) {
+            Log.e(TAG, "changePassword: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
 
     /**
      * update user info <br/>

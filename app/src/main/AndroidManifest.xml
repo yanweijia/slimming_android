@@ -25,7 +25,8 @@
             android:name=".LoginActivity"
             android:label="@string/sign_in" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".UpdateUserInfoActivity"></activity>
+        <activity android:name=".UpdateUserInfoActivity" />
+        <activity android:name=".ChangePasswordActivity"></activity>
     </application>
 
 </manifest>

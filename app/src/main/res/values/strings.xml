@@ -55,4 +55,10 @@
     <string name="illegal_height">Illegal height,only support numbers</string>
     <string name="update_userinfo_success">Update user\'s information success</string>
     <string name="update_userinfo_fail">Update user\'s information fail!</string>
+
+    <!--change password-->
+    <string name="prompt_change_password">Change Password</string>
+    <string name="confirm">Confirm</string>
+    <string name="change_password_success">Change password successful, please login again.</string>
+    <string name="change_password_fail">Change password fail.</string>
 </resources>
