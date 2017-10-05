@@ -26,7 +26,8 @@
             android:label="@string/sign_in" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".UpdateUserInfoActivity" />
-        <activity android:name=".ChangePasswordActivity"></activity>
+        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".FoodListActivity"></activity>
     </application>
 
 </manifest>

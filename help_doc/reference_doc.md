@@ -4,6 +4,8 @@
 * [ DataBinding-是时候放弃butterknife了 ](http://blog.csdn.net/dxplay120/article/details/52036448)
 * [**Android MVVM框架 - Data Binding Library介绍**](https://github.com/derron/DataBinding-album-sample/blob/master/MVVM.md)
 * [DataBinding 中 BindingConversion 的使用](http://blog.csdn.net/zhuhai__yizhi/article/details/52924196)
+* [Android dataBinding与ListView及事件详解](http://www.jb51.net/article/95064.htm)
+* [databinding中的ImageView与Glide结合使用](http://blog.csdn.net/zhuhai__yizhi/article/details/52922092)
 
 ## Fragment介绍
 * [Android Fragment 真正的完全解析（上）](http://blog.csdn.net/lmj623565791/article/details/37970961/)
@@ -31,4 +33,4 @@
 * [stackOverFlow - Warning:Android custom view should extend AppCompatTextView](https://stackoverflow.com/questions/43246336/android-custom-view-should-extend-appcompattextview)
 * [Android报错：No package identifier when getting value for resource number 0x00000003](http://www.jianshu.com/p/b4df9b81c1e0)
 * [笔记12--GridView--且解决与ScrollView共用的冲突问题](http://blog.csdn.net/mwj_88/article/details/23094399)
-
+* [ImageView简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)

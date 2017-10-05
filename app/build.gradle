@@ -46,4 +46,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.1'
     //https://github.com/hdodenhof/CircleImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    //https://muyangmin.github.io/glide-docs-cn/doc/download-setup.html
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
 }

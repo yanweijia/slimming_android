@@ -1,5 +1,6 @@
 package cn.yanweijia.slimming.fragment.diet;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.SearchView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.yanweijia.slimming.FoodListActivity;
 import cn.yanweijia.slimming.R;
 import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.databinding.FragmentDietBinding;
@@ -41,6 +45,9 @@ public class DietFragment extends Fragment {
     private FragmentDietBinding binding;
     private DietFragmentHandler myHandler;
     private Bitmap recommendFoodImage = null;
+
+    public static final int GET_FOOD_BY_CATEGORY = 1;
+    public static final int GET_FOOD_BY_NAME = 2;
 
     /**
      * recommend food sign
@@ -77,7 +84,22 @@ public class DietFragment extends Fragment {
      * @author weijia
      */
     private void initViews() {
+        binding.search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "onQueryTextSubmit: key:" + query);
+                Intent intent = new Intent(getActivity(), FoodListActivity.class);
+                intent.putExtra("method", GET_FOOD_BY_NAME);
+                intent.putExtra("name", query);
+                startActivity(intent);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         Log.d(TAG, "initViews: complete!");
     }
 
@@ -111,7 +133,13 @@ public class DietFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
-                Log.d(TAG, "onItemClick: position=" + position + ", categoryid:" + (String) item.get("categoryid"));
+                int categoryid = Integer.parseInt((String) item.get("categoryid"));
+                Log.d(TAG, "onItemClick: position=" + position + ", categoryid:" + categoryid);
+                //transfer params
+                Intent intent = new Intent(getActivity(), FoodListActivity.class);
+                intent.putExtra("method", GET_FOOD_BY_CATEGORY);
+                intent.putExtra("categoryid", categoryid);
+                startActivity(intent);
             }
         });
         final Food recommendFood = new Food();
@@ -133,7 +161,7 @@ public class DietFragment extends Fragment {
                         msg.what = RECOMMEND_FOOD;
                         Food food = objectMapper.readValue(jsonObject.getString("food"), Food.class);
                         binding.setRecommendFood(food);
-                        //TODO:download food image
+                        //download food image
                         recommendFoodImage = RequestUtils.downloadFoodImage(food.getFoodId());
                     }
                 } catch (Exception e) {
@@ -176,7 +204,7 @@ public class DietFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case RECOMMEND_FOOD:
-                    //TODO:更新推荐食物的图片
+                    //update food image
                     binding.foodImage.setImageBitmap(recommendFoodImage);
                     break;
                 default:
