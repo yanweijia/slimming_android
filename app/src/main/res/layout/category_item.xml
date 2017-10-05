@@ -6,6 +6,10 @@
         android:id="@+id/circleImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxHeight="@dimen/head_maxHeight"
+        android:maxWidth="@dimen/head_maxWidth"
+        android:minHeight="@dimen/head_minHeight"
+        android:minWidth="@dimen/head_minWidth"
         android:src="@drawable/category1"
         android:layout_centerHorizontal="true"/>
     <TextView

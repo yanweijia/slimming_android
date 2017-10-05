@@ -1,8 +1,11 @@
 package cn.yanweijia.slimming.fragment.diet;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +13,21 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.json.JSONObject;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import cn.yanweijia.slimming.R;
+import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.databinding.FragmentDietBinding;
+import cn.yanweijia.slimming.entity.Food;
+import cn.yanweijia.slimming.utils.RequestUtils;
 
 /**
  * @author weijia
@@ -31,6 +39,13 @@ public class DietFragment extends Fragment {
     private static final String TAG = "DietFragment";
     private ObjectMapper objectMapper;
     private FragmentDietBinding binding;
+    private DietFragmentHandler myHandler;
+    private Bitmap recommendFoodImage = null;
+
+    /**
+     * recommend food sign
+     */
+    private static final int RECOMMEND_FOOD = 1;
 
     public DietFragment() {
         Log.d(TAG, "DietFragment: Constructor");
@@ -63,7 +78,6 @@ public class DietFragment extends Fragment {
      */
     private void initViews() {
 
-
         Log.d(TAG, "initViews: complete!");
     }
 
@@ -73,6 +87,8 @@ public class DietFragment extends Fragment {
      * @author weijia
      */
     private void initDatas() {
+        myHandler = new DietFragmentHandler();
+        objectMapper = new ObjectMapper();
         //data source
         List<HashMap<String, Object>> list = new ArrayList<>();
         int[] images = {R.drawable.category1, R.drawable.category2, R.drawable.category3, R.drawable.category4, R.drawable.category5, R.drawable.category6, R.drawable.category7, R.drawable.category8, R.drawable.category9, R.drawable.category10, R.drawable.category11};
@@ -94,12 +110,39 @@ public class DietFragment extends Fragment {
         binding.gridview.setOnItemClickListener(new GridView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //在本例中arg2=arg3
                 HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
-                //显示所选Item的ItemText
                 Log.d(TAG, "onItemClick: position=" + position + ", categoryid:" + (String) item.get("categoryid"));
             }
         });
+        final Food recommendFood = new Food();
+        recommendFood.setName(getString(R.string.food_recommend));
+        recommendFood.setCalorie(new BigDecimal(0f));
+        recommendFood.setComment(getString(R.string.food_intro));
+        binding.setRecommendFood(recommendFood);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.recommendFood(DBManager.getUser().getId());
+                JSONObject jsonObject;
+                Message msg = new Message();
+                msg.what = 0;
+                try {
+                    jsonObject = new JSONObject(jsonResult);
+                    if (jsonObject.getBoolean("success")) {
+                        msg.what = RECOMMEND_FOOD;
+                        Food food = objectMapper.readValue(jsonObject.getString("food"), Food.class);
+                        binding.setRecommendFood(food);
+                        //TODO:download food image
+                        recommendFoodImage = RequestUtils.downloadFoodImage(food.getFoodId());
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "run: ", e);
+                }
+                myHandler.sendMessage(msg);
+            }
+        }).start();
+
         Log.d(TAG, "initDatas: complete!");
     }
 
@@ -125,6 +168,20 @@ public class DietFragment extends Fragment {
                 viewGroup.removeView(rootView);
         }
         return rootView;
+    }
+
+    class DietFragmentHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case RECOMMEND_FOOD:
+                    //TODO:更新推荐食物的图片
+                    binding.foodImage.setImageBitmap(recommendFoodImage);
+                    break;
+                default:
+            }
+        }
     }
 
 }

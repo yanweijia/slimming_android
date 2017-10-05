@@ -79,4 +79,11 @@
     <string name="category11">菜肴</string>
 
     <string name="query_calorie">热量查询</string>
+    <string name="search_food_hint">请输入食物名称</string>
+    <string name="search">搜索</string>
+    <string name="food_recommend">推荐食物</string>
+    <string name="calorie">卡路里</string>
+    <string name="calorie_acronym">卡/100g</string>
+    <string name="category">分类</string>
+    <string name="food_intro">食物介绍</string>
 </resources>

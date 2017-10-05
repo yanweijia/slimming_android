@@ -1,11 +1,14 @@
 package cn.yanweijia.slimming.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,16 +23,54 @@ import cn.yanweijia.slimming.entity.User;
 public class RequestUtils {
     private static final String TAG = "RequestUtils";
     private static final String BASE_URL = "http://server.yanweijia.cn:8080/slimming";
+    private static final String URL_FOOD_IMAGE = BASE_URL + "/images/food/food$ID$.png"; //replace $ID$ to food id
     private static final String URL_LOGIN = BASE_URL + "/api/guest/login";   //post:  username=&password=
     private static final String URL_GET_USER_INFO = BASE_URL + "/api/user/getUserInfo"; //get:  ?id=1
     private static final String URL_REGISTER = BASE_URL + "/api/guest/register";
     private static final String URL_UPDATE_USER_INFO = BASE_URL + "/api/user/updateUserInfo"; //post with json
     private static final String URL_CHANGE_PASSWORD = BASE_URL + "/api/user/changePassword";
+    private static final String URL_RECOMMEND_FOOD = BASE_URL + "/api/food/recommend"; //recommend food
 
     private static ObjectMapper objectMapper;
 
     static {
         objectMapper = new ObjectMapper();
+    }
+
+
+    /**
+     * download food image by food id
+     *
+     * @param foodid
+     * @return
+     */
+    public static Bitmap downloadFoodImage(int foodid) {
+        String urlStr = URL_FOOD_IMAGE.replace("$ID$", "" + foodid);
+        try {
+            URL url = new URL(urlStr);
+            Bitmap bitmap = BitmapFactory.decodeStream(url.openStream());
+            return bitmap;
+        } catch (Exception e) {
+            Log.e(TAG, "downloadFoodImage: " + urlStr, e);
+            return null;
+        }
+    }
+
+    /**
+     * recommend food
+     *
+     * @param userid user id
+     * @return
+     */
+    public static String recommendFood(int userid) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("userid", String.valueOf(userid));
+            return HttpUtils.sendGet(URL_RECOMMEND_FOOD, params);
+        } catch (Exception e) {
+            Log.e(TAG, "recommendFood: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
     }
 
     /**

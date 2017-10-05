@@ -79,4 +79,11 @@
     <string name="category11">菜肴</string>
 
     <string name="query_calorie">Query calories</string>
+    <string name="search_food_hint">Food name</string>
+    <string name="search">Search</string>
+    <string name="food_recommend">Food recommend</string>
+    <string name="calorie">Calorie</string>
+    <string name="calorie_acronym">cal/100g</string>
+    <string name="category">Category</string>
+    <string name="food_intro">Food Intro</string>
 </resources>

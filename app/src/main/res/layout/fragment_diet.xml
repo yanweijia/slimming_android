@@ -2,7 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragment.diet.DietFragment">
 
-
+    <data>
+        <variable
+            name="recommendFood"
+            type="cn.yanweijia.slimming.entity.Food"/>
+    </data>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -14,10 +18,10 @@
             android:fillViewport="true">
 
             <LinearLayout
-                android:padding="@dimen/padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/padding">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -27,19 +31,104 @@
                     android:textColor="@color/black"
                     android:textSize="25sp" />
 
+                <SearchView
+                    android:id="@+id/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="@string/search_food_hint" />
+
                 <cn.yanweijia.slimming.custom.view.NoScrollGridView
                     android:id="@+id/gridview"
-                    android:numColumns="auto_fit"
-                    android:verticalSpacing="10dp"
-                    android:horizontalSpacing="10dp"
-                    android:columnWidth="@dimen/categoryImgWidth"
-                    android:stretchMode="columnWidth"
-                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:columnWidth="@dimen/categoryImgWidth"
+                    android:gravity="center"
+                    android:horizontalSpacing="10dp"
+                    android:minHeight="100dp"
+                    android:numColumns="auto_fit"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="10dp" />
 
-                </cn.yanweijia.slimming.custom.view.NoScrollGridView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/margin"
+                    android:text="@string/food_recommend"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/padding">
+
+                        <ImageView
+                            android:id="@+id/foodImage"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:adjustViewBounds="true"
+                            android:maxHeight="@dimen/head_maxHeight"
+                            android:maxWidth="@dimen/head_maxWidth"
+                            android:minHeight="@dimen/head_minHeight"
+                            android:minWidth="@dimen/head_minWidth"
+                            android:src="@drawable/diet" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="7"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/recommendedFoodName"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4.5"
+                                    android:text="@{recommendFood.name}" />
+
+                                <TextView
+                                    android:id="@+id/recommendedFoodCalorie"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="3"
+                                    android:gravity="end"
+                                    android:text="@{``+recommendFood.calorie}" />
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="2.5"
+                                    android:text="@string/calorie_acronym" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/foodIntro"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{recommendFood.comment}" />
+                        </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
+
+
     </FrameLayout>
 </layout>
