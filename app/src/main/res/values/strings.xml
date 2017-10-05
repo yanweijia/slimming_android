@@ -64,4 +64,19 @@
     <string name="prompt_oldpassword">Old Password</string>
     <string name="prompt_newpassword">New Password</string>
     <string name="prompt_renewpassword">Input again</string>
+
+    <!--food category-->
+    <string name="category1">谷薯芋,杂豆,主食</string>
+    <string name="category2">蛋类,肉类及制品</string>
+    <string name="category3">奶类及制品</string>
+    <string name="category4">蔬果和菌藻</string>
+    <string name="category5">坚果,大豆及制品</string>
+    <string name="category6">饮料</string>
+    <string name="category7">食用油,油脂及制品</string>
+    <string name="category8">调味品</string>
+    <string name="category9">零食,点心,冷饮</string>
+    <string name="category10">其他</string>
+    <string name="category11">菜肴</string>
+
+    <string name="query_calorie">Query calories</string>
 </resources>
