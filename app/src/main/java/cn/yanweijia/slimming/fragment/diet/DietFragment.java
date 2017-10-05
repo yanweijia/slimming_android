@@ -1,13 +1,25 @@
 package cn.yanweijia.slimming.fragment.diet;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import cn.yanweijia.slimming.R;
+import cn.yanweijia.slimming.databinding.FragmentDietBinding;
 
 /**
  * @author weijia
@@ -17,6 +29,8 @@ public class DietFragment extends Fragment {
     //this view is used to save view stack
     private View rootView;
     private static final String TAG = "DietFragment";
+    private ObjectMapper objectMapper;
+    private FragmentDietBinding binding;
 
     public DietFragment() {
         Log.d(TAG, "DietFragment: Constructor");
@@ -59,7 +73,33 @@ public class DietFragment extends Fragment {
      * @author weijia
      */
     private void initDatas() {
-
+        //data source
+        List<HashMap<String, Object>> list = new ArrayList<>();
+        int[] images = {R.drawable.category1, R.drawable.category2, R.drawable.category3, R.drawable.category4, R.drawable.category5, R.drawable.category6, R.drawable.category7, R.drawable.category8, R.drawable.category9, R.drawable.category10, R.drawable.category11};
+        int[] titles = {R.string.category1, R.string.category2, R.string.category3, R.string.category4, R.string.category5, R.string.category6, R.string.category7, R.string.category8, R.string.category9, R.string.category10, R.string.category11};
+        String[] categoryids = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+        for (int i = 0; i < 10; i++) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("image", images[i]);
+            map.put("title", getString(titles[i]));
+            map.put("categoryid", categoryids[i]);
+            list.add(map);
+        }
+        SimpleAdapter simpleAdapter = new SimpleAdapter(getActivity(),
+                list,//data source
+                R.layout.category_item,
+                new String[]{"image", "title", "categoryid"},
+                new int[]{R.id.circleImageView, R.id.categorytitle, R.id.categoryid});
+        binding.gridview.setAdapter(simpleAdapter);
+        binding.gridview.setOnItemClickListener(new GridView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //在本例中arg2=arg3
+                HashMap<String, Object> item = (HashMap<String, Object>) parent.getItemAtPosition(position);
+                //显示所选Item的ItemText
+                Log.d(TAG, "onItemClick: position=" + position + ", categoryid:" + (String) item.get("categoryid"));
+            }
+        });
         Log.d(TAG, "initDatas: complete!");
     }
 
@@ -73,7 +113,8 @@ public class DietFragment extends Fragment {
     public View getPersistentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int layout) {
         Log.d(TAG, "getPersistentView: rootView==null? " + String.valueOf(rootView == null));
         if (rootView == null) {
-            rootView = inflater.inflate(layout, container, false);
+            binding = DataBindingUtil.inflate(inflater, layout, container, false);
+            rootView = binding.getRoot();
             Log.d(TAG, "getPersistentView:  rootView is null, initial rootView");
             initViews();
             initDatas();
@@ -83,7 +124,6 @@ public class DietFragment extends Fragment {
             if (viewGroup != null)
                 viewGroup.removeView(rootView);
         }
-        initViews();
         return rootView;
     }
 

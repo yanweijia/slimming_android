@@ -242,7 +242,7 @@ public class MeFragment extends Fragment {
     public View getPersistentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int layout) {
         Log.d(TAG, "getPersistentView: rootView==null? " + String.valueOf(rootView == null));
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_me, container, false);
+            binding = DataBindingUtil.inflate(inflater, layout, container, false);
             binding.setUser(DBManager.getUser());
             rootView = binding.getRoot();
             Log.d(TAG, "getPersistentView:  rootView is null, initial rootView");

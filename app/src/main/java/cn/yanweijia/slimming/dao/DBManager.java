@@ -14,7 +14,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
+import cn.yanweijia.slimming.entity.FoodCategory;
 import cn.yanweijia.slimming.entity.User;
 
 /**
@@ -134,4 +137,28 @@ public class DBManager {
         db.execSQL(DBSentence.CLEAN_TABLE_USER);
     }
 
+    /**
+     * query food category.
+     * @return
+     */
+    public static List<FoodCategory> getFoodCategory(){
+        List<FoodCategory> list = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.GET_FOOD_CATEGORY, null);
+            JSONObject jsonObject = new JSONObject();
+            FoodCategory foodCategory = null;
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    jsonObject.put(cursor.getColumnName(i), cursor.getString(i));
+                }
+                foodCategory = objectMapper.readValue(jsonObject.toString(), FoodCategory.class);
+                list.add(foodCategory);
+            }
+            cursor.close();
+        } catch (Exception e) {
+            Log.e(TAG, "getFoodCategory: Error:", e);
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

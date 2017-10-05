@@ -10,7 +10,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:padding="@dimen/padding"
@@ -26,257 +27,18 @@
                     android:textColor="@color/black"
                     android:textSize="25sp" />
 
-                <TableLayout
+                <cn.yanweijia.slimming.custom.view.NoScrollGridView
+                    android:id="@+id/gridview"
+                    android:numColumns="auto_fit"
+                    android:verticalSpacing="10dp"
+                    android:horizontalSpacing="10dp"
+                    android:columnWidth="@dimen/categoryImgWidth"
+                    android:stretchMode="columnWidth"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin"
-                    android:shrinkColumns="3">
+                    android:layout_height="wrap_content">
 
-                    <TableRow>
-
-                        <LinearLayout
-                            android:id="@+id/category1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:clickable="true"
-                            android:focusable="true">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category1" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category1" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category2" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category2" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category3" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category3" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow android:layout_marginTop="@dimen/margin">
-
-                        <LinearLayout
-                            android:id="@+id/category4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category4" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category4" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category5" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category5" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category6" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category6" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow android:layout_marginTop="@dimen/margin">
-
-                        <LinearLayout
-                            android:id="@+id/category7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category7" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category7" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category8"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category8" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category8" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category9" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category9" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <TableRow android:layout_marginTop="@dimen/margin">
-
-                        <LinearLayout
-                            android:id="@+id/category10"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category10" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category10" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/category11"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="@dimen/categoryImgWidth"
-                                android:layout_height="@dimen/categoryImgHeight"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/category11" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:text="@string/category11" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="0dp"/>
-                        </LinearLayout>
-                    </TableRow>
-
-                </TableLayout>
+                </cn.yanweijia.slimming.custom.view.NoScrollGridView>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>

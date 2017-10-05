@@ -16,4 +16,6 @@
     <dimen name="head_roundness">90dp</dimen>
     <dimen name="categoryImgWidth">90dp</dimen>
     <dimen name="categoryImgHeight">90dp</dimen>
+
+    <dimen name="categoryMargin">7dp</dimen>
 </resources>

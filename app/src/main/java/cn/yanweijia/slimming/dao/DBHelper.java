@@ -19,6 +19,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //create database for the first time.
         sqLiteDatabase.execSQL(DBSentence.CREATE_TABLE_USER);
+        sqLiteDatabase.execSQL(DBSentence.CREATE_TABLE_FOOD_CATEGORY);
+        sqLiteDatabase.execSQL(DBSentence.INIT_FOOD_CATEGORY);
     }
 
     @Override

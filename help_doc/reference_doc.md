@@ -30,3 +30,5 @@
 * [Android实现圆形Imageview，带白色边框](http://blog.csdn.net/a_ycmbc/article/details/51373211)
 * [stackOverFlow - Warning:Android custom view should extend AppCompatTextView](https://stackoverflow.com/questions/43246336/android-custom-view-should-extend-appcompattextview)
 * [Android报错：No package identifier when getting value for resource number 0x00000003](http://www.jianshu.com/p/b4df9b81c1e0)
+* [笔记12--GridView--且解决与ScrollView共用的冲突问题](http://blog.csdn.net/mwj_88/article/details/23094399)
+
