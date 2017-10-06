@@ -42,6 +42,7 @@
             android:layout_below="@id/titleLayout">
 
             <LinearLayout
+                android:padding="@dimen/padding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -49,7 +50,9 @@
                     android:id="@+id/gridview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:numColumns="auto_fit"
+                    android:horizontalSpacing="10dp"
+                    android:verticalSpacing="10dp"
+                    android:numColumns="1"
                     app:adapter="@{adapter}" />
             </LinearLayout>
         </ScrollView>

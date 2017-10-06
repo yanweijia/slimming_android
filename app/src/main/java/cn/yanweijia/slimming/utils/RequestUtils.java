@@ -31,13 +31,47 @@ public class RequestUtils {
     private static final String URL_UPDATE_USER_INFO = BASE_URL + "/api/user/updateUserInfo"; //post with json
     private static final String URL_CHANGE_PASSWORD = BASE_URL + "/api/user/changePassword";
     private static final String URL_RECOMMEND_FOOD = BASE_URL + "/api/food/recommend"; //recommend food
-
+    private static final String URL_GET_FOOD_BY_CATEGORY = BASE_URL + "/api/food/listFoodByCategory";// get food by category id.  ex: ?categoryId=1
+    private static final String URL_GET_FOOD_BY_NAME = BASE_URL + "/api/food/listFoodByName"; //get food by food name, ex:  ?name=米饭  remember to encode id using
     private static ObjectMapper objectMapper;
 
     static {
         objectMapper = new ObjectMapper();
     }
 
+
+    /**
+     * get foods by food name
+     * @param name
+     * @return
+     */
+    public static String getFoodByName(String name){
+        try{
+            Map<String,String> params = new HashMap<>();
+            params.put("name",name);
+            return HttpUtils.sendGet(URL_GET_FOOD_BY_NAME,params);
+        }catch (Exception e){
+            Log.e(TAG, "getFoodByName: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+
+    /**
+     * get foods by category
+     * @param categoryid
+     * @return
+     */
+    public static String getFoodByCategory(int categoryid) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("categoryId", String.valueOf(categoryid));
+            return HttpUtils.sendGet(URL_GET_FOOD_BY_CATEGORY, params);
+        } catch (Exception e) {
+            Log.e(TAG, "getFoodByCategory: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
 
     /**
      * download food image by food id

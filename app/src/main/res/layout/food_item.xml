@@ -24,7 +24,7 @@
             android:maxWidth="80dp"
             android:minHeight="60dp"
             android:minWidth="60dp"
-            android:src="@drawable/diet"
+
             app:error="@{@drawable/diet}"
             app:foodImageId="@{foodbean.foodId}"/>
 
@@ -36,18 +36,20 @@
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:layout_height="wrap_content"
                 android:text="@{foodbean.name}"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"/>
+                android:textSize="15sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:textSize="15sp"
-                android:text="@{``+foodbean.category+` cal/100g`}"/>
+                android:text="@{``+foodbean.calorie+` cal/100g`}"/>
 
         </LinearLayout>
     </RelativeLayout>

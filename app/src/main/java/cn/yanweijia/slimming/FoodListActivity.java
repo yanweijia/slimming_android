@@ -10,6 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +38,8 @@ public class FoodListActivity extends AppCompatActivity {
     private ActivityFoodListBinding binding;
     private List<Food> list;
     private static final String TAG = "FoodListActivity";
-
+    private FoodListActivityHandler myHandler;
+    private ObjectMapper objectMapper;
     /**
      * load data successful complete!
      */
@@ -46,6 +53,8 @@ public class FoodListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_food_list);
+        myHandler = new FoodListActivityHandler();
+        objectMapper = new ObjectMapper();
         Intent intent = getIntent();
         list = new ArrayList<>();
         //GET_FOOD_BY_CATEGORY
@@ -59,8 +68,24 @@ public class FoodListActivity extends AppCompatActivity {
                         if (foodCategory.getId() == categoryid)
                             binding.setTitle(foodCategory.getName());
                     }
-                    //TODO:获取分类的食物信息
-
+                    //获取分类的食物信息
+                    String jsonResult = RequestUtils.getFoodByCategory(categoryid);
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonResult);
+                        if (jsonObject.getBoolean("success")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("foods");
+                            list.clear();
+                            for(int i = 0 ; i < jsonArray.length();i++){
+                                Food food = objectMapper.readValue(jsonArray.getString(i),Food.class);
+                                list.add(food);
+                            }
+                            myHandler.sendEmptyMessage(LOAD_SUCCESS);
+                        } else
+                            myHandler.sendEmptyMessage(LOAD_FAIL);
+                    } catch (Exception e) {
+                        Log.e(TAG, "run: ", e);
+                        myHandler.sendEmptyMessage(LOAD_FAIL);
+                    }
                 }
             }).start();
         } else {// GET_FOOD_BY_NAME
@@ -69,7 +94,24 @@ public class FoodListActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     binding.setTitle(foodName);
-                    //TODO:联网搜索食物信息
+                    //联网搜索食物信息
+                    String jsonResult = RequestUtils.getFoodByName(foodName);
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonResult);
+                        if (jsonObject.getBoolean("success")) {
+                            JSONArray jsonArray = jsonObject.getJSONArray("foods");
+                            list.clear();
+                            for(int i = 0 ; i < jsonArray.length();i++){
+                                Food food = objectMapper.readValue(jsonArray.getString(i),Food.class);
+                                list.add(food);
+                            }
+                            myHandler.sendEmptyMessage(LOAD_SUCCESS);
+                        } else
+                            myHandler.sendEmptyMessage(LOAD_FAIL);
+                    } catch (Exception e) {
+                        Log.e(TAG, "run: ", e);
+                        myHandler.sendEmptyMessage(LOAD_FAIL);
+                    }
                 }
             }).start();
         }
@@ -92,6 +134,9 @@ public class FoodListActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case LOAD_SUCCESS:
+                    //TODO: reduce list size
+                    if(list.size()>10)
+                        list = list.subList(0,9);
                     ListAdapter<Food> adapter = new ListAdapter<>(FoodListActivity.this, list, R.layout.food_item, BR.foodbean);
                     binding.setAdapter(adapter);
                     break;
