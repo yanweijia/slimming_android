@@ -17,14 +17,10 @@
         <ImageView
             android:id="@+id/image"
             android:layout_marginEnd="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/food_image_size"
+            android:layout_height="@dimen/food_image_size"
             android:adjustViewBounds="true"
-            android:maxHeight="80dp"
-            android:maxWidth="80dp"
-            android:minHeight="60dp"
-            android:minWidth="60dp"
-
+            android:scaleType="fitCenter"
             app:error="@{@drawable/diet}"
             app:foodImageId="@{foodbean.foodId}"/>
 
@@ -48,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:text="@{``+foodbean.calorie+` cal/100g`}"/>
 
         </LinearLayout>

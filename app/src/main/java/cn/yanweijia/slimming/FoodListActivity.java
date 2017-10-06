@@ -134,9 +134,9 @@ public class FoodListActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case LOAD_SUCCESS:
-                    //TODO: reduce list size
-                    if(list.size()>10)
-                        list = list.subList(0,9);
+                    //reduce list size, should be mult page
+//                    if(list.size()>30)
+//                        list = list.subList(0,29);
                     ListAdapter<Food> adapter = new ListAdapter<>(FoodListActivity.this, list, R.layout.food_item, BR.foodbean);
                     binding.setAdapter(adapter);
                     break;

@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:horizontalSpacing="10dp"
                     android:verticalSpacing="10dp"
-                    android:numColumns="1"
+                    android:numColumns="2"
                     app:adapter="@{adapter}" />
             </LinearLayout>
         </ScrollView>
