@@ -6,4 +6,6 @@
     <color name="bottomBarDefault">#e25252</color>
     <color name="grey">#a3a3a3</color>
     <color name="black">#000000</color>
+    <color name="lightGrey">#b4b4b4</color>
+    <color name="deepGrey">#484848</color>
 </resources>

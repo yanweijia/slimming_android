@@ -21,6 +21,7 @@ import cn.yanweijia.slimming.entity.User;
  */
 
 public class RequestUtils {
+    private static ObjectMapper objectMapper;
     private static final String TAG = "RequestUtils";
     public static final String BASE_URL = "http://server.yanweijia.cn:8080/slimming";
     public static final String URL_FOOD_IMAGE = BASE_URL + "/images/food/food$ID$.png"; //replace $ID$ to food id
@@ -33,7 +34,8 @@ public class RequestUtils {
     private static final String URL_RECOMMEND_FOOD = BASE_URL + "/api/food/recommend"; //recommend food
     private static final String URL_GET_FOOD_BY_CATEGORY = BASE_URL + "/api/food/listFoodByCategory";// get food by category id.  ex: ?categoryId=1
     private static final String URL_GET_FOOD_BY_NAME = BASE_URL + "/api/food/listFoodByName"; //get food by food name, ex:  ?name=米饭  remember to encode id using
-    private static ObjectMapper objectMapper;
+    private static final String URL_GET_FOOD_INFO_BY_ID = BASE_URL + "/api/food/getFoodInfo";//get food info by id ?foodId=1
+    private static final String URL_GET_FOOD_MEASUREMENT = BASE_URL + "/api/food/listFoodMeasurementByFoodID";//get food measurements by food id. ex: ?foodId=100
 
     static {
         objectMapper = new ObjectMapper();
@@ -41,16 +43,54 @@ public class RequestUtils {
 
 
     /**
+     * get food measurements by food id;
+     *
+     * @param foodId
+     * @return
+     * @author weijia
+     */
+    public static String getFoodMeasurements(int foodId) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("foodId", String.valueOf(foodId));
+            return HttpUtils.sendGet(URL_GET_FOOD_MEASUREMENT, params);
+        } catch (Exception e) {
+            Log.e(TAG, "getFoodMeasurements: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+
+    /**
+     * get food info by food id
+     *
+     * @param foodId
+     * @return
+     * @author weijia
+     */
+    public static String getFoodInfoById(int foodId) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("foodId", String.valueOf(foodId));
+            return HttpUtils.sendGet(URL_GET_FOOD_INFO_BY_ID, params);
+        } catch (Exception e) {
+            Log.e(TAG, "getFoodInfoById: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
      * get foods by food name
+     *
      * @param name
      * @return
      */
-    public static String getFoodByName(String name){
-        try{
-            Map<String,String> params = new HashMap<>();
-            params.put("name",name);
-            return HttpUtils.sendGet(URL_GET_FOOD_BY_NAME,params);
-        }catch (Exception e){
+    public static String getFoodByName(String name) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("name", name);
+            return HttpUtils.sendGet(URL_GET_FOOD_BY_NAME, params);
+        } catch (Exception e) {
             Log.e(TAG, "getFoodByName: ", e);
             return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
         }
@@ -59,6 +99,7 @@ public class RequestUtils {
 
     /**
      * get foods by category
+     *
      * @param categoryid
      * @return
      */

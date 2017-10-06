@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -63,11 +62,8 @@ public class FoodListActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<FoodCategory> foodCategories = DBManager.getFoodCategory();
-                    for (FoodCategory foodCategory : foodCategories) {
-                        if (foodCategory.getId() == categoryid)
-                            binding.setTitle(foodCategory.getName());
-                    }
+                    FoodCategory foodCategory = DBManager.getFoodCategory(categoryid);
+                    binding.setTitle(foodCategory.getName() == null ? "unknow" : foodCategory.getName());
                     //获取分类的食物信息
                     String jsonResult = RequestUtils.getFoodByCategory(categoryid);
                     try {
@@ -75,8 +71,8 @@ public class FoodListActivity extends AppCompatActivity {
                         if (jsonObject.getBoolean("success")) {
                             JSONArray jsonArray = jsonObject.getJSONArray("foods");
                             list.clear();
-                            for(int i = 0 ; i < jsonArray.length();i++){
-                                Food food = objectMapper.readValue(jsonArray.getString(i),Food.class);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Food food = objectMapper.readValue(jsonArray.getString(i), Food.class);
                                 list.add(food);
                             }
                             myHandler.sendEmptyMessage(LOAD_SUCCESS);
@@ -101,8 +97,8 @@ public class FoodListActivity extends AppCompatActivity {
                         if (jsonObject.getBoolean("success")) {
                             JSONArray jsonArray = jsonObject.getJSONArray("foods");
                             list.clear();
-                            for(int i = 0 ; i < jsonArray.length();i++){
-                                Food food = objectMapper.readValue(jsonArray.getString(i),Food.class);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Food food = objectMapper.readValue(jsonArray.getString(i), Food.class);
                                 list.add(food);
                             }
                             myHandler.sendEmptyMessage(LOAD_SUCCESS);
@@ -120,9 +116,9 @@ public class FoodListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "onItemClick: ");
-                //TODO:将null换成对应activity的class
-                Intent intent = new Intent(FoodListActivity.this, null);
-                intent.putExtra("url", list.get(position).getFoodId());
+                // --将null换成对应activity的class--
+                Intent intent = new Intent(FoodListActivity.this, FoodActivity.class);
+                intent.putExtra("foodid", list.get(position).getFoodId());
                 startActivity(intent);
             }
         });

@@ -9,10 +9,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,13 +136,41 @@ public class DBManager {
     }
 
     /**
-     * query food category.
+     * query food category
+     *
+     * @param categoryid
      * @return
      */
-    public static List<FoodCategory> getFoodCategory(){
+    public static FoodCategory getFoodCategory(int categoryid) {
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.GET_FOOD_CATEGORY.replace(DBSentence.REPLACEMENT_FOODCATEGORY_ID, String.valueOf(categoryid)), null);
+            JSONObject jsonObject = new JSONObject();
+            if (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    jsonObject.put(cursor.getColumnName(i), cursor.getString(i));
+                }
+                FoodCategory foodCategory = objectMapper.readValue(jsonObject.toString(), FoodCategory.class);
+                cursor.close();
+                return foodCategory;
+            } else {
+                Log.d(TAG, "getFoodCategory: cannot find anything");
+                return null;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "getFoodCategory: ", e);
+            return null;
+        }
+    }
+
+    /**
+     * list food categorys.
+     *
+     * @return
+     */
+    public static List<FoodCategory> listFoodCategories() {
         List<FoodCategory> list = new ArrayList<>();
         try {
-            Cursor cursor = db.rawQuery(DBSentence.GET_FOOD_CATEGORY, null);
+            Cursor cursor = db.rawQuery(DBSentence.LIST_FOOD_CATEGORY, null);
             JSONObject jsonObject = new JSONObject();
             FoodCategory foodCategory = null;
             while (cursor.moveToNext()) {
@@ -156,7 +182,7 @@ public class DBManager {
             }
             cursor.close();
         } catch (Exception e) {
-            Log.e(TAG, "getFoodCategory: Error:", e);
+            Log.e(TAG, "listFoodCategories: Error:", e);
             e.printStackTrace();
         }
         return list;

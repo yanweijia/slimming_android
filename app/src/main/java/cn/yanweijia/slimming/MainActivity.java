@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     // BottomNavBar relevant
     private int[] bottomBarTitles = {R.string.title_sport, R.string.title_analyze, R.string.title_diet, R.string.title_health, R.string.title_me};
-    private int[] bottomBarColors = {R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault, R.color.bottomBarDefault};
+    private int[] bottomBarColors = {R.color.deepGrey, R.color.deepGrey, R.color.deepGrey, R.color.deepGrey, R.color.deepGrey};
     private int[] bottomBarImages = {R.drawable.sport, R.drawable.analyze, R.drawable.diet, R.drawable.health, R.drawable.me};
 
 

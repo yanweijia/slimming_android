@@ -21,7 +21,7 @@
             android:id="@+id/titleLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/bottomBarDefault"
+            android:background="@color/deepGrey"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/padding_thin"
                 android:text="@{title}"
-                android:textColor="@color/black"
+                android:textColor="@android:color/white"
                 android:textSize="25sp"
                 android:textStyle="bold" />
         </LinearLayout>

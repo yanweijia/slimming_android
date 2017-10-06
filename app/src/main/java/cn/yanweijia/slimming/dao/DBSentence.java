@@ -12,6 +12,10 @@ public class DBSentence {
     public static final int DB_VERSION = 1;
 
     /**
+     * to replace sql sentence params
+     */
+    public static final String REPLACEMENT_FOODCATEGORY_ID = "$ID$";
+    /**
      * create user table
      */
     public static final String CREATE_TABLE_USER = "CREATE TABLE `user` (" +
@@ -58,7 +62,7 @@ public class DBSentence {
             " (10,'其它',10)," +
             " (11,'菜肴',11)," +
             " (12,'未定义',0);";
-    
+
     /**
      * delete all data from user table
      */
@@ -78,8 +82,13 @@ public class DBSentence {
     public static final String GET_USER = "SELECT * FROM user LIMIT 0,1";
 
     /**
-     * query food category
+     * list food categorys
      */
-    public static final String GET_FOOD_CATEGORY = "SELECT * FROM food_category";
+    public static final String LIST_FOOD_CATEGORY = "SELECT * FROM food_category";
+
+    /**
+     * get food category
+     */
+    public static final String GET_FOOD_CATEGORY = "SELECT * FROM food_category where id=$ID$";
 
 }

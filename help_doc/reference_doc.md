@@ -34,3 +34,5 @@
 * [Android报错：No package identifier when getting value for resource number 0x00000003](http://www.jianshu.com/p/b4df9b81c1e0)
 * [笔记12--GridView--且解决与ScrollView共用的冲突问题](http://blog.csdn.net/mwj_88/article/details/23094399)
 * [ImageView简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)
+* [Android背景渐变色(shape,gradient)](http://l62s.iteye.com/blog/1659433)
+
