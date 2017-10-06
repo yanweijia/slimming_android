@@ -3,6 +3,7 @@ package cn.yanweijia.slimming;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import com.luseen.luseenbottomnavigation.BottomNavigation.OnBottomNavigationItem
 import java.lang.ref.WeakReference;
 
 import cn.yanweijia.slimming.dao.DBManager;
+import cn.yanweijia.slimming.databinding.ActivityMainBinding;
 import cn.yanweijia.slimming.fragment.analyze.AnalyzeFragment;
 import cn.yanweijia.slimming.fragment.diet.DietFragment;
 import cn.yanweijia.slimming.fragment.health.HealthFragment;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private HealthFragment healthFragment;
     private MeFragment meFragment;
 
+    private ActivityMainBinding binding;
     /**
      * tap twice to exit application
      */
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
 
         initViews();
 
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initViews() {
         setDefaultFragment();
-        final BottomNavigationView navView = findViewById(R.id.bottomNavigation);
+        final BottomNavigationView navView = binding.bottomNavigation;
         for (int i = 0; i < bottomBarTitles.length; i++) {
             BottomNavigationItem item = new BottomNavigationItem(getString(bottomBarTitles[i]), ContextCompat.getColor(MainActivity.this, bottomBarColors[i]), bottomBarImages[i]);
             navView.addTab(item);
@@ -82,27 +85,27 @@ public class MainActivity extends AppCompatActivity {
                     case 0: //sport
                         if (sportFragment == null)
                             sportFragment = SportFragment.newInstance();
-                        transaction.replace(R.id.fragment_main, sportFragment);
+                        transaction.replace(R.id.fragment, sportFragment);
                         break;
                     case 1: //analyze
                         if (analyzeFragment == null)
                             analyzeFragment = AnalyzeFragment.newInstance();
-                        transaction.replace(R.id.fragment_main, analyzeFragment);
+                        transaction.replace(R.id.fragment, analyzeFragment);
                         break;
                     case 2: //diet
                         if (dietFragment == null)
                             dietFragment = DietFragment.newInstance();
-                        transaction.replace(R.id.fragment_main, dietFragment);
+                        transaction.replace(R.id.fragment, dietFragment);
                         break;
                     case 3: //health
                         if (healthFragment == null)
                             healthFragment = HealthFragment.newInstance();
-                        transaction.replace(R.id.fragment_main, healthFragment);
+                        transaction.replace(R.id.fragment, healthFragment);
                         break;
                     case 4: //me
                         if (meFragment == null)
                             meFragment = MeFragment.newInstance();
-                        transaction.replace(R.id.fragment_main, meFragment);
+                        transaction.replace(R.id.fragment, meFragment);
                         break;
                     default:
                         Log.d(TAG, "onNavigationItemClick: Error! index is :" + index);
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fm.beginTransaction();
         if (sportFragment == null)
             sportFragment = SportFragment.newInstance();
-        transaction.replace(R.id.fragment_main, sportFragment);
+        transaction.replace(R.id.fragment, sportFragment);
         transaction.commit();
     }
 

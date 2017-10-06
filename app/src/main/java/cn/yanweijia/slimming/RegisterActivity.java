@@ -1,6 +1,7 @@
 package cn.yanweijia.slimming;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import com.blankj.utilcode.util.StringUtils;
 
 import org.json.JSONObject;
 
+import cn.yanweijia.slimming.databinding.ActivityRegisterBinding;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -32,43 +34,37 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String username;
     private String password;    //encrypted (MD5)
-    private EditText editText_username, editText_password, editText_repassword;
-    private Button btn_register;
     private RegisterActivityHandler myHandler;
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_register);
         myHandler = new RegisterActivityHandler();
 
-        //bind views
-        editText_username = (EditText) findViewById(R.id.edittext_register_username);
-        editText_password = (EditText) findViewById(R.id.edittext_register_password);
-        editText_repassword = (EditText) findViewById(R.id.edittext_register_repassword);
-        btn_register = (Button) findViewById(R.id.btn_register);
 
 
         //register action
-        btn_register.setOnClickListener(new View.OnClickListener() {
+        binding.register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                username = editText_username.getText().toString();
-                password = editText_password.getText().toString();
-                String repassword = editText_repassword.getText().toString();
+                username = binding.username.getText().toString();
+                password = binding.password.getText().toString();
+                String repassword = binding.repassword.getText().toString();
                 if (!RegexUtils.isUsername(username)) {
                     Toast.makeText(RegisterActivity.this, R.string.illegal_username, Toast.LENGTH_SHORT).show();
-                    editText_username.requestFocus();
+                    binding.username.requestFocus();
                     return;
                 }
                 if (!isPasswordValid(password)) {
                     Toast.makeText(RegisterActivity.this, R.string.illegal_password, Toast.LENGTH_SHORT).show();
-                    editText_password.requestFocus();
+                    binding.password.requestFocus();
                     return;
                 }
                 if (!StringUtils.equals(password, repassword)) {
                     Toast.makeText(RegisterActivity.this, R.string.password_not_same, Toast.LENGTH_SHORT).show();
-                    editText_repassword.requestFocus();
+                    binding.repassword.requestFocus();
                     return;
                 }
                 password = EncryptUtils.encryptMD5ToString(password);

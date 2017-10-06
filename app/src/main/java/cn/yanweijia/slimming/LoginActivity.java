@@ -3,6 +3,7 @@ package cn.yanweijia.slimming;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import cn.yanweijia.slimming.dao.DBManager;
+import cn.yanweijia.slimming.databinding.ActivityLoginBinding;
 import cn.yanweijia.slimming.entity.User;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
@@ -48,43 +50,35 @@ public class LoginActivity extends Activity {
 
     private static final String TAG = "LoginActivity";
 
-
-    private EditText editText_username, editText_password;
     private String username;
     private String password;    //encrypted(MD5)
     private LoginActivityHandler myHandler;
     private ObjectMapper objectMapper;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         objectMapper = new ObjectMapper();
         myHandler = new LoginActivityHandler();
 
-        //bind views
-        Button btn_signin = (Button) findViewById(R.id.sign_in_button);
-        Button btn_signon = (Button) findViewById(R.id.sign_on_button);
-        editText_password = (EditText) findViewById(R.id.edittext_login_password);
-        editText_username = (EditText) findViewById(R.id.edittext_login_username);
-
-
         //sign in action
-        btn_signin.setOnClickListener(new View.OnClickListener() {
+        binding.signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                username = editText_username.getText().toString();
-                password = editText_password.getText().toString();
+                username = binding.username.getText().toString();
+                password = binding.password.getText().toString();
                 if (!isUserNameValid(username) || !RegexUtils.isUsername(username)) {
                     //check username
                     Toast.makeText(LoginActivity.this, R.string.illegal_username, Toast.LENGTH_SHORT).show();
-                    editText_username.requestFocus();
+                    binding.username.requestFocus();
                     return;
                 }
                 if (!isPasswordValid(password)) {
                     //check password
                     Toast.makeText(LoginActivity.this, R.string.illegal_password, Toast.LENGTH_SHORT).show();
-                    editText_password.requestFocus();
+                    binding.password.requestFocus();
                     return;
                 }
                 password = EncryptUtils.encryptMD5ToString(password);
@@ -93,7 +87,7 @@ public class LoginActivity extends Activity {
         });
 
         //register
-        btn_signon.setOnClickListener(new View.OnClickListener() {
+        binding.signOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -134,6 +128,7 @@ public class LoginActivity extends Activity {
         DBManager.initSQLiteDB(LoginActivity.this);
         User user = DBManager.getUser();
         if (user != null) {
+            binding.setUser(user);
             //自动登录跳转
             username = user.getUsername();
             password = user.getPassword();
@@ -207,8 +202,8 @@ public class LoginActivity extends Activity {
                     break;
                 username = data.getStringExtra("username");
                 password = data.getStringExtra("password");
-                editText_username.setText(username);
-                editText_password.setText(password);
+                binding.username.setText(username);
+                binding.password.setText(password);
                 login();
                 break;
             default:
