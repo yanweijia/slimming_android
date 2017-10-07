@@ -120,4 +120,8 @@
     <string name="nutritionSelenium">Selenium(μg)</string>
     <string name="load_food_fail">Load food information fail.</string>
     <string name="food_measurement_content">calorie(eatable)</string>
+    <string name="heart_rate">Heart rate</string>
+    <string name="blood_persure">Blood persure</string>
+    <string name="blood_sugar">Blood sugar</string>
+    <string name="weight">Weight</string>
 </resources>

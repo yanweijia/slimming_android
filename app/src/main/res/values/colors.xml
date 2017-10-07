@@ -8,4 +8,5 @@
     <color name="black">#000000</color>
     <color name="lightGrey">#b4b4b4</color>
     <color name="deepGrey">#484848</color>
+    <color name="health_btn_background">@color/lightGrey</color>
 </resources>

@@ -1,13 +1,45 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.health.HealthFragment">
 
+    <data>
 
-    <EditText
+        <variable
+            name="adapter"
+            type="android.widget.BaseAdapter" />
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/title_health" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <TextView
+            android:id="@+id/textview"
+            android:padding="@dimen/padding"
+            android:text="@string/title_health"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@color/bottomBarDefault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textview">
+
+            <cn.yanweijia.slimming.custom.view.NoScrollGridView
+                android:layout_margin="@dimen/margin"
+                android:id="@+id/gridview"
+                android:numColumns="2"
+                android:horizontalSpacing="15dp"
+                android:verticalSpacing="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:adapter="@{adapter}" />
+        </ScrollView>
+    </RelativeLayout>
+
+</layout>

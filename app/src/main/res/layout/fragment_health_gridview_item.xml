@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="map"
+            type="java.util.Map&lt;String,Object&gt;" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/health_btn_background"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgaeview"
+            app:drawableId="@{(int)map[`image`]}"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="@dimen/head_maxWidth"
+            android:layout_height="@dimen/head_maxHeight" />
+
+        <TextView
+            android:text="@{map[`title`]}"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

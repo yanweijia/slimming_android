@@ -24,6 +24,17 @@ public class DataBindingAttrAdapter {
     private static final String TAG = "DataBindingAttrAdapter";
 
     /**
+     * set image drawable
+     *
+     * @param imageView
+     * @param drawableId
+     */
+    @BindingAdapter("app:drawableId")
+    public static void loagImage(final ImageView imageView, int drawableId) {
+        imageView.setImageDrawable(imageView.getContext().getResources().getDrawable(drawableId));
+    }
+
+    /**
      * usd Glide to load image
      *
      * @param imageView

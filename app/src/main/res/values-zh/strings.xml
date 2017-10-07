@@ -120,4 +120,8 @@
     <string name="nutritionSelenium">硒(μg)</string>
     <string name="load_food_fail">加载食物信息失败.</string>
     <string name="food_measurement_content">热量(可食部分)</string>
+    <string name="heart_rate">心率</string>
+    <string name="blood_persure">血压</string>
+    <string name="blood_sugar">血糖</string>
+    <string name="weight">体重</string>
 </resources>
