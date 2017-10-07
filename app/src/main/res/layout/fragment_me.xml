@@ -215,7 +215,8 @@
                 </LinearLayout>
                 <Button
                     android:id="@+id/changePassword"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginEnd="@dimen/margin"
                     android:text="@string/prompt_change_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -223,7 +224,8 @@
                     android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_marginEnd="@dimen/margin"
                     android:text="@string/logout" />
             </LinearLayout>
         </ScrollView>

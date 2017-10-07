@@ -52,7 +52,6 @@ public class FoodActivity extends AppCompatActivity {
         list = new ArrayList<>();
 
         Intent intent = getIntent();
-        intent.putExtra("foodid", 1);
         foodId = intent.getIntExtra("foodid", 1);
         initDatas();
     }
