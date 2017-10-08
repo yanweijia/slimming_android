@@ -9,4 +9,6 @@
     <color name="lightGrey">#b4b4b4</color>
     <color name="deepGrey">#484848</color>
     <color name="health_btn_background">@color/lightGrey</color>
+    <color name="heart_rate_activity_title_background">@color/colorAccent</color>
+    <color name="heart_rate_activity_title_color">@color/black</color>
 </resources>

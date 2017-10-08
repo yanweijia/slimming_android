@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.yanweijia.slimming.BR;
+import cn.yanweijia.slimming.HeartRateActivity;
 import cn.yanweijia.slimming.R;
 import cn.yanweijia.slimming.custom.adapter.ListAdapter;
 import cn.yanweijia.slimming.databinding.FragmentHealthBinding;
@@ -82,7 +83,7 @@ public class HealthFragment extends Fragment {
                 Log.d(TAG, "onItemClick: " + list.get(position).get("title"));
                 switch (drawableId) {
                     case R.drawable.heart_rate:
-                        startActivity(new Intent(getActivity(), null)); //TODO:replace it
+                        startActivity(new Intent(getActivity(), HeartRateActivity.class)); //TODO:replace it
                         break;
                     case R.drawable.blood_persure:
                         startActivity(new Intent(getActivity(), null));

@@ -17,6 +17,7 @@ import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.KeyboardUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
@@ -196,6 +197,13 @@ public class DietFragment extends Fragment {
                 viewGroup.removeView(rootView);
         }
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //TODO: hide soft keyboard
+        KeyboardUtils.hideSoftInput(getActivity());
     }
 
     class DietFragmentHandler extends Handler {

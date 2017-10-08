@@ -35,4 +35,4 @@
 * [笔记12--GridView--且解决与ScrollView共用的冲突问题](http://blog.csdn.net/mwj_88/article/details/23094399)
 * [ImageView简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)
 * [Android背景渐变色(shape,gradient)](http://l62s.iteye.com/blog/1659433)
-
+* [Android开发学习之路-Android6.0运行时权限](http://www.cnblogs.com/Fndroid/p/5542526.html)
