@@ -152,4 +152,21 @@ public class DBSentence {
      */
     public static final String GET_FOOD_CATEGORY = "SELECT * FROM food_category where id=$ID$";
 
+    /**
+     * list user weight
+     */
+    public static final String LIST_USER_WEIGHT = "SELECT * FROM user_weight";
+    /**
+     * list heart rate
+     */
+    public static final String LIST_HEART_RATE = "SELECT * FROM heart_rate";
+    /**
+     * list blood glucose
+     */
+    public static final String LIST_BLOOD_GLUCOSE = "SELECT * FROM blood_glucose";
+    /**
+     * list blood pressure
+     */
+    public static final String LIST_BLOOD_PRESSURE = "SELECT * FROM blood_pressure";
+
 }

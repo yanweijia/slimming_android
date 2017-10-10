@@ -15,8 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.yanweijia.slimming.entity.BloodGlucose;
+import cn.yanweijia.slimming.entity.BloodPressure;
 import cn.yanweijia.slimming.entity.FoodCategory;
+import cn.yanweijia.slimming.entity.HeartRate;
 import cn.yanweijia.slimming.entity.User;
+import cn.yanweijia.slimming.entity.UserWeight;
 
 /**
  * Created by weijia on 30/09/2017.
@@ -184,6 +188,228 @@ public class DBManager {
         } catch (Exception e) {
             Log.e(TAG, "listFoodCategories: Error:", e);
             e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * save user weight data
+     *
+     * @param list
+     * @return success flag
+     */
+    public static boolean saveUserWeight(List<UserWeight> list) {
+        if (list == null || list.size() == 0)
+            return false;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                UserWeight userWeight = list.get(i);
+                db.execSQL(DBSentence.SAVE_USER_WEIGHT,
+                        new Object[]{userWeight.getId(),
+                                userWeight.getUserId(),
+                                userWeight.getWeight(),
+                                userWeight.getTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(userWeight.getTime()),
+                                userWeight.getMethod()});
+            }
+        } catch (Exception e) {
+            try {
+                Log.e(TAG, "saveUserWeight: Error:" + e.getMessage() + " User Bean:" + objectMapper.writeValueAsString(list), e);
+            } catch (JsonProcessingException e1) {
+                Log.e(TAG, "saveUserWeight: ", e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * save heart rate data
+     *
+     * @param list
+     * @return success flag
+     */
+    public static boolean saveHeartRate(List<HeartRate> list) {
+        if (list == null || list.size() == 0)
+            return false;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                HeartRate heartRate = list.get(i);
+                db.execSQL(DBSentence.SAVE_HEART_RATE,
+                        new Object[]{heartRate.getId(),
+                                heartRate.getUserId(),
+                                heartRate.getRate(),
+                                heartRate.getTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(heartRate.getTime()),
+                                heartRate.getMethod()});
+            }
+        } catch (Exception e) {
+            try {
+                Log.e(TAG, "saveHeartRate: Error:" + e.getMessage() + " User Bean:" + objectMapper.writeValueAsString(list), e);
+            } catch (JsonProcessingException e1) {
+                Log.e(TAG, "saveHeartRate: ", e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    /**
+     * save blood pressure data
+     *
+     * @param list
+     * @return success flag
+     */
+    public static boolean saveBloodPressure(List<BloodPressure> list) {
+        if (list == null || list.size() == 0)
+            return false;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                BloodPressure bloodPressure = list.get(i);
+                db.execSQL(DBSentence.SAVE_BLOOD_PRESSURE,
+                        new Object[]{bloodPressure.getId(),
+                                bloodPressure.getUserId(),
+                                bloodPressure.getDiastolicPressure(),
+                                bloodPressure.getSystolicPressure(),
+                                bloodPressure.getTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(bloodPressure.getTime()),
+                                bloodPressure.getMethod()});
+            }
+        } catch (Exception e) {
+            try {
+                Log.e(TAG, "saveBloodPressure: Error:" + e.getMessage() + " User Bean:" + objectMapper.writeValueAsString(list), e);
+            } catch (JsonProcessingException e1) {
+                Log.e(TAG, "saveBloodPressure: ", e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * save blood glucose data
+     *
+     * @param list
+     * @return success flag
+     */
+    public static boolean saveBloodGlucose(List<BloodGlucose> list) {
+        if (list == null || list.size() == 0)
+            return false;
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                BloodGlucose bloodGlucose = list.get(i);
+                db.execSQL(DBSentence.SAVE_BLOOD_GLUCOSE,
+                        new Object[]{bloodGlucose.getId(),
+                                bloodGlucose.getUserId(),
+                                bloodGlucose.getGlucose(),
+                                bloodGlucose.getTime() == null ? null : new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(bloodGlucose.getTime()),
+                                bloodGlucose.getMethod()});
+            }
+        } catch (Exception e) {
+            try {
+                Log.e(TAG, "saveBloodGlucose: Error:" + e.getMessage() + " User Bean:" + objectMapper.writeValueAsString(list), e);
+            } catch (JsonProcessingException e1) {
+                Log.e(TAG, "saveBloodGlucose: ", e1);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * list all blood glucose data
+     *
+     * @return
+     */
+    public static List<BloodGlucose> listBloodGlucose() {
+        List<BloodGlucose> list = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.LIST_BLOOD_GLUCOSE, null);
+            JSONObject json = new JSONObject();
+            BloodGlucose bloodGlucose = null;
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    json.put(cursor.getColumnName(i), cursor.getString(i));
+                    ;
+                }
+                bloodGlucose = objectMapper.readValue(json.toString(), BloodGlucose.class);
+                list.add(bloodGlucose);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "listBloodGlucose: Error:", e);
+        }
+        return list;
+    }
+
+    /**
+     * list all blood pressure data
+     *
+     * @return
+     */
+    public static List<BloodPressure> listBloodPressure() {
+        List<BloodPressure> list = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.LIST_BLOOD_PRESSURE, null);
+            JSONObject json = new JSONObject();
+            BloodPressure bloodPressure = null;
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    json.put(cursor.getColumnName(i), cursor.getString(i));
+                    ;
+                }
+                bloodPressure = objectMapper.readValue(json.toString(), BloodPressure.class);
+                list.add(bloodPressure);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "listBloodPressure: Error:", e);
+        }
+        return list;
+    }
+
+    /**
+     * list all heart rate data
+     *
+     * @return
+     */
+    public static List<HeartRate> listHeartRate() {
+        List<HeartRate> list = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.LIST_HEART_RATE, null);
+            JSONObject json = new JSONObject();
+            HeartRate heartRate = null;
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    json.put(cursor.getColumnName(i), cursor.getString(i));
+                    ;
+                }
+                heartRate = objectMapper.readValue(json.toString(), HeartRate.class);
+                list.add(heartRate);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "listHeartRate: Error:", e);
+        }
+        return list;
+    }
+
+    /**
+     * list all user weight data
+     *
+     * @return
+     */
+    public static List<UserWeight> listWeight() {
+        List<UserWeight> list = new ArrayList<>();
+        try {
+            Cursor cursor = db.rawQuery(DBSentence.LIST_USER_WEIGHT, null);
+            JSONObject json = new JSONObject();
+            UserWeight userWeight = null;
+            while (cursor.moveToNext()) {
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    json.put(cursor.getColumnName(i), cursor.getString(i));
+                    ;
+                }
+                userWeight = objectMapper.readValue(json.toString(), UserWeight.class);
+                list.add(userWeight);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "listWeight: Error:", e);
         }
         return list;
     }
