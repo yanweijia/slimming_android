@@ -46,6 +46,67 @@ public class DBSentence {
             ");";
 
     /**
+     * create user weight table
+     */
+    public static final String CREATE_TABLE_USER_WEIGHT = "CREATE TABLE `user_weight` (" +
+            "`id` INTEGER NOT NULL," +
+            "`user_id `INTEGER," +
+            "`time` VARCHAR(30) UNIQUE," +
+            "`method` VARCHAR(50)," +
+            "`weight` DECIMAL(6,2)," +
+            "PRIMARY KEY(`id`)" +
+            ");";
+    /**
+     * create heart rate table
+     */
+    public static final String CREATE_TABLE_HEART_RATE = "CREATE TABLE `heart_rate` (" +
+            " `id` INTEGER NOT NULL UNIQUE," +
+            " `user_id` INTEGER NOT NULL," +
+            " `time` VARCHAR(30) NOT NULL UNIQUE," +
+            " `rate` INTEGER NOT NULL," +
+            " `method` VARCHAR(50)," +
+            " PRIMARY KEY(`id`)" +
+            ");";
+    /**
+     * create blood glucose table
+     */
+    public static final String CREATE_TABLE_BLOOD_GLUCOSE = "CREATE TABLE `blood_glucose` (" +
+            " `id` INTEGER NOT NULL," +
+            " `user_id` INTEGER NOT NULL," +
+            " `glucose` INTEGER NOT NULL," +
+            " `time` VARCHAR(30) NOT NULL UNIQUE," +
+            " `method` VARCHAR(50)," +
+            " PRIMARY KEY(`id`)" +
+            ");";
+    /**
+     * create blood pressure table
+     */
+    public static final String CREATE_TABLE_BLOOD_PRESSURE = "CREATE TABLE `blood_pressure` (" +
+            " `id` INTEGER NOT NULL," +
+            " `user_id` INTEGER NOT NULL," +
+            " `diastolic_pressure` DECIMAL(6,2) NOT NULL," +
+            " `time` VARCHAR(30) NOT NULL," +
+            " `systolic_pressure` DECIMAL(6,2) NOT NULL," +
+            " `method` VARCHAR(50)," +
+            " PRIMARY KEY(`id`)" +
+            ");";
+    /**
+     * save weight data
+     */
+    public static final String SAVE_USER_WEIGHT = "INSERT  INTO `user_weight` (`id`,`user_id`,`weight`,`time`,`method` ) VALUES (?,?,?,?,?);";
+    /**
+     * save heart rate data
+     */
+    public static final String SAVE_HEART_RATE = "INSERT  INTO `heart_rate` (`id`,`user_id`,`rate`,`time`,`method` )VALUES (?,?,?,?,?);";
+    /**
+     * save blood glucose data
+     */
+    public static final String SAVE_BLOOD_GLUCOSE = "INSERT  INTO `blood_glucose` (`id`,`user_id`,`glucose`,`time`,`method` )VALUES (?,?,?,?,?);";
+    /**
+     * save blood pressure data
+     */
+    public static final String SAVE_BLOOD_PRESSURE = "INSERT  INTO `blood_pressure` (`id`,`user_id`,`diastolic_pressure`,`systolic_pressure`,`time`,`method` )VALUES (?,?,?,?,?,?);";
+    /**
      * initial food category table
      */
     public static final String INIT_FOOD_CATEGORY = "INSERT INTO `food_category` (`id`, `name`, `image`)" +

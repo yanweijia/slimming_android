@@ -83,7 +83,7 @@ public class HealthFragment extends Fragment {
                 Log.d(TAG, "onItemClick: " + list.get(position).get("title"));
                 switch (drawableId) {
                     case R.drawable.heart_rate:
-                        startActivity(new Intent(getActivity(), HeartRateActivity.class)); //TODO:replace it
+                        startActivity(new Intent(getActivity(), HeartRateActivity.class)); //replace it
                         break;
                     case R.drawable.blood_persure:
                         startActivity(new Intent(getActivity(), null));

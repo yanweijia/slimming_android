@@ -202,7 +202,7 @@ public class DietFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //TODO: hide soft keyboard
+        //hide soft keyboard
         KeyboardUtils.hideSoftInput(getActivity());
     }
 

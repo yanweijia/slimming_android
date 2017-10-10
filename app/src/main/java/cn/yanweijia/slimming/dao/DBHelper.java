@@ -16,11 +16,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+    public void onCreate(SQLiteDatabase db) {
         //create database for the first time.
-        sqLiteDatabase.execSQL(DBSentence.CREATE_TABLE_USER);
-        sqLiteDatabase.execSQL(DBSentence.CREATE_TABLE_FOOD_CATEGORY);
-        sqLiteDatabase.execSQL(DBSentence.INIT_FOOD_CATEGORY);
+        db.execSQL(DBSentence.CREATE_TABLE_USER);
+        db.execSQL(DBSentence.CREATE_TABLE_FOOD_CATEGORY);
+        db.execSQL(DBSentence.INIT_FOOD_CATEGORY);
+        db.execSQL(DBSentence.CREATE_TABLE_USER_WEIGHT);
+        db.execSQL(DBSentence.CREATE_TABLE_HEART_RATE);
+        db.execSQL(DBSentence.CREATE_TABLE_BLOOD_PRESSURE);
+        db.execSQL(DBSentence.CREATE_TABLE_BLOOD_GLUCOSE);
     }
 
     @Override
