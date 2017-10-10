@@ -9,10 +9,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import cn.yanweijia.slimming.entity.BloodGlucose;
+import cn.yanweijia.slimming.entity.BloodPressure;
+import cn.yanweijia.slimming.entity.HeartRate;
 import cn.yanweijia.slimming.entity.User;
+import cn.yanweijia.slimming.entity.UserWeight;
 
 /**
  * Created by weijia on 29/09/2017.
@@ -36,11 +41,159 @@ public class RequestUtils {
     private static final String URL_GET_FOOD_BY_NAME = BASE_URL + "/api/food/listFoodByName"; //get food by food name, ex:  ?name=米饭  remember to encode id using
     private static final String URL_GET_FOOD_INFO_BY_ID = BASE_URL + "/api/food/getFoodInfo";//get food info by id ?foodId=1
     private static final String URL_GET_FOOD_MEASUREMENT = BASE_URL + "/api/food/listFoodMeasurementByFoodID";//get food measurements by food id. ex: ?foodId=100
+    private static final String URL_LIST_WEIGHT = BASE_URL + "/api/health/weight/download";//get user weight data, eg ?startTime=&endTime=
+    private static final String URL_LIST_HEART_RATE = BASE_URL + "/api/health/heartrate/download";//get heart rate data, eg ?startTime=&endTime=
+    private static final String URL_LIST_BLOOD_GLUCOSE = BASE_URL + "/api/health/bloodglucose/download";//get blood glucose data, eg ?startTime=&endTime=
+    private static final String URL_LIST_BLOOD_PRESSURE = BASE_URL + "/api/health/bloodpressure/download";//get blood pressure data, eg ?startTime=&endTime=
+    private static final String URL_UPLOAD_WEIGHT = BASE_URL + "/api/health/weight/upload";//upload user weight data with json
+    private static final String URL_UPLOAD_HEART_RATE = BASE_URL + "/api/health/heartrate/upload";//upload heart rate data with json
+    private static final String URL_UPLOAD_BLOOD_GLUCOSE = BASE_URL + "/api/health/bloodglucose/upload";//upload blood glucose data with json
+    private static final String URL_UPLOAD_BLOOD_PRESSURE = BASE_URL + "/api/health/bloodpressure/upload"; //upload blood pressure data with json
+
 
     static {
         objectMapper = new ObjectMapper();
     }
 
+    /**
+     * upload blood glucose
+     *
+     * @param bloodGlucose
+     * @return
+     */
+    public static String uploadBloodGlucose(BloodGlucose bloodGlucose) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPLOAD_BLOOD_GLUCOSE, objectMapper.writeValueAsString(bloodGlucose));
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, "uploadGlucose: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * upload heart rate
+     *
+     * @param heartRate
+     * @return
+     */
+    public static String uploadHeartRate(HeartRate heartRate) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPLOAD_HEART_RATE, objectMapper.writeValueAsString(heartRate));
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, "uploadHeartRate: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * upload blood pressure
+     *
+     * @param bloodPressure
+     * @return
+     */
+    public static String uploadBloodPressure(BloodPressure bloodPressure) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPLOAD_BLOOD_PRESSURE, objectMapper.writeValueAsString(bloodPressure));
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, "uploadBloodPressure: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * upload user weight
+     *
+     * @param userWeight
+     * @return
+     */
+    public static String uploadWeight(UserWeight userWeight) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPLOAD_WEIGHT, objectMapper.writeValueAsString(userWeight));
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, "uploadWeight: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * list blood glucose
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     * @author weijia
+     */
+    public static String listBloodGlucose(Date startTime, Date endTime) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("startTime", String.valueOf(startTime.getTime()));
+            params.put("endTime", String.valueOf(endTime.getTime()));
+            return HttpUtils.sendGet(URL_LIST_BLOOD_GLUCOSE, params);
+        } catch (Exception e) {
+            Log.e(TAG, "listBloodGlucose: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * list blood pressure
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     * @author weijia
+     */
+    public static String listBloodPressure(Date startTime, Date endTime) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("startTime", String.valueOf(startTime.getTime()));
+            params.put("endTime", String.valueOf(endTime.getTime()));
+            return HttpUtils.sendGet(URL_LIST_BLOOD_PRESSURE, params);
+        } catch (Exception e) {
+            Log.e(TAG, "listBloodPressure: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * list heart rate
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     * @author weijia
+     */
+    public static String listHeartRate(Date startTime, Date endTime) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("startTime", String.valueOf(startTime.getTime()));
+            params.put("endTime", String.valueOf(endTime.getTime()));
+            return HttpUtils.sendGet(URL_LIST_HEART_RATE, params);
+        } catch (Exception e) {
+            Log.e(TAG, "listHeartRate: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * list user weight
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     * @author weijia
+     */
+    public static String listWeight(Date startTime, Date endTime) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("startTime", String.valueOf(startTime.getTime()));
+            params.put("endTime", String.valueOf(endTime.getTime()));
+            return HttpUtils.sendGet(URL_LIST_WEIGHT, params);
+        } catch (Exception e) {
+            Log.e(TAG, "listWeight: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
 
     /**
      * get food measurements by food id;
