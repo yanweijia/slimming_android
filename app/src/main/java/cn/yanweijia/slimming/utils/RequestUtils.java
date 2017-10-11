@@ -56,6 +56,15 @@ public class RequestUtils {
     }
 
     /**
+     * base url
+     *
+     * @return
+     */
+    public static String getBaseUrl() {
+        return BASE_URL;
+    }
+
+    /**
      * upload blood glucose
      *
      * @param bloodGlucose

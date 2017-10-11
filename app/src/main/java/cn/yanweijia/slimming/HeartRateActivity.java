@@ -1,5 +1,6 @@
 package cn.yanweijia.slimming;
 
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.app.Activity;
@@ -16,9 +17,14 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import cn.yanweijia.slimming.databinding.ActivityHeartRateBinding;
+import cn.yanweijia.slimming.entity.HeartRate;
+import cn.yanweijia.slimming.utils.RequestUtils;
 import cn.yanweijia.slimming.utils.YUV420SPUtils;
 
 
@@ -28,6 +34,8 @@ import cn.yanweijia.slimming.utils.YUV420SPUtils;
 public class HeartRateActivity extends Activity {
     private static final String TAG = "HeartRateActivity";
     private static final int MEASURE_COMPLETE = 1;
+    private static final int UPLOAD_COMPLETE = 2;
+    private static final int UPLOAD_FAIL = 3;
     private static double flag = 1;
     private static boolean complete = false;
     private ActivityHeartRateBinding binding;
@@ -101,6 +109,38 @@ public class HeartRateActivity extends Activity {
 
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK, "DoNotDimScreen");
+        binding.confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HeartRate heartRate = new HeartRate();
+                        heartRate.setRate(heartBeat);
+                        heartRate.setTime(new Date());
+                        heartRate.setMethod("手机相机测量");
+                        Message msg = new Message();
+                        Bundle bundle = new Bundle();
+                        try {
+                            String jsonResult = RequestUtils.uploadHeartRate(heartRate);
+                            JSONObject json = new JSONObject(jsonResult);
+                            if (json.getBoolean("success")) {
+                                msg.what = UPLOAD_COMPLETE;
+                            } else {
+                                msg.what = UPLOAD_FAIL;
+                            }
+                            bundle.putString("message", json.getString("message"));
+                        } catch (Exception e) {
+                            Log.e(TAG, "run: ", e);
+                            msg.what = UPLOAD_FAIL;
+                            bundle.putString("message", e.getMessage());
+                        }
+                        msg.setData(bundle);
+                        handler.sendMessage(msg);
+                    }
+                }).start();
+            }
+        });
     }
 
     //	曲线
@@ -245,7 +285,7 @@ public class HeartRateActivity extends Activity {
                         ",beatsIndex:" + beatsIndex +
                         ",beatsArrayAvg:" + beatsArrayAvg +
                         ",beatsArrayCount" + beatsArrayCount);
-                //TODO:判断结束条件
+                //判断结束条件
                 if (beatsIndex == beatsArray.length) {
                     complete = true;
                     Log.i(TAG, "onPreviewFrame: 测量结束,心率为:" + beatsAvg);
@@ -322,9 +362,24 @@ public class HeartRateActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == MEASURE_COMPLETE) {
-                Toast.makeText(HeartRateActivity.this, "心率:" + heartBeat, Toast.LENGTH_LONG).show();
-                //TODO:存储心率
+            switch (msg.what) {
+                case MEASURE_COMPLETE:
+                    Toast.makeText(HeartRateActivity.this, "心率:" + heartBeat, Toast.LENGTH_LONG).show();
+                    //TODO:save heart rate
+                    binding.heartrate.setText(heartBeat + "bmp");
+                    binding.confirm.setEnabled(true);
+                    break;
+
+                case UPLOAD_COMPLETE:
+                    binding.confirm.setEnabled(false);
+                    Toast.makeText(HeartRateActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+
+                case UPLOAD_FAIL:
+                    Toast.makeText(HeartRateActivity.this, "fail:" + msg.getData().getString("message"), Toast.LENGTH_LONG).show();
+                    break;
+                default:
             }
         }
     }

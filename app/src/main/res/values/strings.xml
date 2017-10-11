@@ -129,4 +129,12 @@
     <string name="cover_camera_with_finger">Please cover camera with finger</string>
 
     <string name="need_permission">Need Permission!</string>
+
+    <string name="blood_glucose_hint">Blood Glucose(mmo/l)</string>
+    <string name="systolic_blood_pressure_hint">Systolic Pressure(kPa)</string>
+    <string name="diastolic_blood_pressure_hint">Diastolic Pressure(kPa)</string>
+    <string name="illegal_input">Illegal Input</string>
+    <string name="upload_success">Upload success!</string>
+    <string name="upload_fail">Upload fail </string>
+    <string name="weight_recoard_hint">Weight(kg)</string>
 </resources>

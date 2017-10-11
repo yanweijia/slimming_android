@@ -16,8 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 import cn.yanweijia.slimming.BR;
+import cn.yanweijia.slimming.BloodGlucoseActivity;
+import cn.yanweijia.slimming.BloodPressureActivity;
 import cn.yanweijia.slimming.HeartRateActivity;
 import cn.yanweijia.slimming.R;
+import cn.yanweijia.slimming.WeightRecoardActivity;
 import cn.yanweijia.slimming.custom.adapter.ListAdapter;
 import cn.yanweijia.slimming.databinding.FragmentHealthBinding;
 
@@ -86,13 +89,13 @@ public class HealthFragment extends Fragment {
                         startActivity(new Intent(getActivity(), HeartRateActivity.class)); //replace it
                         break;
                     case R.drawable.blood_persure:
-                        startActivity(new Intent(getActivity(), null));
+                        startActivity(new Intent(getActivity(), BloodPressureActivity.class));
                         break;
                     case R.drawable.blood_sugar:
-                        startActivity(new Intent(getActivity(), null));
+                        startActivity(new Intent(getActivity(), BloodGlucoseActivity.class));
                         break;
                     case R.drawable.weight:
-                        startActivity(new Intent(getActivity(), null));
+                        startActivity(new Intent(getActivity(), WeightRecoardActivity.class));
                         break;
                     default:
                         Log.d(TAG, "onItemClick: Err!" + position);

@@ -11,4 +11,10 @@
     <color name="health_btn_background">@color/lightGrey</color>
     <color name="heart_rate_activity_title_background">@color/colorAccent</color>
     <color name="heart_rate_activity_title_color">@color/black</color>
+    <color name="blood_glucose_activity_title_color">@color/black</color>
+    <color name="blood_glucose_activity_title_background">@color/lightGrey</color>
+    <color name="blood_pressure_activity_title_background">@color/lightGrey</color>
+    <color name="blood_pressure_activity_title_color">@color/black</color>
+    <color name="weight_recoard_activity_title_background">@color/lightGrey</color>
+    <color name="weight_recoard_activity_title_color">@color/black</color>
 </resources>

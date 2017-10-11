@@ -129,4 +129,12 @@
     <string name="cover_camera_with_finger">请将食指覆盖住手机摄像头</string>
 
     <string name="need_permission">要爆炸啦,权限不够,需要权限来继续!</string>
+
+    <string name="blood_glucose_hint">血糖(mmo/l)</string>
+    <string name="systolic_blood_pressure_hint">收缩压(kPa)</string>
+    <string name="diastolic_blood_pressure_hint">舒张压(kPa)</string>
+    <string name="illegal_input">输入数据格式不正确.</string>
+    <string name="upload_success">上传成功!</string>
+    <string name="upload_fail">上传失败 </string>
+    <string name="weight_recoard_hint">体重(kg千克)</string>
 </resources>
