@@ -86,6 +86,10 @@ public class HeartRateActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_heart_rate);
+        flag = 1;
+        complete = false;
+        processing.set(false);
+        heartBeat = 0;
         initConfig();
 
         new Thread(new Runnable() {
@@ -372,7 +376,7 @@ public class HeartRateActivity extends Activity {
 
                 case UPLOAD_COMPLETE:
                     binding.confirm.setEnabled(false);
-                    Toast.makeText(HeartRateActivity.this, "success", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HeartRateActivity.this, R.string.upload_success, Toast.LENGTH_SHORT).show();
                     finish();
                     break;
 
