@@ -137,4 +137,6 @@
     <string name="upload_success">上传成功!</string>
     <string name="upload_fail">上传失败 </string>
     <string name="weight_recoard_hint">体重(kg千克)</string>
+
+    <string name="run">开始跑步</string>
 </resources>

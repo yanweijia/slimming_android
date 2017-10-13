@@ -137,4 +137,6 @@
     <string name="upload_success">Upload success!</string>
     <string name="upload_fail">Upload fail </string>
     <string name="weight_recoard_hint">Weight(kg)</string>
+
+    <string name="run">Run now</string>
 </resources>
