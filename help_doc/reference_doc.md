@@ -20,6 +20,10 @@
 ## 资源
 * [IconFont 阿里巴巴矢量图标库](http://www.iconfont.cn/)
 
+## 地图定位
+* [高德地图定位SDK](http://lbs.amap.com/api/android-location-sdk/guide/android-location/getlocation)
+
+
 ## 异常处理参考文档
 
 * [ADB Install Fails With INSTALL_FAILED_TEST_ONLY - Stack overFlow](https://stackoverflow.com/questions/25274296/adb-install-fails-with-install-failed-test-only)
