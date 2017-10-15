@@ -1,11 +1,19 @@
 package cn.yanweijia.slimming;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.location.Location;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -14,10 +22,17 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amap.api.maps.model.PolylineOptions;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,11 +46,10 @@ import cn.yanweijia.slimming.entity.RunRecord;
 import cn.yanweijia.slimming.entity.User;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
-public class RunActivity extends AppCompatActivity {
+public class RunActivity extends Activity {
     private static final String TAG = "RunActivity";
     private ActivityRunBinding binding;
     private AMap aMap;
-    private ObjectMapper objectMapper;
     private List<LocationRecordPoint> locationList;
     private RunRecord runRecord = null;
     //声明AMapLocationClient类对象
@@ -51,7 +65,6 @@ public class RunActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_run);
         binding.map.onCreate(savedInstanceState);
-        objectMapper = new ObjectMapper();
         locationList = new ArrayList<>();
         runRecord = new RunRecord();
         if (aMap == null) {
@@ -119,70 +132,126 @@ public class RunActivity extends AppCompatActivity {
         binding.startRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //启动定位
-                locationList.clear();
-                isRunning = true;
-                runRecord.setStarttime(new Date());
-                mLocationClient.startLocation();
-                binding.runPanel.setVisibility(View.GONE);
-                binding.sharePanel.setVisibility(View.GONE);
-                binding.stopPanel.setVisibility(View.VISIBLE);
+                startRun();
             }
         });
         binding.stopRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isRunning = false;
-                runRecord.setEndtime(new Date());
-                mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
-                //判断list不为空,再继续,无记录点则返回开始跑步layout
-                if (locationList.size() < 2) {
-                    binding.sharePanel.setVisibility(View.GONE);
-                    binding.stopPanel.setVisibility(View.GONE);
-                    binding.runPanel.setVisibility(View.VISIBLE);
-                    return;
-                }
-                binding.sharePanel.setVisibility(View.VISIBLE);
-                binding.stopPanel.setVisibility(View.GONE);
-                binding.runPanel.setVisibility(View.GONE);
-                //上传运动结果,更新share界面
-                runRecord.setId(null);
-                runRecord.setRoad(locationList);    //路径点
-                BigDecimal distance = new BigDecimal(Double.toString(calcDistance()));
-                runRecord.setDistance(distance);
-                User user = DBManager.getUser();
-                user = user == null ? new User() : user;
-                runRecord.setUserId(user.getId());
-                BigDecimal userWeight = user.getWeight();
-                if (null == userWeight || userWeight.intValue() == 0) {
-                    userWeight = new BigDecimal("60");
-                }
-                runRecord.setCalorie(userWeight.multiply(distance.divide(new BigDecimal("1000"), 3, BigDecimal.ROUND_HALF_UP)).multiply(new BigDecimal("1.036")).setScale(2, BigDecimal.ROUND_HALF_UP));
-                BigDecimal speed = distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60.0f)), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
-                BigDecimal pace = new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60f)).divide(distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
-                runRecord.setPace(pace);
-                runRecord.setSpeed(speed);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String jsonResult = RequestUtils.uploadRunRecord(runRecord);
-                        Log.d(TAG, "run: JSONResult:" + jsonResult);
-                    }
-                }).start();
-                binding.distance.setText(new BigDecimal(Double.toString(distance.floatValue() / 1000.0f)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-                binding.kcalorie.setText(runRecord.getCalorie().toString());
-                binding.pace.setText(runRecord.getPace().toString());
-                long seconds = (runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000;
-                String time = (seconds / 3600) + ":" + (seconds / 60 % 60) + ":" + (seconds % 60);
-                binding.time.setText(time);
+                stopRun();
             }
         });
         binding.share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:截图并分享截图
+                share();
+
             }
         });
+    }
+
+    /**
+     * start run
+     */
+    private void startRun() {
+        //启动定位
+        locationList.clear();
+        isRunning = true;
+        removeAllMarker();
+        runRecord.setStarttime(new Date());
+        mLocationClient.startLocation();
+        binding.runPanel.setVisibility(View.GONE);
+        binding.sharePanel.setVisibility(View.GONE);
+        binding.stopPanel.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * stop run
+     */
+    private void stopRun() {
+        isRunning = false;
+        runRecord.setEndtime(new Date());
+        mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
+        //判断list不为空,再继续,无记录点则返回开始跑步layout
+        if (locationList.size() < 2) {
+            binding.sharePanel.setVisibility(View.GONE);
+            binding.stopPanel.setVisibility(View.GONE);
+            binding.runPanel.setVisibility(View.VISIBLE);
+            return;
+        }
+        binding.sharePanel.setVisibility(View.VISIBLE);
+        binding.stopPanel.setVisibility(View.GONE);
+        binding.runPanel.setVisibility(View.GONE);
+        //上传运动结果,更新share界面
+        runRecord.setId(null);
+        runRecord.setRoad(locationList);    //路径点
+        BigDecimal distance = new BigDecimal(Double.toString(calcDistance()));
+        runRecord.setDistance(distance);
+        User user = DBManager.getUser();
+        user = user == null ? new User() : user;
+        runRecord.setUserId(user.getId());
+        BigDecimal userWeight = user.getWeight();
+        if (null == userWeight || userWeight.intValue() == 0) {
+            userWeight = new BigDecimal("60");
+        }
+        runRecord.setCalorie(userWeight.multiply(distance.divide(new BigDecimal("1000"), 3, BigDecimal.ROUND_HALF_UP)).multiply(new BigDecimal("1.036")).setScale(2, BigDecimal.ROUND_HALF_UP));
+        BigDecimal speed = distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60.0f)), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal pace = new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60f)).divide(distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+        runRecord.setPace(pace);
+        runRecord.setSpeed(speed);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.uploadRunRecord(runRecord);
+                Log.d(TAG, "run: JSONResult:" + jsonResult);
+            }
+        }).start();
+        binding.distance.setText(new BigDecimal(Double.toString(distance.floatValue() / 1000.0f)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        binding.kcalorie.setText(runRecord.getCalorie().toString());
+        binding.pace.setText(runRecord.getPace().toString());
+        long seconds = (runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000;
+        String time = (seconds / 3600) + ":" + (seconds / 60 % 60) + ":" + (seconds % 60);
+        binding.time.setText(time);
+        LocationRecordPoint startPoint, endPoint;
+        startPoint = locationList.get(0);
+        endPoint = locationList.get(locationList.size() - 1);
+        aMap.addMarker(new MarkerOptions()
+                .position(new LatLng(endPoint.getLat(), endPoint.getLng()))
+                .title("终点")
+                .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.endpoint))));
+    }
+
+    /**
+     * share result
+     */
+    private void share() {
+        //截图并分享截图
+        aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
+            @Override
+            public void onMapScreenShot(Bitmap bitmap) {
+                String screenShotURI = saveScreenShot(bitmap, binding.container, binding.map, binding.sharePanel);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(screenShotURI));
+                intent.setType("image/png");
+                startActivity(Intent.createChooser(intent, getString(R.string.share)));
+            }
+
+            @Override
+            public void onMapScreenShot(Bitmap bitmap, int i) {
+
+            }
+        });
+    }
+
+    /**
+     * remove all markers
+     */
+    private void removeAllMarker() {
+        List<Marker> markers = aMap.getMapScreenMarkers();
+        for (Marker marker : markers) {
+            marker.remove();
+        }
+
     }
 
     /**
@@ -228,14 +297,27 @@ public class RunActivity extends AppCompatActivity {
         if (!isRunning) {
             return;
         }
+        //begin location
         if (locationList.isEmpty()) {
             locationList.add(new LocationRecordPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getTime()));
+            //标记起点
+            aMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()))
+                    .title("起点")
+                    .icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.startpoint))));
             return;
         }
         LocationRecordPoint lastEffectiveLocation = locationList.get(locationList.size() - 1);
-        if (lastEffectiveLocation.getLat() != aMapLocation.getLatitude() || lastEffectiveLocation.getLng() != aMapLocation.getLongitude()) {
-            locationList.add(new LocationRecordPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getTime()));
+        if (lastEffectiveLocation.getLat() == aMapLocation.getLatitude() && lastEffectiveLocation.getLng() == aMapLocation.getLongitude()) {
+            return;
         }
+        locationList.add(new LocationRecordPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getTime()));
+
+        LocationRecordPoint oldPoint = locationList.get(locationList.size() - 2),
+                newPoint = locationList.get(locationList.size() - 1);
+        LatLng oldLatLng = new LatLng(oldPoint.getLat(), oldPoint.getLng()),
+                newLatLng = new LatLng(newPoint.getLat(), newPoint.getLng());
+        aMap.addPolyline(new PolylineOptions().add(oldLatLng, newLatLng).width(10).geodesic(true).color(Color.GREEN));
     }
 
 
@@ -277,4 +359,66 @@ public class RunActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         binding.map.onSaveInstanceState(outState);
     }
+
+
+    /**
+     * 组装地图截图和其他View截图，并且将截图存储在本地sdcard，需要注意的是目前提供的方法限定为MapView与其他View在同一个ViewGroup下
+     *
+     * @param bitmap        地图截图回调返回的结果
+     * @param viewContainer MapView和其他要截图的View所在的父容器ViewGroup
+     * @param mapView       MapView控件
+     * @param views         其他想要在截图中显示的控件
+     * @return 存放位置
+     */
+    public static String saveScreenShot(final Bitmap bitmap, final ViewGroup viewContainer, final MapView mapView, final View... views) {
+        final String name = "screenshot.png";
+        new Thread() {
+            public void run() {
+
+                Bitmap screenShotBitmap = getMapAndViewScreenShot(bitmap, viewContainer, mapView, views);
+                if (Environment.getExternalStorageState().
+                        equals(Environment.MEDIA_MOUNTED)) {
+
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + name);
+                    try {
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        screenShotBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+                        //根据自己需求，如果外边对bitmp还有别的需求就不要recycle的
+                        screenShotBitmap.recycle();
+                        bitmap.recycle();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        }.start();
+
+        return name;
+    }
+
+    /**
+     * 组装地图截图和其他View截图，需要注意的是目前提供的方法限定为MapView与其他View在同一个ViewGroup下
+     *
+     * @param bitmap        地图截图回调返回的结果
+     * @param viewContainer MapView和其他要截图的View所在的父容器ViewGroup
+     * @param mapView       MapView控件
+     * @param views         其他想要在截图中显示的控件
+     */
+    public static Bitmap getMapAndViewScreenShot(Bitmap bitmap, ViewGroup viewContainer, MapView mapView, View... views) {
+        int width = viewContainer.getWidth();
+        int height = viewContainer.getHeight();
+        final Bitmap screenBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(screenBitmap);
+        canvas.drawBitmap(bitmap, mapView.getLeft(), mapView.getTop(), null);
+        for (View view : views) {
+            view.setDrawingCacheEnabled(true);
+            canvas.drawBitmap(view.getDrawingCache(), view.getLeft(), view.getTop(), null);
+        }
+
+        return screenBitmap;
+    }
+
+
 }

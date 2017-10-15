@@ -1,21 +1,33 @@
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.sport.SportFragment">
 
     <data>
 
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragment.sport.SportFragment">
+        android:layout_margin="@dimen/margin">
 
+        <LinearLayout
+            android:id="@+id/runContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/run"
-            android:text="@string/run"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/start_run"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
 
     </RelativeLayout>
 

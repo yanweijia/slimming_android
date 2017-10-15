@@ -54,7 +54,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:4.1.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
     //高德地图
-    compile 'com.amap.api:location:3.6.0'  //定位
+    compile 'com.amap.api:location:3.6.1'  //定位
     compile 'com.amap.api:3dmap:5.4.0'  //导航,已包含3d地图
     compile 'com.amap.api:search:5.3.1'   //搜索
 }

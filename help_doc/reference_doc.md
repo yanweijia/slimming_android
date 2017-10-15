@@ -37,7 +37,9 @@
 * [stackOverFlow - Warning:Android custom view should extend AppCompatTextView](https://stackoverflow.com/questions/43246336/android-custom-view-should-extend-appcompattextview)
 * [Android报错：No package identifier when getting value for resource number 0x00000003](http://www.jianshu.com/p/b4df9b81c1e0)
 * [笔记12--GridView--且解决与ScrollView共用的冲突问题](http://blog.csdn.net/mwj_88/article/details/23094399)
-* [ImageView简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)
-* [Android背景渐变色(shape,gradient)](http://l62s.iteye.com/blog/1659433)
-* [Android开发学习之路-Android6.0运行时权限](http://www.cnblogs.com/Fndroid/p/5542526.html)
-* [Jackson将json字符串转换成泛型List](http://www.cnblogs.com/quanyongan/archive/2013/04/16/3024993.html)
+* [ImageView 简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)
+* [Android 背景渐变色(shape,gradient)](http://l62s.iteye.com/blog/1659433)
+* [Android 开发学习之路 - Android6.0运行时权限](http://www.cnblogs.com/Fndroid/p/5542526.html)
+* [Jackson 将 json 字符串转换成泛型List](http://www.cnblogs.com/quanyongan/archive/2013/04/16/3024993.html)
+* [Android 分享 - 调用系统自带分享功能](http://www.jianshu.com/p/0a0e2258b3d6)
+

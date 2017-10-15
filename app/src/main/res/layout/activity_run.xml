@@ -30,10 +30,14 @@
             android:orientation="horizontal"
             android:visibility="visible">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/startRun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/start_run"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
                 android:text="@string/begin_run" />
 
         </LinearLayout>
@@ -50,10 +54,14 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/stopRun"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/stop_run"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
                 android:text="@string/stop_run" />
         </LinearLayout>
 
@@ -70,36 +78,49 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp">
 
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/run_distance_kilometer"
-                    android:textColor="@android:color/black"
-                    android:textSize="36sp"
-                    android:textStyle="bold" />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/run_distance_kilometer"
+                        android:textColor="@android:color/black"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="@string/kilometer"
-                    android:textSize="18sp" />
+                    <TextView
 
-                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="@string/kilometer"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/share"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/share" />
-            </LinearLayout>
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/share"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:text="@string/stop_run" />
+            </RelativeLayout>
+
 
             <View
                 android:layout_width="match_parent"
