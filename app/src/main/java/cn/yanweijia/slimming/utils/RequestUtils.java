@@ -16,6 +16,7 @@ import java.util.Map;
 import cn.yanweijia.slimming.entity.BloodGlucose;
 import cn.yanweijia.slimming.entity.BloodPressure;
 import cn.yanweijia.slimming.entity.HeartRate;
+import cn.yanweijia.slimming.entity.RunRecord;
 import cn.yanweijia.slimming.entity.User;
 import cn.yanweijia.slimming.entity.UserWeight;
 
@@ -49,7 +50,8 @@ public class RequestUtils {
     private static final String URL_UPLOAD_HEART_RATE = BASE_URL + "/api/health/heartrate/upload";//upload heart rate data with json
     private static final String URL_UPLOAD_BLOOD_GLUCOSE = BASE_URL + "/api/health/bloodglucose/upload";//upload blood glucose data with json
     private static final String URL_UPLOAD_BLOOD_PRESSURE = BASE_URL + "/api/health/bloodpressure/upload"; //upload blood pressure data with json
-
+    private static final String URL_LIST_RUN_RECORD = BASE_URL + "/api/sport/run/listrecord";//list run record , eg ?startTime=&endTime=
+    private static final String URL_UPLOAD_RUN_RECORD = BASE_URL + "/api/sport/run/upload"; //upload run record with json
 
     static {
         objectMapper = new ObjectMapper();
@@ -63,6 +65,42 @@ public class RequestUtils {
     public static String getBaseUrl() {
         return BASE_URL;
     }
+
+
+    /**
+     * list run record
+     *
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static String listRunRecord(Date startTime, Date endTime) {
+        try {
+            Map<String, String> params = new HashMap<>();
+            params.put("startTime", String.valueOf(startTime.getTime()));
+            params.put("endTime", String.valueOf(endTime.getTime()));
+            return HttpUtils.sendGet(URL_LIST_RUN_RECORD, params);
+        } catch (Exception e) {
+            Log.e(TAG, "listRunRecord: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
+    /**
+     * upload run record
+     *
+     * @param runRecord
+     * @return
+     */
+    public static String uploadRunRecord(RunRecord runRecord) {
+        try {
+            return HttpUtils.sendPostWithJSON(URL_UPLOAD_RUN_RECORD, objectMapper.writeValueAsString(EntityConverter.convertRunRecordToUploadFormat(runRecord)));
+        } catch (Exception e) {
+            Log.e(TAG, "uploadRunRecord: ", e);
+            return "{\"success\":false,\"message\":\"" + e.getMessage() + "\"}";
+        }
+    }
+
 
     /**
      * upload blood glucose

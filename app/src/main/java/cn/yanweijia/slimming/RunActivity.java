@@ -12,24 +12,32 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cn.yanweijia.slimming.dao.DBManager;
 import cn.yanweijia.slimming.databinding.ActivityRunBinding;
+import cn.yanweijia.slimming.entity.LocationRecordPoint;
+import cn.yanweijia.slimming.entity.RunRecord;
+import cn.yanweijia.slimming.entity.User;
+import cn.yanweijia.slimming.utils.RequestUtils;
 
 public class RunActivity extends AppCompatActivity {
     private static final String TAG = "RunActivity";
     private ActivityRunBinding binding;
     private AMap aMap;
     private ObjectMapper objectMapper;
-    private List<AMapLocation> locationList;
+    private List<LocationRecordPoint> locationList;
+    private RunRecord runRecord = null;
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
     //声明定位回调监听器
@@ -37,8 +45,6 @@ public class RunActivity extends AppCompatActivity {
 
     //跑步状态记录
     private boolean isRunning = false;
-    private Date startTime = null;
-    private Date endTime = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class RunActivity extends AppCompatActivity {
         binding.map.onCreate(savedInstanceState);
         objectMapper = new ObjectMapper();
         locationList = new ArrayList<>();
+        runRecord = new RunRecord();
         if (aMap == null) {
             aMap = binding.map.getMap();
         }
@@ -98,31 +105,24 @@ public class RunActivity extends AppCompatActivity {
         };
         //初始化定位
         mLocationClient = new AMapLocationClient(getApplicationContext());
-        //初始化AMapLocationClientOption对象
-        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-        mLocationOption.setInterval(1000);
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-        //设置是否允许模拟位置,默认为true，允许模拟位置
-        mLocationOption.setMockEnable(true);
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
-        //关闭定位缓存机制
-        mLocationOption.setLocationCacheEnable(false);
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();        //初始化AMapLocationClientOption对象
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setInterval(1000);        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+        mLocationOption.setNeedAddress(true);        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setMockEnable(true);        //设置是否允许模拟位置,默认为true，允许模拟位置
+        mLocationOption.setHttpTimeOut(20000);        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        mLocationOption.setLocationCacheEnable(false);        //关闭定位缓存机制
+        mLocationClient.setLocationOption(mLocationOption);        //给定位客户端对象设置定位参数
         mLocationClient.setLocationListener(mLocationListener);
 
 
         binding.startRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO:启动定位
+                //启动定位
+                locationList.clear();
                 isRunning = true;
-                startTime = new Date();
+                runRecord.setStarttime(new Date());
                 mLocationClient.startLocation();
                 binding.runPanel.setVisibility(View.GONE);
                 binding.sharePanel.setVisibility(View.GONE);
@@ -133,12 +133,48 @@ public class RunActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isRunning = false;
-                endTime = new Date();
+                runRecord.setEndtime(new Date());
                 mLocationClient.stopLocation();//停止定位后，本地定位服务并不会被销毁
-                //TODO:判断list不为空,再继续
+                //判断list不为空,再继续,无记录点则返回开始跑步layout
+                if (locationList.size() < 2) {
+                    binding.sharePanel.setVisibility(View.GONE);
+                    binding.stopPanel.setVisibility(View.GONE);
+                    binding.runPanel.setVisibility(View.VISIBLE);
+                    return;
+                }
                 binding.sharePanel.setVisibility(View.VISIBLE);
                 binding.stopPanel.setVisibility(View.GONE);
                 binding.runPanel.setVisibility(View.GONE);
+                //上传运动结果,更新share界面
+                runRecord.setId(null);
+                runRecord.setRoad(locationList);    //路径点
+                BigDecimal distance = new BigDecimal(Double.toString(calcDistance()));
+                runRecord.setDistance(distance);
+                User user = DBManager.getUser();
+                user = user == null ? new User() : user;
+                runRecord.setUserId(user.getId());
+                BigDecimal userWeight = user.getWeight();
+                if (null == userWeight || userWeight.intValue() == 0) {
+                    userWeight = new BigDecimal("60");
+                }
+                runRecord.setCalorie(userWeight.multiply(distance.divide(new BigDecimal("1000"), 3, BigDecimal.ROUND_HALF_UP)).multiply(new BigDecimal("1.036")).setScale(2, BigDecimal.ROUND_HALF_UP));
+                BigDecimal speed = distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60.0f)), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal pace = new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60f)).divide(distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+                runRecord.setPace(pace);
+                runRecord.setSpeed(speed);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String jsonResult = RequestUtils.uploadRunRecord(runRecord);
+                        Log.d(TAG, "run: JSONResult:" + jsonResult);
+                    }
+                }).start();
+                binding.distance.setText(new BigDecimal(Double.toString(distance.floatValue() / 1000.0f)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+                binding.kcalorie.setText(runRecord.getCalorie().toString());
+                binding.pace.setText(runRecord.getPace().toString());
+                long seconds = (runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000;
+                String time = (seconds / 3600) + ":" + (seconds / 60 % 60) + ":" + (seconds % 60);
+                binding.time.setText(time);
             }
         });
         binding.share.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +183,27 @@ public class RunActivity extends AppCompatActivity {
                 //TODO:截图并分享截图
             }
         });
+    }
+
+    /**
+     * calculate run distance,(meter)
+     *
+     * @return
+     */
+    private float calcDistance() {
+        float distance = 0.0f;
+        if (locationList.size() < 2)
+            return distance;
+        LatLng lastLatLng, nowLatLng;
+        LocationRecordPoint firstLocation = locationList.get(0);
+        lastLatLng = new LatLng(firstLocation.getLat(), firstLocation.getLng());
+        for (int i = 1; i < locationList.size() - 1; i++) {
+            LocationRecordPoint point = locationList.get(i);
+            nowLatLng = new LatLng(point.getLat(), point.getLng());
+            distance += AMapUtils.calculateLineDistance(lastLatLng, nowLatLng);
+            lastLatLng = nowLatLng;
+        }
+        return distance;
     }
 
     /**
@@ -172,12 +229,12 @@ public class RunActivity extends AppCompatActivity {
             return;
         }
         if (locationList.isEmpty()) {
-            locationList.add(aMapLocation);
+            locationList.add(new LocationRecordPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getTime()));
             return;
         }
-        AMapLocation lastEffectiveLocation = locationList.get(locationList.size() - 1);
-        if (lastEffectiveLocation.getLatitude() != aMapLocation.getLatitude() || lastEffectiveLocation.getLongitude() != aMapLocation.getLongitude()) {
-            locationList.add(aMapLocation);
+        LocationRecordPoint lastEffectiveLocation = locationList.get(locationList.size() - 1);
+        if (lastEffectiveLocation.getLat() != aMapLocation.getLatitude() || lastEffectiveLocation.getLng() != aMapLocation.getLongitude()) {
+            locationList.add(new LocationRecordPoint(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getTime()));
         }
     }
 

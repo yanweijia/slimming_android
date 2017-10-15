@@ -139,4 +139,15 @@
     <string name="weight_recoard_hint">Weight(kg)</string>
 
     <string name="run">Run now</string>
+    <string name="begin_run">Run</string>
+    <string name="stop_run">Stop</string>
+    <string name="kilometer">km</string>
+    <string name="run_distance_kilometer">3.11</string>
+    <string name="share">Share</string>
+    <string name="run_time_num">00:32:20</string>
+    <string name="run_pace_num">9\'17</string>
+    <string name="run_kcalorie_num">218.2</string>
+    <string name="run_duration">Duration</string>
+    <string name="run_pace">Pace</string>
+    <string name="run_kcalorie">Kcalo</string>
 </resources>

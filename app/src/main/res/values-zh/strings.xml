@@ -139,4 +139,15 @@
     <string name="weight_recoard_hint">体重(kg千克)</string>
 
     <string name="run">开始跑步</string>
+    <string name="begin_run">开始</string>
+    <string name="stop_run">停止</string>
+    <string name="kilometer">公里</string>
+    <string name="run_distance_kilometer">3.11</string>
+    <string name="share">分享</string>
+    <string name="run_time_num">00:32:20</string>
+    <string name="run_pace_num">9\'17</string>
+    <string name="run_kcalorie_num">218.2</string>
+    <string name="run_duration">持续时长</string>
+    <string name="run_pace">平均配速</string>
+    <string name="run_kcalorie">大卡</string>
 </resources>

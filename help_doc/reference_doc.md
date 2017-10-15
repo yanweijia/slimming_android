@@ -40,3 +40,4 @@
 * [ImageView简单加载网络图片实例代码](http://www.jb51.net/article/38825.htm)
 * [Android背景渐变色(shape,gradient)](http://l62s.iteye.com/blog/1659433)
 * [Android开发学习之路-Android6.0运行时权限](http://www.cnblogs.com/Fndroid/p/5542526.html)
+* [Jackson将json字符串转换成泛型List](http://www.cnblogs.com/quanyongan/archive/2013/04/16/3024993.html)
