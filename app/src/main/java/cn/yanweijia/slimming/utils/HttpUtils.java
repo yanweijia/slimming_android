@@ -135,8 +135,6 @@ public class HttpUtils {
      * @author weijia
      */
     public static String sendGet(String url, Map<String, String> params) {
-        //httpClient
-        HttpClient httpClient = new DefaultHttpClient();
 
         StringBuilder params_str = new StringBuilder("");
 

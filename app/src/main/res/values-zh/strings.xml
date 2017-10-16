@@ -150,4 +150,6 @@
     <string name="run_duration">持续时长</string>
     <string name="run_pace">平均配速</string>
     <string name="run_kcalorie">大卡</string>
+
+    <string name="choose_date">请选择统计日期:</string>
 </resources>

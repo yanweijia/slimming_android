@@ -21,4 +21,7 @@
     <dimen name="categoryMargin">7dp</dimen>
     <dimen name="food_image_size">60dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="chart_margin_top">16dp</dimen>
+    <dimen name="chart_height">220dp</dimen>
 </resources>

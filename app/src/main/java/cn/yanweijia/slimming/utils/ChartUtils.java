@@ -28,9 +28,27 @@ import java.util.List;
 
 public class ChartUtils {
 
-    public static void drawLineChart(Context context, LineChart lineChart, String chartTitle, String desc, Integer descriptionColor, List<ArrayList<Entry>> values, List<String> titles, List<Integer> colors) {
+    /**
+     * draw a Line Chart
+     *
+     * @param context          Application/Activity/View Context
+     * @param lineChart        chart View
+     * @param chartTitle       title,useless
+     * @param desc             chart description ,right bottom
+     * @param descriptionColor description color
+     * @param values           chart sequence values
+     * @param titles           chart sequence title
+     * @param colors           chart sequence color
+     * @author weijia
+     */
+    public static boolean drawLineChart(Context context, LineChart lineChart, String chartTitle, String desc, Integer descriptionColor, List<ArrayList<Entry>> values, List<String> titles, List<Integer> colors) {
         if (null == lineChart || null == values || values.size() == 0) {
-            return;
+            return false;
+        }
+        for (ArrayList arrayList : values) {
+            if (arrayList.size() == 0) {
+                return false;
+            }
         }
         lineChart.clear();
         //创建描述信息
@@ -41,7 +59,7 @@ public class ChartUtils {
         description.setTextColor(descriptionColor);
         description.setTextSize(20);
         lineChart.setDescription(description);//设置图表描述信息
-        lineChart.setNoDataText("请添加数据");//没有数据时显示的文字
+        lineChart.setNoDataText("Please add some Datas");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawBorders(false);//禁止绘制图表边框的线
@@ -95,8 +113,6 @@ public class ChartUtils {
         xAxis.setDrawGridLines(true);//设置x轴上每个点对应的线
         xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
-        //xAxis.setTextSize(20f);//设置字体
-        //xAxis.setTextColor(Color.BLACK);//设置字体颜色
         //设置竖线的显示样式为虚线
         //lineLength控制虚线段的长度
         //spaceLength控制线之间的空间
@@ -151,6 +167,6 @@ public class ChartUtils {
 
         lineChart.notifyDataSetChanged();//刷新数据
         lineChart.invalidate();//重绘
-
+        return true;
     }
 }

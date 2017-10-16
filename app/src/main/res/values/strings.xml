@@ -150,4 +150,9 @@
     <string name="run_duration">Duration</string>
     <string name="run_pace">Pace</string>
     <string name="run_kcalorie">Kcalo</string>
+
+    <string name="choose_date">Please choose date:</string>
+    <string name="start_date">StartDate:</string>
+    <string name="end_date">EndDate:</string>
+    <string name="set">Set</string>
 </resources>
