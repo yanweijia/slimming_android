@@ -57,4 +57,6 @@ dependencies {
     compile 'com.amap.api:location:3.6.1'  //定位
     compile 'com.amap.api:3dmap:5.4.0'  //导航,已包含3d地图
     compile 'com.amap.api:search:5.3.1'   //搜索
+    //https://github.com/PhilJay/MPAndroidChart
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }
