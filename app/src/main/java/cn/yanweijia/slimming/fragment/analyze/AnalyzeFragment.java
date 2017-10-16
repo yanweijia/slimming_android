@@ -134,6 +134,6 @@ public class AnalyzeFragment extends Fragment {
         List<Integer> colors = new ArrayList<>();
         colors.add(Color.BLACK);
         colors.add(Color.BLUE);
-        ChartUtils.drawLineChart(getActivity(), binding.lineChart, "", "description", values, titles, colors);
+        ChartUtils.drawLineChart(getActivity(), binding.lineChart, "", "description", null, values, titles, colors);
     }
 }

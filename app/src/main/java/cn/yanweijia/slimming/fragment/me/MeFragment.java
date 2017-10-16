@@ -218,7 +218,7 @@ public class MeFragment extends Fragment {
             Log.e(TAG, "refreshUserInfo() : Error!", e);
         } finally {
             // refresh complete;
-            binding.swipeRefreshlayout.setRefreshing(false);
+//            binding.swipeRefreshlayout.setRefreshing(false);
         }
     }
 
@@ -263,6 +263,7 @@ public class MeFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case REFRESH_USERINFO_SUCCESS:
+                    binding.swipeRefreshlayout.setRefreshing(false);
                     try {
                         String userJson = msg.getData().getString("user");
                         User user = objectMapper.readValue(userJson, User.class);
@@ -276,6 +277,7 @@ public class MeFragment extends Fragment {
                     }
                     break;
                 case REFRESH_USERINFO_FAIL:
+                    binding.swipeRefreshlayout.setRefreshing(false);
                     String message = msg.getData().getString("message");
                     Toast.makeText(getActivity(), getString(R.string.refresh_userinfo_fail) + ":" + message, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "handleMessage: REFRESH_USERINFO_FAIL" + message);
