@@ -460,6 +460,8 @@ public class RunActivity extends Activity {
                         .setNegativeButton(R.string.cancel, null)
                         .show();
 
+            } else {
+                finish();
             }
             return false;
         } else {
