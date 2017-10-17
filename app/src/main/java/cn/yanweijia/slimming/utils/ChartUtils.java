@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -11,6 +12,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -39,9 +41,11 @@ public class ChartUtils {
      * @param values           chart sequence values
      * @param titles           chart sequence title
      * @param colors           chart sequence color
+     * @param formatter        nullable, xValuesFormatter: display 'x axis unit' on x axis
      * @author weijia
      */
-    public static boolean drawLineChart(Context context, LineChart lineChart, String chartTitle, String desc, Integer descriptionColor, List<ArrayList<Entry>> values, List<String> titles, List<Integer> colors) {
+    public static boolean drawLineChart(Context context, LineChart lineChart, String chartTitle, String desc, Integer descriptionColor, List<ArrayList<Entry>> values, List<String> titles, List<Integer> colors, IAxisValueFormatter formatter) {
+        lineChart.clear();
         if (null == lineChart || null == values || values.size() == 0) {
             return false;
         }
@@ -50,7 +54,6 @@ public class ChartUtils {
                 return false;
             }
         }
-        lineChart.clear();
         //创建描述信息
         Description description = new Description();
         description.setText(desc);
@@ -59,7 +62,7 @@ public class ChartUtils {
         description.setTextColor(descriptionColor);
         description.setTextSize(20);
         lineChart.setDescription(description);//设置图表描述信息
-        lineChart.setNoDataText("Please add some Datas");//没有数据时显示的文字
+        lineChart.setNoDataText("No chart data available.");//没有数据时显示的文字
         lineChart.setNoDataTextColor(Color.BLUE);//没有数据时显示文字的颜色
         lineChart.setDrawGridBackground(false);//chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawBorders(false);//禁止绘制图表边框的线
@@ -108,6 +111,9 @@ public class ChartUtils {
         lineChart.invalidate();
         //获取此图表的x轴
         XAxis xAxis = lineChart.getXAxis();
+        if (formatter != null)
+            xAxis.setValueFormatter(formatter);
+        xAxis.setValueFormatter(formatter);
         xAxis.setEnabled(true);//设置轴启用或禁用 如果禁用以下的设置全部不生效
         xAxis.setDrawAxisLine(true);//是否绘制轴线
         xAxis.setDrawGridLines(true);//设置x轴上每个点对应的线

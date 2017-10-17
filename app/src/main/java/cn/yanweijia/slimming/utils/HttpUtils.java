@@ -40,16 +40,17 @@ public class HttpUtils {
 
     /**
      * send post request, Content-Type:application/json;charset=UTF-8 <br/>
-     * @param url request url
+     *
+     * @param url  request url
      * @param json json string
      * @return
      * @author weijia
      */
-    public static String sendPostWithJSON(String url, String json) {
+    public static synchronized String sendPostWithJSON(String url, String json) {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
         try {
-            StringEntity stringEntity = new StringEntity(json,"UTF-8");
+            StringEntity stringEntity = new StringEntity(json, "UTF-8");
             stringEntity.setContentEncoding("UTF-8");
             stringEntity.setContentType("application/json;charset=UTF-8");  // important !!!
             httpPost.setEntity(stringEntity);
@@ -83,7 +84,7 @@ public class HttpUtils {
      * @param params params,Nullable
      * @return result html content
      */
-    public static String sendPost(String url, Map<String, String> params) {
+    public static synchronized String sendPost(String url, Map<String, String> params) {
 
         // get method
         HttpPost httpPost = new HttpPost(url);
@@ -134,7 +135,7 @@ public class HttpUtils {
      * @return result html content
      * @author weijia
      */
-    public static String sendGet(String url, Map<String, String> params) {
+    public static synchronized String sendGet(String url, Map<String, String> params) {
 
         StringBuilder params_str = new StringBuilder("");
 

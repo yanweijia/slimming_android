@@ -15,10 +15,10 @@ import android.widget.DatePicker;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -32,6 +32,9 @@ import cn.yanweijia.slimming.R;
 import cn.yanweijia.slimming.databinding.FragmentAnalyzeBinding;
 import cn.yanweijia.slimming.entity.BloodGlucose;
 import cn.yanweijia.slimming.entity.BloodPressure;
+import cn.yanweijia.slimming.entity.HeartRate;
+import cn.yanweijia.slimming.entity.RunRecordUpload;
+import cn.yanweijia.slimming.entity.UserWeight;
 import cn.yanweijia.slimming.utils.ChartUtils;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
@@ -45,9 +48,9 @@ public class AnalyzeFragment extends Fragment {
     private static final String TAG = "AnalyzeFragment";
     private FragmentAnalyzeBinding binding;
     private Date startTime, endTime;
-    private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;  //convert jsonString to java bean
     private Handler handler;
-
+    private IAxisValueFormatter formatter;
     private static final int DRAW_WEIGHT = 1;
     private static final int DRAW_BLOOD_PRESSURE = 2;
     private static final int DRAW_BLOOD_GLUCOSE = 3;
@@ -96,6 +99,16 @@ public class AnalyzeFragment extends Fragment {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //x轴单位对应显示数据
+        formatter = new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                Date date = new Date((long) value);
+                return new SimpleDateFormat("MM.dd").format(date);
+            }
+        };
+
+
         drawChart();
         binding.setStartTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,11 +213,33 @@ public class AnalyzeFragment extends Fragment {
     }
 
     private void drawRunRecordChart() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.listRunRecord(startTime, endTime);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("data", jsonResult);
+                msg.setData(bundle);
+                msg.what = DRAW_RUN_RECORD;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     private void drawHeartRateChart() {
-
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.listHeartRate(startTime, endTime);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("data", jsonResult);
+                msg.setData(bundle);
+                msg.what = DRAW_HEART_RATE;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     private void drawBloodPressureChart() {
@@ -222,6 +257,97 @@ public class AnalyzeFragment extends Fragment {
         }).start();
     }
 
+    private void drawBloodGlucoseChart() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.listBloodGlucose(startTime, endTime);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("data", jsonResult);
+                msg.setData(bundle);
+                msg.what = DRAW_BLOOD_GLUCOSE;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void drawWeightChart() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String jsonResult = RequestUtils.listWeight(startTime, endTime);
+                Message msg = new Message();
+                Bundle bundle = new Bundle();
+                bundle.putString("data", jsonResult);
+                msg.setData(bundle);
+                msg.what = DRAW_WEIGHT;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+
+    private void drawRunRecordChart(String jsonResult) {
+        List<ArrayList<Entry>> values = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        ArrayList<Entry> runRecordValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(jsonResult);
+            if (json.getBoolean("success")) {
+                String jsonPressure = json.getString("runRecord");
+                List<RunRecordUpload> list = null;
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, RunRecordUpload.class);
+                list = objectMapper.readValue(jsonPressure, javaType);
+                for (RunRecordUpload runRecord : list) {
+                    float x = runRecord.getStarttime().getTime();
+                    runRecordValues.add(new Entry(x, runRecord.getDistance().floatValue()));
+                }
+            } else {
+                Log.d(TAG, "drawRunRecordChart: downloadFail:" + json.getString("message"));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "drawRunRecordChart: ", e);
+        }
+        values.add(runRecordValues);
+        titles.add(getString(R.string.run));
+        colors.add(Color.BLACK);
+        ChartUtils.drawLineChart(getActivity(), binding.runRecordChart, "", getString(R.string.run), null, values, titles, colors, formatter);
+
+    }
+
+    private void drawHeartRateChart(String jsonResult) {
+        List<ArrayList<Entry>> values = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        ArrayList<Entry> heartRateValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(jsonResult);
+            if (json.getBoolean("success")) {
+                String jsonPressure = json.getString("heartRate");
+                List<HeartRate> list = null;
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, HeartRate.class);
+                list = objectMapper.readValue(jsonPressure, javaType);
+                for (HeartRate heartRate : list) {
+                    float x = heartRate.getTime().getTime();
+                    heartRateValues.add(new Entry(x, heartRate.getRate().floatValue()));
+                }
+            } else {
+                Log.d(TAG, "drawHeartRateChart: downloadFail:" + json.getString("message"));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "drawHeartRateChart: ", e);
+        }
+        values.add(heartRateValues);
+        titles.add(getString(R.string.heart_rate));
+        colors.add(Color.BLACK);
+        ChartUtils.drawLineChart(getActivity(), binding.heartRateChart, "", getString(R.string.heart_rate), null, values, titles, colors, formatter);
+
+    }
+
     private void drawBloodPressureChart(String jsonResult) {
         List<ArrayList<Entry>> values = new ArrayList<>();
         List<String> titles = new ArrayList<>();
@@ -236,10 +362,8 @@ public class AnalyzeFragment extends Fragment {
                 List<BloodPressure> list = null;
                 JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, BloodPressure.class);
                 list = objectMapper.readValue(jsonPressure, javaType);
-                for (int i = 0; i < list.size(); i++) {
-                    BloodPressure bloodPressure = list.get(i);
-                    //TODO:坐标轴参考:http://blog.csdn.net/huangjiamingboke/article/details/52166257
-                    float x = (bloodPressure.getTime().getTime() - startTime.getTime()) / 24F / 60F / 60F / 1000.0F;
+                for (BloodPressure bloodPressure : list) {
+                    float x = bloodPressure.getTime().getTime();
                     systolicValues.add(new Entry(x, bloodPressure.getSystolicPressure().floatValue()));
                     diastolicValues.add(new Entry(x, bloodPressure.getDiastolicPressure().floatValue()));
                 }
@@ -255,15 +379,67 @@ public class AnalyzeFragment extends Fragment {
         titles.add(getString(R.string.diastolic_blood_pressure_hint));
         colors.add(Color.BLACK);
         colors.add(Color.BLUE);
-        ChartUtils.drawLineChart(getActivity(), binding.bloodPressureChart, "", getString(R.string.blood_persure), null, values, titles, colors);
+        ChartUtils.drawLineChart(getActivity(), binding.bloodPressureChart, "", getString(R.string.blood_persure), null, values, titles, colors, formatter);
 
     }
 
-    private void drawBloodGlucoseChart() {
+    private void drawBloodGlucoseChart(String jsonResult) {
+        List<ArrayList<Entry>> values = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        ArrayList<Entry> bloodGlucoseValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(jsonResult);
+            if (json.getBoolean("success")) {
+                String jsonPressure = json.getString("bloodGlucose");
+                List<BloodGlucose> list = null;
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, BloodGlucose.class);
+                list = objectMapper.readValue(jsonPressure, javaType);
+                for (BloodGlucose bloodGlucose : list) {
+                    float x = bloodGlucose.getTime().getTime();
+                    bloodGlucoseValues.add(new Entry(x, bloodGlucose.getGlucose().floatValue()));
+                }
+            } else {
+                Log.d(TAG, "drawBloodGlucoseChart: downloadFail:" + json.getString("message"));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "drawBloodGlucoseChart: ", e);
+        }
+        values.add(bloodGlucoseValues);
+        titles.add(getString(R.string.blood_glucose_hint));
+        colors.add(Color.BLACK);
+        ChartUtils.drawLineChart(getActivity(), binding.bloodGlucoseChart, "", getString(R.string.blood_glucose_hint), null, values, titles, colors, formatter);
 
     }
 
-    private void drawWeightChart() {
+    private void drawWeightChart(String jsonResult) {
+        List<ArrayList<Entry>> values = new ArrayList<>();
+        List<String> titles = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        ArrayList<Entry> weightValues = new ArrayList<>();
+        try {
+            JSONObject json = new JSONObject(jsonResult);
+            if (json.getBoolean("success")) {
+                String jsonPressure = json.getString("userWeight");
+                List<UserWeight> list = null;
+                JavaType javaType = objectMapper.getTypeFactory().constructParametricType(ArrayList.class, UserWeight.class);
+                list = objectMapper.readValue(jsonPressure, javaType);
+                for (UserWeight userWeight : list) {
+                    float x = userWeight.getTime().getTime();
+                    weightValues.add(new Entry(x, userWeight.getWeight().floatValue()));
+                }
+            } else {
+                Log.d(TAG, "drawWeightChart: downloadFail:" + json.getString("message"));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "drawWeightChart: ", e);
+        }
+        values.add(weightValues);
+        titles.add(getString(R.string.weight));
+        colors.add(Color.BLACK);
+        ChartUtils.drawLineChart(getActivity(), binding.weightChart, "", getString(R.string.weight), null, values, titles, colors, formatter);
 
     }
 
@@ -271,18 +447,22 @@ public class AnalyzeFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            String jsonResult = msg.getData().getString("data");
             switch (msg.what) {
                 case DRAW_WEIGHT:
+                    drawWeightChart(jsonResult);
                     break;
                 case DRAW_BLOOD_PRESSURE:
-                    String jsonResult = msg.getData().getString("data");
                     drawBloodPressureChart(jsonResult);
                     break;
                 case DRAW_BLOOD_GLUCOSE:
+                    drawBloodGlucoseChart(jsonResult);
                     break;
                 case DRAW_HEART_RATE:
+                    drawHeartRateChart(jsonResult);
                     break;
                 case DRAW_RUN_RECORD:
+                    drawRunRecordChart(jsonResult);
                     break;
                 default:
             }
