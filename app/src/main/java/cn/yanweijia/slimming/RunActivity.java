@@ -31,7 +31,6 @@ import com.amap.api.maps.model.MyLocationStyle;
 import com.amap.api.maps.model.PolylineOptions;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -196,7 +195,10 @@ public class RunActivity extends Activity {
         }
         runRecord.setCalorie(userWeight.multiply(distance.divide(new BigDecimal("1000"), 3, BigDecimal.ROUND_HALF_UP)).multiply(new BigDecimal("1.036")).setScale(2, BigDecimal.ROUND_HALF_UP));
         BigDecimal speed = distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP).divide(new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60.0f)), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal pace = new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60f)).divide(distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal pace = new BigDecimal("0.0");
+        if (distance.doubleValue() != 0) {
+            pace = new BigDecimal(Double.toString((runRecord.getEndtime().getTime() - runRecord.getStarttime().getTime()) / 1000.0f / 60f)).divide(distance.divide(new BigDecimal("1000"), 10, BigDecimal.ROUND_HALF_UP), 10, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP);
+        }
         runRecord.setPace(pace);
         runRecord.setSpeed(speed);
         new Thread(new Runnable() {
@@ -229,11 +231,7 @@ public class RunActivity extends Activity {
         aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
             @Override
             public void onMapScreenShot(Bitmap bitmap) {
-                String screenShotURI = saveScreenShot(bitmap, binding.container, binding.map, binding.sharePanel);
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(screenShotURI));
-                intent.setType("image/png");
-                startActivity(Intent.createChooser(intent, getString(R.string.share)));
+                saveScreenShotAndShare(bitmap, binding.container, binding.map, binding.sharePanel);
             }
 
             @Override
@@ -370,8 +368,9 @@ public class RunActivity extends Activity {
      * @param views         其他想要在截图中显示的控件
      * @return 存放位置
      */
-    public static String saveScreenShot(final Bitmap bitmap, final ViewGroup viewContainer, final MapView mapView, final View... views) {
+    public void saveScreenShotAndShare(final Bitmap bitmap, final ViewGroup viewContainer, final MapView mapView, final View... views) {
         final String name = "screenshot.png";
+        final String screenShotPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + name;
         new Thread() {
             public void run() {
 
@@ -379,7 +378,7 @@ public class RunActivity extends Activity {
                 if (Environment.getExternalStorageState().
                         equals(Environment.MEDIA_MOUNTED)) {
 
-                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + name);
+                    File file = new File(screenShotPath);
                     try {
                         FileOutputStream outputStream = new FileOutputStream(file);
                         screenShotBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -387,15 +386,23 @@ public class RunActivity extends Activity {
                         //根据自己需求，如果外边对bitmp还有别的需求就不要recycle的
                         screenShotBitmap.recycle();
                         bitmap.recycle();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
+                        outputStream.close();
+                    } catch (Exception e) {
+                        Log.e(TAG, "run: ", e);
                     }
+                    //这种方式是直接分享
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(screenShotPath));
+//                    intent.setType("image/png");
+//                    startActivity(Intent.createChooser(intent, getString(R.string.share)));
+                    //这种方式是用系统图库打开刚才的照片
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(file), "image/png");
+                    RunActivity.this.startActivity(intent);
                 }
             }
 
         }.start();
-
-        return name;
     }
 
     /**
@@ -406,7 +413,7 @@ public class RunActivity extends Activity {
      * @param mapView       MapView控件
      * @param views         其他想要在截图中显示的控件
      */
-    public static Bitmap getMapAndViewScreenShot(Bitmap bitmap, ViewGroup viewContainer, MapView mapView, View... views) {
+    public Bitmap getMapAndViewScreenShot(Bitmap bitmap, ViewGroup viewContainer, MapView mapView, View... views) {
         int width = viewContainer.getWidth();
         int height = viewContainer.getHeight();
         final Bitmap screenBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
