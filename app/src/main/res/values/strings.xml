@@ -162,4 +162,7 @@
 
     <string name="refresh_runrecord_complete">Refresh run record complete!</string>
     <string name="refresh_runrecord_fail">Refresh run record fail!</string>
+
+    <string name="chooseADevice">Please Choose a device</string>
+    <string name="print">Print</string>
 </resources>

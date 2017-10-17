@@ -162,4 +162,7 @@
 
     <string name="refresh_runrecord_complete">刷新跑步数据成功!</string>
     <string name="refresh_runrecord_fail">刷新跑步数据失败!</string>
+
+    <string name="chooseADevice">请选择一个设备</string>
+    <string name="print">打印</string>
 </resources>

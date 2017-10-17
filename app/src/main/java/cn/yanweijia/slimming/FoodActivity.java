@@ -7,8 +7,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONArray;
@@ -23,6 +25,7 @@ import cn.yanweijia.slimming.databinding.ActivityFoodBinding;
 import cn.yanweijia.slimming.entity.Food;
 import cn.yanweijia.slimming.entity.FoodCategory;
 import cn.yanweijia.slimming.entity.FoodMeasurement;
+import cn.yanweijia.slimming.utils.BlueToothPrinter;
 import cn.yanweijia.slimming.utils.RequestUtils;
 
 /**
@@ -37,7 +40,7 @@ public class FoodActivity extends AppCompatActivity {
     private int foodId = 1;
     private FoodActivityHandler myHandler;
     private List<FoodMeasurement> list;
-
+    private Food food;
 
     private static final int GET_INFO_SUCCESS = 1;
     private static final int GET_INFO_FAIL = 2;
@@ -54,6 +57,19 @@ public class FoodActivity extends AppCompatActivity {
         Intent intent = getIntent();
         foodId = intent.getIntExtra("foodid", 1);
         initDatas();
+
+        binding.print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    BlueToothPrinter.print(FoodActivity.this, "DC:0D:30:00:7E:8C", objectMapper.writeValueAsString(food));
+                    BlueToothPrinter.print(FoodActivity.this, objectMapper.writeValueAsString(food));
+
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -74,7 +90,7 @@ public class FoodActivity extends AppCompatActivity {
                     if (jsonObject.getBoolean("success")) {
                         msg.what = GET_INFO_SUCCESS;
                         bundle.putString("message", jsonObject.getString("message"));
-                        Food food = objectMapper.readValue(jsonObject.getString("food"), Food.class);
+                        food = objectMapper.readValue(jsonObject.getString("food"), Food.class);
                         binding.setFood(food);
                         FoodCategory foodCategory = DBManager.getFoodCategory(food.getCategory());
                         binding.setFoodCategory(foodCategory == null ? "unknow" : foodCategory.getName());
@@ -104,7 +120,7 @@ public class FoodActivity extends AppCompatActivity {
                     if (json.getBoolean("success")) {
                         JSONArray jsonArray = json.getJSONArray("foodMeasurement");
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            FoodMeasurement foodMeasurement = objectMapper.readValue(jsonArray.getString(i),FoodMeasurement.class);
+                            FoodMeasurement foodMeasurement = objectMapper.readValue(jsonArray.getString(i), FoodMeasurement.class);
                             list.add(foodMeasurement);
                         }
                     }
