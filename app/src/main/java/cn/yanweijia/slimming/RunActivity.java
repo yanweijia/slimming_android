@@ -1,6 +1,8 @@
 package cn.yanweijia.slimming;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -12,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -162,6 +165,13 @@ public class RunActivity extends Activity {
         binding.runPanel.setVisibility(View.GONE);
         binding.sharePanel.setVisibility(View.GONE);
         binding.stopPanel.setVisibility(View.VISIBLE);
+
+
+        AMapLocation location = mLocationClient.getLastKnownLocation();
+        if (location != null) {
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            aMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+        }
     }
 
     /**
@@ -427,5 +437,34 @@ public class RunActivity extends Activity {
         return screenBitmap;
     }
 
+    /**
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //warn user if running now
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Log.d(TAG, "onKeyDown: Back button Pressed");
+            if (isRunning) {
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.run_exit_warn)
+                        .setMessage(R.string.exit_without_confrim)
+                        .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .show();
+
+            }
+            return false;
+        } else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 
 }
