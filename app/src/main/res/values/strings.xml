@@ -153,9 +153,13 @@
     <string name="exit_without_confrim">You\'re running now, The data will not be saved if you exit now, Do you want to exit?</string>
     <string name="run_exit_warn">Warning</string>
     <string name="cancel">Cancel</string>
+    <string name="run_record">Run Record</string>
 
     <string name="choose_date">Please choose date:</string>
     <string name="start_date">StartDate:</string>
     <string name="end_date">EndDate:</string>
     <string name="set">Set</string>
+
+    <string name="refresh_runrecord_complete">Refresh run record complete!</string>
+    <string name="refresh_runrecord_fail">Refresh run record fail!</string>
 </resources>

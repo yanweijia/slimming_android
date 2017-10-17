@@ -5,12 +5,16 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import cn.yanweijia.slimming.utils.RequestUtils;
 
@@ -22,6 +26,18 @@ import cn.yanweijia.slimming.utils.RequestUtils;
 
 public class DataBindingAttrAdapter {
     private static final String TAG = "DataBindingAttrAdapter";
+
+
+    /**
+     * convert date to string format,run startTime and run endTime
+     *
+     * @param textview
+     * @param date
+     */
+    @BindingAdapter("app:time")
+    public static void convertRunningDateToString(final TextView textview, Date date) {
+        textview.setText(new SimpleDateFormat("MM-dd HH:mm:ss").format(date));
+    }
 
     /**
      * set image drawable

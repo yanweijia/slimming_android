@@ -1,9 +1,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.sport.SportFragment">
 
     <data>
 
+        <variable
+            name="adapter"
+            type="android.widget.BaseAdapter" />
     </data>
 
     <RelativeLayout
@@ -11,17 +15,44 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/margin">
 
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal"
+            android:text="@string/run_record"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/runContainer"
+            android:layout_below="@id/textview">
+
+            <ListView
+                android:id="@+id/gridview"
+                android:numColumns="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:adapter="@{adapter}" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
         <LinearLayout
             android:id="@+id/runContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/run"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:background="@drawable/start_run"
                 android:clickable="true"
                 android:focusable="true"

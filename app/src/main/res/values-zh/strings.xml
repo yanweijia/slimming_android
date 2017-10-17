@@ -153,9 +153,13 @@
     <string name="exit_without_confrim">您当前正在跑步,退出后数据不会被保存,确认退出?</string>
     <string name="run_exit_warn">警告</string>
     <string name="cancel">取消</string>
+    <string name="run_record">跑步记录</string>
 
     <string name="choose_date">请选择统计日期:</string>
     <string name="start_date">开始时间:</string>
     <string name="end_date">结束时间:</string>
     <string name="set">设置</string>
+
+    <string name="refresh_runrecord_complete">刷新跑步数据成功!</string>
+    <string name="refresh_runrecord_fail">刷新跑步数据失败!</string>
 </resources>

@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 
 public class LocationRecordPoint implements Serializable {
+    private static final long serialVersionUID = 1L;
     /**
      * latitude
      */
@@ -22,6 +23,9 @@ public class LocationRecordPoint implements Serializable {
      * time
      */
     private Long time;
+
+    public LocationRecordPoint() {
+    }
 
     public LocationRecordPoint(Double lat, Double lng, Long time) {
         this.lat = lat;
