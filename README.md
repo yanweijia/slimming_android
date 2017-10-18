@@ -6,6 +6,10 @@
 
 >其原理是通过摄像头闪光灯发出来的光,通过闪光灯识别手指的血管，读取摄像头红色素平均值/明暗变化,绘制心率曲线,检测曲线上下脉冲,计算心率值.
 
+若要自己搭建一个服务器环境,请将本项目对应服务端部署好,并修改本项目RequestUtil.java中的BASE_URL为对应服务器地址
+
+### Apk release: Demo下载体验
+[slimming.apk.zip](slimming.apk.zip)
 ###### 项目地址
 * [Coding repository](https://git.coding.net/yanweijia/slimming_android.git) slimming_android
 * [Github repository](https://github.com/yanweijia/slimming_android) slimming_android
