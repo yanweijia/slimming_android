@@ -9,7 +9,11 @@
 若要自己搭建一个服务器环境,请将本项目对应服务端部署好,并修改本项目RequestUtil.java中的BASE_URL为对应服务器地址
 
 ### Apk release: Demo下载体验
-[slimming.apk.zip](slimming.apk.zip)
+[slimming.apk.zip](about_project/slimming.apk.zip)
+>注:仅针对Android 6.0版本以下的系统,高版本的安卓系统动态申请权限还没写,定位及蓝牙打印功能可能会crash
+
+>targetSDK版本设置的26 , min为18,若想要高版本系统运行,请将app的build.gradle 中 targetSDK 设置为22及以下就可以,Android系统会认为apk是之前编译的版本,为了保持兼容性就会直接赋予AndroidManifest.xml中的权限.
+
 ###### 项目地址
 * [Coding repository](https://git.coding.net/yanweijia/slimming_android.git) slimming_android
 * [Github repository](https://github.com/yanweijia/slimming_android) slimming_android
