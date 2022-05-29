@@ -156,7 +156,6 @@ Code:
 
 ## ScreenShot: 截图演示
 
-![ScreenShot](screenshot/IMG_1354.JPG)
 
 ![ScreenShot](screenshot/IMG_1355.JPG)
 
