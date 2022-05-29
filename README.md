@@ -152,10 +152,9 @@ Code:
 * [android 调用系统图库查看指定路径的图片](http://blog.csdn.net/lyl278401555/article/details/12840925)
 
 ## ScreenShot: Postman Intro
-![Postman image](screenshot/postman.png)
 
 ## ScreenShot: 截图演示
-
+![ScreenShot](screenshot/IMG_1354.JPG)
 
 ![ScreenShot](screenshot/IMG_1355.JPG)
 
